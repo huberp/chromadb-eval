@@ -18,6 +18,16 @@ export interface Chunk {
   metadata?: ChunkMetadata;
 }
 
+/**
+ * Legacy string-based markdown document chunker.
+ * 
+ * This implementation uses string parsing to chunk markdown documents based on
+ * headers, paragraphs, and content type detection. It follows Mistral's recommendations
+ * for chunking strategy (200-500 tokens, 1-2 sentence overlap).
+ * 
+ * @deprecated This is the legacy chunker. An AST-based implementation is planned
+ * for better structural understanding and more robust parsing.
+ */
 export class DocumentChunker {
   private chunkSize: number;
   private chunkOverlap: number;

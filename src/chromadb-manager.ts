@@ -1,5 +1,5 @@
 import { ChromaClient, Collection, EmbeddingFunction } from 'chromadb';
-import { Chunk } from './chunker';
+import { Chunk } from './chunking';
 import { LocalEmbeddings } from './embeddings';
 
 export interface DocumentSimilarity {

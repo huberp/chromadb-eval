@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { DocumentChunker } from './chunker';
+import { DocumentChunker } from './chunking';
 import { ChromaDBManager } from './chromadb-manager';
 
 async function main() {
