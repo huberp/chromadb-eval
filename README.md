@@ -106,7 +106,9 @@ Manually trigger this workflow to analyze and display the 10 most common terms a
 
 ## Architecture
 
-- `src/chunker.ts`: Document chunking logic with configurable size and overlap
+- `src/chunking/`: Document chunking module with configurable size and overlap
+  - `legacy-chunker.ts`: Legacy string-based markdown chunker
+  - `index.ts`: Public API re-exports
 - `src/embeddings.ts`: Local embedding generation using Transformers.js
 - `src/chromadb-manager.ts`: ChromaDB operations including storage, querying, and analysis
 - `src/index.ts`: Main application orchestrating the workflow
