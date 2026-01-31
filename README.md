@@ -81,14 +81,28 @@ npm run dev
 npm run build
 ```
 
-## GitHub Actions Workflow
+## GitHub Actions Workflows
 
-You can also ask questions via GitHub Actions:
+This project includes several GitHub Actions workflows for different operations:
+
+### ChromaDB Query
+Ask questions about the documents via GitHub Actions:
 1. Go to the "Actions" tab in GitHub
 2. Select "ChromaDB Query" workflow
 3. Click "Run workflow"
 4. Enter your question
 5. View the results in the workflow run logs
+
+### Prepare ChromaDB
+Automatically chunks documents and stores them in ChromaDB. Runs on:
+- Manual trigger (workflow_dispatch)
+- When documents or source code changes
+
+### Compute Document Similarities
+Manually trigger this workflow to compute and display the top 10 most similar document pairs based on vector embeddings.
+
+### Analyze Common Terms
+Manually trigger this workflow to analyze and display the 10 most common terms across all documents.
 
 ## Architecture
 
