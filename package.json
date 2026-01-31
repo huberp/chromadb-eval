@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "tsx src/index.ts",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "verify-ast": "tsx src/verify-ast-parsing.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +15,13 @@
   "dependencies": {
     "@xenova/transformers": "^2.17.2",
     "chromadb": "^3.2.2",
-    "chromadb-default-embed": "^2.14.0"
+    "chromadb-default-embed": "^2.14.0",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@types/mdast": "^4.0.4",
     "@types/node": "^25.1.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
