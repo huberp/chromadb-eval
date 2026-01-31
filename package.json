@@ -8,7 +8,8 @@
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
     "verify-ast": "tsx src/verify-ast-parsing.ts",
-    "verify-ast-chunker": "tsx src/verify-ast-chunker.ts"
+    "verify-ast-chunker": "tsx src/verify-ast-chunker.ts",
+    "compare-chunkers": "tsx src/chunking/compare-chunkers.ts"
   },
   "keywords": [],
   "author": "",
