@@ -1,10 +1,12 @@
 # chromadb-eval
 
-Evaluation of using ChromaDB vector store and full text search, based on TypeScript and fed with markdown files. This project demonstrates ChromaDB's vector and fulltext search capabilities using local embeddings.
+Evaluation of using ChromaDB vector store and full text search, based on TypeScript and fed with markdown files. This project demonstrates ChromaDB's vector and fulltext search capabilities with both local and modern AI embeddings.
 
 ## Features
 
-- **Local Embeddings**: Uses custom TF-IDF-based embeddings for local operation without API calls
+- **Multiple Embedding Strategies**:
+  - **Local Embeddings** (default): Uses custom TF-IDF-based embeddings for local operation without API calls
+  - **HuggingFace Embeddings**: Uses Hugging Face Text Embeddings Inference server with modern AI models
 - **Document Chunking**: Intelligent text chunking with overlap for better context preservation
   - **Legacy Chunker**: String-based markdown chunking (default)
   - **AST Chunker**: Structure-aware chunking using remark/mdast (experimental)
@@ -28,27 +30,29 @@ npm install
 
 ## Prerequisites
 
-This application requires a ChromaDB server to be running. Start it using Docker:
+This application requires a ChromaDB server to be running. You can also optionally run a Hugging Face Text Embeddings Inference server for modern AI embeddings.
+
+### Option 1: ChromaDB only (uses local TF-IDF embeddings)
+
+Start ChromaDB using Docker:
 
 ```bash
 docker run -d -p 8000:8000 chromadb/chroma:latest
 ```
 
-Or use Docker Compose (create a `docker-compose.yml` file):
+### Option 2: ChromaDB + HuggingFace Embeddings (recommended)
 
-```yaml
-version: '3.8'
-services:
-  chromadb:
-    image: chromadb/chroma:latest
-    ports:
-      - "8000:8000"
-```
+Use Docker Compose to start both services:
 
-Then run:
 ```bash
 docker-compose up -d
 ```
+
+This will start:
+- ChromaDB server on port 8000
+- Hugging Face Text Embeddings Inference server on port 8001 with the `sentence-transformers/all-MiniLM-L6-v2` model
+
+The `sentence-transformers/all-MiniLM-L6-v2` model is compatible with both Hugging Face TEI and Transformers.js, making it ideal for this use case.
 
 ## Usage
 
@@ -85,16 +89,43 @@ CHUNKING_MODE=ast npm start
 
 **Note**: AST mode is experimental and provides improved structural awareness of markdown documents. Both modes follow the same chunking strategies (chunk size, overlap, special handling for code blocks, lists, and tables) but AST mode leverages the Abstract Syntax Tree for more precise parsing.
 
+### Switch between embedding strategies
+
+The application supports two embedding strategies:
+
+#### Local Embeddings (Default)
+Uses TF-IDF-based embeddings for local operation without external dependencies:
+```bash
+npm start
+# or explicitly
+EMBEDDING_STRATEGY=local npm start
+```
+
+#### HuggingFace Embeddings (Recommended for production)
+Uses Hugging Face Text Embeddings Inference server with modern AI models:
+```bash
+EMBEDDING_STRATEGY=huggingface npm start
+```
+
+**Note**: When using HuggingFace embeddings, make sure the embedding server is running (see Prerequisites section). The default configuration uses `sentence-transformers/all-MiniLM-L6-v2` which is compatible with Transformers.js.
+
 ### Configuration Options
 
-You can customize chunking behavior via environment variables:
+You can customize both chunking and embedding behavior via environment variables:
+
+**Chunking:**
 - `CHUNKING_MODE`: Set to `legacy` (default) or `ast`
 - `CHUNK_SIZE`: Target chunk size in characters (default: 1000)
 - `CHUNK_OVERLAP`: Overlap size between chunks in characters (default: 150)
 
+**Embeddings:**
+- `EMBEDDING_STRATEGY`: Set to `local` (default) or `huggingface`
+- `HUGGINGFACE_EMBEDDING_URL`: URL of the HuggingFace embedding server (default: http://localhost:8001/embed)
+- `EMBEDDING_MODEL`: Model name for reference/logging (default: sentence-transformers/all-MiniLM-L6-v2 for huggingface, TF-IDF for local)
+
 Example with custom settings:
 ```bash
-CHUNKING_MODE=ast CHUNK_SIZE=1500 CHUNK_OVERLAP=200 npm start
+CHUNKING_MODE=ast CHUNK_SIZE=1500 CHUNK_OVERLAP=200 EMBEDDING_STRATEGY=huggingface npm start
 ```
 
 ### Ask a question
@@ -146,15 +177,19 @@ Manually trigger this workflow to analyze and display the 10 most common terms a
   - `markdown-ast.ts`: AST parsing utilities
   - `index.ts`: Public API re-exports
 - `src/config.ts`: Configuration module for chunking behavior
-- `src/embeddings.ts`: Local embedding generation using Transformers.js
+- `src/embedding-config.ts`: Configuration module for embedding strategies
+- `src/embeddings.ts`: Local TF-IDF-based embedding generation (naive approach)
+- `src/embedding-factory.ts`: Factory for creating embedding functions
 - `src/chromadb-manager.ts`: ChromaDB operations including storage, querying, and analysis
 - `src/index.ts`: Main application orchestrating the workflow
 - `documents/`: 20 markdown documents for demonstration
 
 ## Technical Details
 
-- **Chunk Size**: 500 characters with 50 character overlap
-- **Embedding Model**: Custom TF-IDF-based embeddings (384-dimensional vectors)
+- **Chunk Size**: 1000 characters with 150 character overlap (configurable)
+- **Embedding Models**:
+  - **Local**: Custom TF-IDF-based embeddings (384-dimensional vectors)
+  - **HuggingFace**: `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional vectors, compatible with Transformers.js)
 - **Similarity Metric**: Cosine similarity
 - **Storage**: Local ChromaDB instance
 

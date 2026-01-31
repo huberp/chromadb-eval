@@ -1,6 +1,7 @@
 import { ChromaClient, Collection, EmbeddingFunction } from 'chromadb';
 import { Chunk } from './chunking';
 import { LocalEmbeddings } from './embeddings';
+import { createEmbeddingFunction } from './embedding-factory';
 
 export interface DocumentSimilarity {
   doc1: string;
@@ -8,39 +9,31 @@ export interface DocumentSimilarity {
   similarity: number;
 }
 
-/**
- * Custom embedding function for ChromaDB
- */
-class CustomEmbeddingFunction implements EmbeddingFunction {
-  private embedder: LocalEmbeddings;
-
-  constructor(embedder: LocalEmbeddings) {
-    this.embedder = embedder;
-  }
-
-  async generate(texts: string[]): Promise<number[][]> {
-    return await this.embedder.embedBatch(texts);
-  }
-}
-
 export class ChromaDBManager {
   private client: ChromaClient;
   private collection: Collection | null = null;
-  private embeddings: LocalEmbeddings;
+  private embeddingFunction: EmbeddingFunction | null = null;
+  private localEmbedder: LocalEmbeddings | null = null;
+  private strategy: string = 'unknown';
+  private modelName: string = 'unknown';
 
   constructor() {
     this.client = new ChromaClient({ 
       host: 'localhost',
       port: 8000
     });
-    this.embeddings = new LocalEmbeddings();
   }
 
   /**
    * Initialize ChromaDB and create/get collection
    */
   async initialize(): Promise<void> {
-    await this.embeddings.initialize();
+    // Create embedding function based on configuration
+    const embeddingSetup = await createEmbeddingFunction();
+    this.embeddingFunction = embeddingSetup.embeddingFunction;
+    this.localEmbedder = embeddingSetup.localEmbedder || null;
+    this.strategy = embeddingSetup.strategy;
+    this.modelName = embeddingSetup.modelName;
     
     try {
       // Delete existing collection if it exists
@@ -49,14 +42,14 @@ export class ChromaDBManager {
       // Collection doesn't exist, that's fine
     }
     
-    // Create new collection with custom embedding function
+    // Create new collection with the configured embedding function
     this.collection = await this.client.createCollection({
       name: 'documents',
       metadata: { 'hnsw:space': 'cosine' },
-      embeddingFunction: new CustomEmbeddingFunction(this.embeddings)
+      embeddingFunction: this.embeddingFunction
     });
     
-    console.log('ChromaDB collection created successfully');
+    console.log(`ChromaDB collection created successfully with ${this.strategy} embeddings (${this.modelName})`);
   }
 
   /**
@@ -69,20 +62,27 @@ export class ChromaDBManager {
 
     console.log(`Processing ${chunks.length} chunks...`);
     
-    // Build vocabulary from all chunks
-    const allTexts = chunks.map(c => c.content);
-    this.embeddings.buildVocabulary(allTexts);
+    // Build vocabulary from all chunks (only needed for local embeddings)
+    if (this.localEmbedder) {
+      const allTexts = chunks.map(c => c.content);
+      this.localEmbedder.buildVocabulary(allTexts);
+    }
     
     // Process in batches to avoid memory issues
     const batchSize = 10;
     for (let i = 0; i < chunks.length; i += batchSize) {
       const batch = chunks.slice(i, i + batchSize);
       const texts = batch.map(c => c.content);
-      const embeddings = await this.embeddings.embedBatch(texts);
       
-      await this.collection.add({
+      // For HuggingFace, we let ChromaDB handle the embedding via the embeddingFunction
+      // For local, we need to compute embeddings ourselves
+      let embeddings: number[][] | undefined;
+      if (this.localEmbedder) {
+        embeddings = await this.localEmbedder.embedBatch(texts);
+      }
+      
+      const addParams: any = {
         ids: batch.map(c => c.id),
-        embeddings: embeddings,
         documents: texts,
         metadatas: batch.map(c => ({
           sourceFile: c.sourceFile,
@@ -92,7 +92,14 @@ export class ChromaDBManager {
           chunkType: c.metadata?.chunkType || 'text',
           language: c.metadata?.language || ''
         }))
-      });
+      };
+      
+      // Only add embeddings if using local strategy (HuggingFace handles it automatically)
+      if (embeddings) {
+        addParams.embeddings = embeddings;
+      }
+      
+      await this.collection.add(addParams);
       
       console.log(`Processed ${Math.min(i + batchSize, chunks.length)}/${chunks.length} chunks`);
     }
@@ -108,14 +115,26 @@ export class ChromaDBManager {
       throw new Error('Collection not initialized');
     }
 
-    const embedding = await this.embeddings.embed(question);
-    
-    const results = await this.collection.query({
-      queryEmbeddings: [embedding],
-      nResults: topK
-    });
-    
-    return results;
+    // For HuggingFace, ChromaDB will automatically call the embedding function
+    // For local, we need to manually create the embedding
+    if (this.localEmbedder) {
+      const embedding = await this.localEmbedder.embed(question);
+      
+      const results = await this.collection.query({
+        queryEmbeddings: [embedding],
+        nResults: topK
+      });
+      
+      return results;
+    } else {
+      // For HuggingFace, use queryTexts instead of queryEmbeddings
+      const results = await this.collection.query({
+        queryTexts: [question],
+        nResults: topK
+      });
+      
+      return results;
+    }
   }
 
   /**

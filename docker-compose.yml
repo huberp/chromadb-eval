@@ -8,5 +8,16 @@ services:
     volumes:
       - chroma_data:/chroma/chroma
 
+  huggingface-embeddings:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.2
+    ports:
+      - "8001:80"
+    environment:
+      - MODEL_ID=sentence-transformers/all-MiniLM-L6-v2
+    command: --model-id sentence-transformers/all-MiniLM-L6-v2
+    volumes:
+      - hf_data:/data
+
 volumes:
   chroma_data:
+  hf_data:
