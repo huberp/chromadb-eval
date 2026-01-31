@@ -3,6 +3,15 @@
  * 
  * This script tests the parseMarkdownToAst function by parsing sample
  * documents and logging the top-level node types to verify parsing works.
+ * 
+ * Usage:
+ *   npm run verify-ast
+ * 
+ * This demonstrates that:
+ * - The parseMarkdownToAst function correctly parses markdown documents
+ * - The AST contains reasonable node types (headings, paragraphs, lists, etc.)
+ * - GitHub Flavored Markdown (GFM) features like tables are supported
+ * - No errors occur during parsing of existing documents
  */
 
 import * as fs from 'fs';
