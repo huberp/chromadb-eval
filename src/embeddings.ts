@@ -2,6 +2,11 @@ export class LocalEmbeddings {
   private vocabulary: Map<string, number> = new Map();
   private idf: Map<string, number> = new Map();
   private embeddingDim: number = 384;
+  
+  // Multi-hash configuration for better word distribution
+  private readonly NUM_HASH_FUNCTIONS = 3;
+  private readonly HASH_SEED_PRIME = 2654435761; // Prime number for hash seeding
+  private readonly SIGN_BIT_POSITION = 16; // Bit position for sign variance
 
   /**
    * Initialize the embedding model
@@ -63,12 +68,12 @@ export class LocalEmbeddings {
         // This reduces hash collisions and improves embedding quality
         const tfidfWeight = tfValue * idfValue;
         
-        // Use 3 different hash functions for better distribution
-        for (let hashIdx = 0; hashIdx < 3; hashIdx++) {
+        // Use multiple hash functions for better distribution
+        for (let hashIdx = 0; hashIdx < this.NUM_HASH_FUNCTIONS; hashIdx++) {
           const hash = this.hashWord(word, hashIdx);
           const embIdx = hash % this.embeddingDim;
-          const sign = ((hash >> 16) & 1) === 0 ? 1 : -1; // Use sign to add variance
-          embedding[embIdx] += sign * tfidfWeight / 3; // Divide by number of hashes
+          const sign = ((hash >> this.SIGN_BIT_POSITION) & 1) === 0 ? 1 : -1; // Use sign to add variance
+          embedding[embIdx] += sign * tfidfWeight / this.NUM_HASH_FUNCTIONS; // Divide by number of hashes
         }
       }
     }
@@ -113,7 +118,7 @@ export class LocalEmbeddings {
    * Uses different seeds for different hash indices to create independent hash functions
    */
   private hashWord(word: string, hashIdx: number): number {
-    let hash = hashIdx * 2654435761; // Prime number as initial seed
+    let hash = hashIdx * this.HASH_SEED_PRIME; // Prime number as initial seed
     
     for (let i = 0; i < word.length; i++) {
       hash = ((hash << 5) - hash) + word.charCodeAt(i);
