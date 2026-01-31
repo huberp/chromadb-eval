@@ -40,6 +40,7 @@ jobs:
           npm start > output.log
           echo ""
           echo "=== Results ==="
+          # Extract terms section (header + 10 terms = ~12 lines)
           grep -A 12 "10 Most Common Terms" output.log || cat output.log
         env:
           NODE_ENV: production

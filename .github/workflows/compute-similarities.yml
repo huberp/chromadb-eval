@@ -40,6 +40,7 @@ jobs:
           npm start > output.log
           echo ""
           echo "=== Results ==="
+          # Extract similarities section (header + 10 pairs with 2 lines each + separator = ~25 lines)
           grep -A 25 "Top 10 Most Similar Document Pairs" output.log || cat output.log
         env:
           NODE_ENV: production
