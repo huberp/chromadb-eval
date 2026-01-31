@@ -37,7 +37,10 @@ jobs:
       - name: Analyze common terms
         run: |
           echo "Analyzing most common terms..."
-          npm start | grep -A 15 "10 Most Common Terms"
+          npm start > output.log
+          echo ""
+          echo "=== Results ==="
+          grep -A 12 "10 Most Common Terms" output.log || cat output.log
         env:
           NODE_ENV: production
       

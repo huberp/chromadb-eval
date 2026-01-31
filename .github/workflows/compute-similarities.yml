@@ -37,7 +37,10 @@ jobs:
       - name: Compute similarities
         run: |
           echo "Computing document similarities..."
-          npm start | grep -A 20 "Top 10 Most Similar Document Pairs"
+          npm start > output.log
+          echo ""
+          echo "=== Results ==="
+          grep -A 25 "Top 10 Most Similar Document Pairs" output.log || cat output.log
         env:
           NODE_ENV: production
       
