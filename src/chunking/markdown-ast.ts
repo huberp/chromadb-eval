@@ -111,7 +111,9 @@ export function extractAstSections(root: Root): AstSection[] {
       // Save the previous section if it has content
       if (currentNodes.length > 0) {
         sections.push({
-          // Filter out any undefined entries in the heading stack
+          // Filter out any undefined entries in the heading stack that may occur
+          // when a document has headings without all parent levels defined
+          // (e.g., ## Section without a # Title before it)
           headings: headingStack.filter(h => h !== undefined),
           nodes: currentNodes
         });
@@ -132,7 +134,9 @@ export function extractAstSections(root: Root): AstSection[] {
   // Add the final section if it has content
   if (currentNodes.length > 0) {
     sections.push({
-      // Filter out any undefined entries in the heading stack
+      // Filter out any undefined entries in the heading stack that may occur
+      // when a document has headings without all parent levels defined
+      // (e.g., ## Section without a # Title before it)
       headings: headingStack.filter(h => h !== undefined),
       nodes: currentNodes
     });
