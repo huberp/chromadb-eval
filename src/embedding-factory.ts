@@ -38,15 +38,20 @@ export async function createEmbeddingFunction(config?: EmbeddingConfig): Promise
   console.log(`Model: ${embedConfig.modelName}`);
   
   if (embedConfig.strategy === 'huggingface') {
+    // Validate required configuration
+    if (!embedConfig.huggingfaceUrl) {
+      throw new Error('HUGGINGFACE_EMBEDDING_URL is required when using huggingface strategy');
+    }
+    
     // Use Hugging Face Text Embeddings Inference server
     const embeddingFunction = new HuggingfaceServerEmbeddingFunction({
-      url: embedConfig.huggingfaceUrl!
+      url: embedConfig.huggingfaceUrl
     });
     
     return {
       embeddingFunction,
       strategy: embedConfig.strategy,
-      modelName: embedConfig.modelName!
+      modelName: embedConfig.modelName
     };
   } else {
     // Use local TF-IDF embeddings (the "naive" approach)
@@ -58,7 +63,7 @@ export async function createEmbeddingFunction(config?: EmbeddingConfig): Promise
       embeddingFunction,
       localEmbedder,
       strategy: embedConfig.strategy,
-      modelName: embedConfig.modelName!
+      modelName: embedConfig.modelName
     };
   }
 }

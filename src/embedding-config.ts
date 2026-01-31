@@ -9,10 +9,10 @@
 export interface EmbeddingConfig {
   /** Embedding strategy: 'local' for naive TF-IDF, 'huggingface' for HF server */
   strategy: 'local' | 'huggingface';
-  /** URL of the Hugging Face embedding server (only used when strategy is 'huggingface') */
+  /** URL of the Hugging Face embedding server (required when strategy is 'huggingface') */
   huggingfaceUrl?: string;
   /** Model name for reference/logging */
-  modelName?: string;
+  modelName: string;
 }
 
 /**

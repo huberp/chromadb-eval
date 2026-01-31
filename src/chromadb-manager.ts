@@ -81,7 +81,21 @@ export class ChromaDBManager {
         embeddings = await this.localEmbedder.embedBatch(texts);
       }
       
-      const addParams: any = {
+      interface AddParams {
+        ids: string[];
+        documents: string[];
+        metadatas: Array<{
+          sourceFile: string;
+          chunkIndex: number;
+          headerHierarchy: string;
+          section: string;
+          chunkType: string;
+          language: string;
+        }>;
+        embeddings?: number[][];
+      }
+      
+      const addParams: AddParams = {
         ids: batch.map(c => c.id),
         documents: texts,
         metadatas: batch.map(c => ({
