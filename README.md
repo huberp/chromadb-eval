@@ -54,6 +54,8 @@ This will start:
 
 The `sentence-transformers/all-MiniLM-L6-v2` model is compatible with both Hugging Face TEI and Transformers.js, making it ideal for this use case.
 
+**Note:** The HuggingFace Text Embeddings Inference server requires internet access on first startup to download the model (approximately 80MB). Once downloaded, it will be cached in a Docker volume for future use. If you're in a restricted environment, you can pre-download the model or use the local TF-IDF embeddings instead.
+
 ## Usage
 
 ### Run the full evaluation
