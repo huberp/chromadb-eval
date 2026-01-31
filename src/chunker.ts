@@ -21,6 +21,10 @@ export interface Chunk {
 export class DocumentChunker {
   private chunkSize: number;
   private chunkOverlap: number;
+  
+  // Constants for content detection and chunking
+  private readonly MIN_TEXT_CHUNK_SIZE = 50;  // Minimum text size to create a chunk
+  private readonly LIST_DETECTION_THRESHOLD = 0.5;  // 50% of lines must be list items
 
   // Default: 1000 chars ≈ 250 tokens (middle of 200-500 token range)
   // Overlap: 150 chars ≈ 1-2 sentences
@@ -126,9 +130,9 @@ export class DocumentChunker {
         const level = headerMatch[1].length;
         const headerText = headerMatch[2].trim();
         
-        // Update header hierarchy
+        // Update header hierarchy - keep only headers above current level
         currentHeaders = currentHeaders.slice(0, level - 1);
-        currentHeaders[level - 1] = headerText;
+        currentHeaders.push(headerText);
         currentLevel = level;
       } else {
         currentContent.push(line);
@@ -188,7 +192,7 @@ export class DocumentChunker {
     for (const block of codeBlocks) {
       // Add text before code block if substantial
       const textBefore = section.content.substring(lastEnd, block.start).trim();
-      if (textBefore.length > 50) {
+      if (textBefore.length > this.MIN_TEXT_CHUNK_SIZE) {
         const textChunks = this.chunkTextContent(
           textBefore,
           section.headers,
@@ -221,7 +225,7 @@ export class DocumentChunker {
     
     // Add remaining text after last code block
     const textAfter = section.content.substring(lastEnd).trim();
-    if (textAfter.length > 50) {
+    if (textAfter.length > this.MIN_TEXT_CHUNK_SIZE) {
       const textChunks = this.chunkTextContent(
         textAfter,
         section.headers,
@@ -260,10 +264,11 @@ export class DocumentChunker {
    */
   private detectContentType(content: string): 'text' | 'list' | 'table' {
     const lines = content.split('\n');
-    const listLines = lines.filter(l => l.trim().match(/^[-*+]\s+/));
+    // Match both unordered (-, *, +) and ordered (1., 2., etc.) lists
+    const listLines = lines.filter(l => l.trim().match(/^([-*+]|\d+\.)\s+/));
     const tableLines = lines.filter(l => l.includes('|'));
     
-    if (listLines.length > lines.length * 0.5) return 'list';
+    if (listLines.length > lines.length * this.LIST_DETECTION_THRESHOLD) return 'list';
     if (tableLines.length > 2) return 'table';
     return 'text';
   }
@@ -479,7 +484,8 @@ export class DocumentChunker {
       return lastOne;
     }
     
-    // If even 1 sentence is too long, truncate to overlap size
-    return lastOne.substring(Math.max(0, lastOne.length - this.chunkOverlap));
+    // If even 1 sentence is too long, use empty overlap to avoid breaking semantic meaning
+    // This is better than truncating mid-sentence
+    return '';
   }
 }
