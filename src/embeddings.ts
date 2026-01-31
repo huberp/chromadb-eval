@@ -2,6 +2,11 @@ export class LocalEmbeddings {
   private vocabulary: Map<string, number> = new Map();
   private idf: Map<string, number> = new Map();
   private embeddingDim: number = 384;
+  
+  // Multi-hash configuration for better word distribution
+  private static readonly NUM_HASH_FUNCTIONS = 3;
+  private static readonly HASH_SEED_PRIME = 2654435761; // Prime number for hash seeding
+  private static readonly SIGN_BIT_POSITION = 16; // Bit position for sign variance
 
   /**
    * Initialize the embedding model
@@ -59,9 +64,18 @@ export class LocalEmbeddings {
       const idfValue = this.idf.get(word) || 0;
       
       if (vocabIdx !== undefined) {
-        // Use simple hash to distribute terms across embedding dimensions
-        const embIdx = vocabIdx % this.embeddingDim;
-        embedding[embIdx] += tfValue * idfValue;
+        // Use multiple hash functions to distribute each term across multiple dimensions
+        // This reduces hash collisions and improves embedding quality
+        const tfidfWeight = tfValue * idfValue;
+        
+        // Use multiple hash functions for better distribution
+        for (let hashIdx = 0; hashIdx < LocalEmbeddings.NUM_HASH_FUNCTIONS; hashIdx++) {
+          const hash = this.hashWord(word, hashIdx);
+          const embIdx = hash % this.embeddingDim;
+          // Alternate signs to create better separation between embeddings and reduce correlation
+          const sign = ((hash >> LocalEmbeddings.SIGN_BIT_POSITION) & 1) === 0 ? 1 : -1;
+          embedding[embIdx] += sign * tfidfWeight / LocalEmbeddings.NUM_HASH_FUNCTIONS;
+        }
       }
     }
     
@@ -98,5 +112,20 @@ export class LocalEmbeddings {
       .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
       .filter(word => word.length > 2);
+  }
+
+  /**
+   * Hash function for distributing words across embedding dimensions
+   * Uses different seeds for different hash indices to create independent hash functions
+   */
+  private hashWord(word: string, hashIdx: number): number {
+    let hash = hashIdx * LocalEmbeddings.HASH_SEED_PRIME;
+    
+    for (let i = 0; i < word.length; i++) {
+      hash = ((hash << 5) - hash) + word.charCodeAt(i);
+      hash |= 0; // Convert to 32-bit integer
+    }
+    
+    return Math.abs(hash);
   }
 }
