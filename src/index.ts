@@ -9,8 +9,10 @@ async function main() {
   const userQuestion = process.argv[2];
 
   try {
-    // Initialize components
-    const chunker = new DocumentChunker(500, 50);
+    // Initialize components with Mistral-recommended settings
+    // 1000 chars ≈ 250 tokens (within 200-500 token range)
+    // 150 chars overlap ≈ 1-2 sentences
+    const chunker = new DocumentChunker();
     const chromaDB = new ChromaDBManager();
 
     // Step 1: Chunk documents
