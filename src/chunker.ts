@@ -37,45 +37,154 @@ export class DocumentChunker {
   }
 
   /**
-   * Chunk a single text into overlapping segments
+   * Chunk a single text into overlapping segments using semantic boundaries
+   * This implementation follows RAG best practices:
+   * - Respects semantic boundaries (sentences, paragraphs, markdown sections)
+   * - Uses 10-20% overlap to preserve context at boundaries
+   * - Employs recursive splitting to balance semantic integrity with size constraints
    */
   private chunkText(text: string, sourceFile: string): Chunk[] {
     const chunks: Chunk[] = [];
-    const words = text.split(/\s+/);
     
-    let currentChunk: string[] = [];
+    // Split by paragraphs first (markdown double newlines)
+    const paragraphs = text.split(/\n\n+/);
+    
+    let currentChunk = '';
     let chunkIndex = 0;
     
-    for (let i = 0; i < words.length; i++) {
-      currentChunk.push(words[i]);
+    for (let i = 0; i < paragraphs.length; i++) {
+      const paragraph = paragraphs[i].trim();
+      if (!paragraph) continue;
       
-      // Check if we've reached the chunk size
-      if (currentChunk.join(' ').length >= this.chunkSize) {
-        const chunkContent = currentChunk.join(' ');
-        chunks.push({
-          id: `${sourceFile}-chunk-${chunkIndex}`,
-          content: chunkContent,
-          sourceFile: sourceFile,
-          chunkIndex: chunkIndex
-        });
+      // If adding this paragraph would exceed chunk size
+      if (currentChunk && (currentChunk.length + paragraph.length + 2) > this.chunkSize) {
+        // Save current chunk
+        if (currentChunk.trim()) {
+          chunks.push({
+            id: `${sourceFile}-chunk-${chunkIndex}`,
+            content: currentChunk.trim(),
+            sourceFile: sourceFile,
+            chunkIndex: chunkIndex
+          });
+          chunkIndex++;
+          
+          // Create overlap by keeping the last sentences of the previous chunk
+          const overlapText = this.extractOverlap(currentChunk);
+          currentChunk = overlapText;
+        } else {
+          currentChunk = '';
+        }
         
-        // Create overlap for next chunk
-        const overlapWords = Math.floor(currentChunk.length * this.chunkOverlap / this.chunkSize);
-        currentChunk = currentChunk.slice(-overlapWords);
-        chunkIndex++;
+        // If single paragraph is too large, split by sentences
+        if (paragraph.length > this.chunkSize) {
+          const sentenceChunks = this.splitBySentences(paragraph, sourceFile, chunkIndex);
+          chunks.push(...sentenceChunks);
+          chunkIndex += sentenceChunks.length;
+          currentChunk = sentenceChunks.length > 0 ? this.extractOverlap(sentenceChunks[sentenceChunks.length - 1].content) : '';
+          continue;
+        }
+      }
+      
+      // Add paragraph to current chunk
+      if (currentChunk) {
+        currentChunk += '\n\n' + paragraph;
+      } else {
+        currentChunk = paragraph;
       }
     }
     
-    // Add remaining content as final chunk
-    if (currentChunk.length > 0) {
+    // Add final chunk if there's remaining content
+    if (currentChunk.trim()) {
       chunks.push({
         id: `${sourceFile}-chunk-${chunkIndex}`,
-        content: currentChunk.join(' '),
+        content: currentChunk.trim(),
         sourceFile: sourceFile,
         chunkIndex: chunkIndex
       });
     }
     
     return chunks;
+  }
+
+  /**
+   * Split a large paragraph by sentences while respecting semantic boundaries
+   */
+  private splitBySentences(text: string, sourceFile: string, startIndex: number): Chunk[] {
+    const chunks: Chunk[] = [];
+    // Split by sentence boundaries (. ! ?) followed by space or newline
+    const sentences = text.split(/(?<=[.!?])\s+/);
+    
+    let currentChunk = '';
+    let chunkIndex = startIndex;
+    
+    for (const sentence of sentences) {
+      if (!sentence.trim()) continue;
+      
+      // If adding this sentence would exceed chunk size
+      if (currentChunk && (currentChunk.length + sentence.length + 1) > this.chunkSize) {
+        // Save current chunk
+        if (currentChunk.trim()) {
+          chunks.push({
+            id: `${sourceFile}-chunk-${chunkIndex}`,
+            content: currentChunk.trim(),
+            sourceFile: sourceFile,
+            chunkIndex: chunkIndex
+          });
+          chunkIndex++;
+          
+          // Create overlap by keeping part of the previous chunk
+          const overlapText = this.extractOverlap(currentChunk);
+          currentChunk = overlapText;
+        } else {
+          currentChunk = '';
+        }
+      }
+      
+      // Add sentence to current chunk
+      if (currentChunk) {
+        currentChunk += ' ' + sentence;
+      } else {
+        currentChunk = sentence;
+      }
+    }
+    
+    // Add final chunk if there's remaining content
+    if (currentChunk.trim()) {
+      chunks.push({
+        id: `${sourceFile}-chunk-${chunkIndex}`,
+        content: currentChunk.trim(),
+        sourceFile: sourceFile,
+        chunkIndex: chunkIndex
+      });
+    }
+    
+    return chunks;
+  }
+
+  /**
+   * Extract overlap text from the end of a chunk (approximately 10-20% of chunk size)
+   * Tries to break at sentence boundaries for better context preservation
+   */
+  private extractOverlap(text: string): string {
+    const overlapSize = Math.floor(this.chunkSize * 0.15); // 15% overlap
+    
+    if (text.length <= overlapSize) {
+      return text;
+    }
+    
+    // Try to find a sentence boundary within the overlap region
+    const overlapStart = text.length - overlapSize;
+    const overlapText = text.substring(overlapStart);
+    
+    // Look for sentence boundaries (. ! ?) in the overlap region
+    const sentenceBoundary = overlapText.search(/[.!?]\s+/);
+    
+    if (sentenceBoundary !== -1) {
+      // Start from the sentence boundary
+      return overlapText.substring(sentenceBoundary + 2).trim();
+    }
+    
+    // If no sentence boundary found, return the overlap as-is
+    return overlapText.trim();
   }
 }
