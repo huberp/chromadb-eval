@@ -6,6 +6,8 @@ Evaluation of using ChromaDB vector store and full text search, based on TypeScr
 
 - **Local Embeddings**: Uses custom TF-IDF-based embeddings for local operation without API calls
 - **Document Chunking**: Intelligent text chunking with overlap for better context preservation
+  - **Legacy Chunker**: String-based markdown chunking (default)
+  - **AST Chunker**: Structure-aware chunking using remark/mdast (experimental)
 - **Vector Search**: Semantic search using ChromaDB's vector store
 - **Fulltext Analysis**: Term frequency analysis across documents
 - **Document Similarity**: Computes top 10 most similar document pairs
@@ -57,11 +59,43 @@ npm start
 ```
 
 This will:
-1. Chunk all markdown documents
+1. Chunk all markdown documents (using legacy chunker by default)
 2. Build and store the local ChromaDB with vectors and fulltext
 3. Compute and display top 10 document similarities
 4. Report 10 most common terms
 5. Wait for user questions (if provided as argument)
+
+### Switch between chunking modes
+
+The application supports two chunking modes:
+
+#### Legacy Mode (Default)
+String-based markdown chunking with robust content detection:
+```bash
+npm start
+# or explicitly
+CHUNKING_MODE=legacy npm start
+```
+
+#### AST Mode (Experimental)
+Structure-aware chunking using remark/mdast for better markdown understanding:
+```bash
+CHUNKING_MODE=ast npm start
+```
+
+**Note**: AST mode is experimental and provides improved structural awareness of markdown documents. Both modes follow the same chunking strategies (chunk size, overlap, special handling for code blocks, lists, and tables) but AST mode leverages the Abstract Syntax Tree for more precise parsing.
+
+### Configuration Options
+
+You can customize chunking behavior via environment variables:
+- `CHUNKING_MODE`: Set to `legacy` (default) or `ast`
+- `CHUNK_SIZE`: Target chunk size in characters (default: 1000)
+- `CHUNK_OVERLAP`: Overlap size between chunks in characters (default: 150)
+
+Example with custom settings:
+```bash
+CHUNKING_MODE=ast CHUNK_SIZE=1500 CHUNK_OVERLAP=200 npm start
+```
 
 ### Ask a question
 
@@ -108,7 +142,10 @@ Manually trigger this workflow to analyze and display the 10 most common terms a
 
 - `src/chunking/`: Document chunking module with configurable size and overlap
   - `legacy-chunker.ts`: Legacy string-based markdown chunker
+  - `ast-chunker.ts`: AST-based markdown chunker (experimental)
+  - `markdown-ast.ts`: AST parsing utilities
   - `index.ts`: Public API re-exports
+- `src/config.ts`: Configuration module for chunking behavior
 - `src/embeddings.ts`: Local embedding generation using Transformers.js
 - `src/chromadb-manager.ts`: ChromaDB operations including storage, querying, and analysis
 - `src/index.ts`: Main application orchestrating the workflow

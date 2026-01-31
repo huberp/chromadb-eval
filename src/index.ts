@@ -1,6 +1,7 @@
 import * as path from 'path';
-import { DocumentChunker } from './chunking';
+import { DocumentChunker, AstDocumentChunker } from './chunking';
 import { ChromaDBManager } from './chromadb-manager';
+import { getChunkingConfig } from './config';
 
 async function main() {
   console.log('=== ChromaDB Evaluator ===\n');
@@ -9,10 +10,16 @@ async function main() {
   const userQuestion = process.argv[2];
 
   try {
+    // Get chunking configuration
+    const config = getChunkingConfig();
+    console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
+
     // Initialize components with Mistral-recommended settings
     // 1000 chars ≈ 250 tokens (within 200-500 token range)
     // 150 chars overlap ≈ 1-2 sentences
-    const chunker = new DocumentChunker();
+    const chunker = config.mode === 'ast'
+      ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
+      : new DocumentChunker(config.chunkSize, config.chunkOverlap);
     const chromaDB = new ChromaDBManager();
 
     // Step 1: Chunk documents
