@@ -6,3 +6,4 @@
  */
 
 export { DocumentChunker, Chunk, ChunkMetadata } from './legacy-chunker';
+export { AstDocumentChunker, AstChunk, AstChunkMetadata } from './ast-chunker';
