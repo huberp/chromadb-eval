@@ -213,6 +213,10 @@ export class ChromaDBManager {
    * Helper: Average multiple embeddings
    */
   private averageEmbeddings(embeddings: number[][]): number[] {
+    if (embeddings.length === 0) {
+      return [];
+    }
+    
     const dim = embeddings[0].length;
     const avg = new Array(dim).fill(0);
     
@@ -243,6 +247,13 @@ export class ChromaDBManager {
       norm2 += vec2[i] * vec2[i];
     }
     
-    return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+    const magnitude = Math.sqrt(norm1) * Math.sqrt(norm2);
+    
+    // Handle zero magnitude vectors
+    if (magnitude === 0) {
+      return 0;
+    }
+    
+    return dotProduct / magnitude;
   }
 }

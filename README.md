@@ -4,7 +4,7 @@ Evaluation of using ChromaDB vector store and full text search, based on TypeScr
 
 ## Features
 
-- **Local Embeddings**: Uses Transformers.js (all-MiniLM-L6-v2 model) for local embedding generation
+- **Local Embeddings**: Uses custom TF-IDF-based embeddings for local operation without API calls
 - **Document Chunking**: Intelligent text chunking with overlap for better context preservation
 - **Vector Search**: Semantic search using ChromaDB's vector store
 - **Fulltext Analysis**: Term frequency analysis across documents
@@ -101,7 +101,7 @@ You can also ask questions via GitHub Actions:
 ## Technical Details
 
 - **Chunk Size**: 500 characters with 50 character overlap
-- **Embedding Model**: Xenova/all-MiniLM-L6-v2 (384-dimensional vectors)
+- **Embedding Model**: Custom TF-IDF-based embeddings (384-dimensional vectors)
 - **Similarity Metric**: Cosine similarity
 - **Storage**: Local ChromaDB instance
 
