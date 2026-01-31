@@ -59,9 +59,17 @@ export class LocalEmbeddings {
       const idfValue = this.idf.get(word) || 0;
       
       if (vocabIdx !== undefined) {
-        // Use simple hash to distribute terms across embedding dimensions
-        const embIdx = vocabIdx % this.embeddingDim;
-        embedding[embIdx] += tfValue * idfValue;
+        // Use multiple hash functions to distribute each term across multiple dimensions
+        // This reduces hash collisions and improves embedding quality
+        const tfidfWeight = tfValue * idfValue;
+        
+        // Use 3 different hash functions for better distribution
+        for (let hashIdx = 0; hashIdx < 3; hashIdx++) {
+          const hash = this.hashWord(word, hashIdx);
+          const embIdx = hash % this.embeddingDim;
+          const sign = ((hash >> 16) & 1) === 0 ? 1 : -1; // Use sign to add variance
+          embedding[embIdx] += sign * tfidfWeight / 3; // Divide by number of hashes
+        }
       }
     }
     
@@ -98,5 +106,20 @@ export class LocalEmbeddings {
       .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
       .filter(word => word.length > 2);
+  }
+
+  /**
+   * Hash function for distributing words across embedding dimensions
+   * Uses different seeds for different hash indices to create independent hash functions
+   */
+  private hashWord(word: string, hashIdx: number): number {
+    let hash = hashIdx * 2654435761; // Prime number as initial seed
+    
+    for (let i = 0; i < word.length; i++) {
+      hash = ((hash << 5) - hash) + word.charCodeAt(i);
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    
+    return Math.abs(hash);
   }
 }
