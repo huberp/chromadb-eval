@@ -86,7 +86,11 @@ export class ChromaDBManager {
         documents: texts,
         metadatas: batch.map(c => ({
           sourceFile: c.sourceFile,
-          chunkIndex: c.chunkIndex
+          chunkIndex: c.chunkIndex,
+          headerHierarchy: c.metadata?.headerHierarchy?.join(' > ') || '',
+          section: c.metadata?.section || '',
+          chunkType: c.metadata?.chunkType || 'text',
+          language: c.metadata?.language || ''
         }))
       });
       
