@@ -42,11 +42,17 @@ async function main() {
     console.log('=== Overall Summary ===\n');
     console.log(`Legacy Chunker: ${legacyChunks.length} total chunks`);
     console.log(`AST Chunker:    ${astChunks.length} total chunks`);
-    console.log(`Difference:     ${astChunks.length - legacyChunks.length} chunks (${((astChunks.length - legacyChunks.length) / legacyChunks.length * 100).toFixed(1)}%)\n`);
     
-    // Calculate average chunk lengths
-    const legacyAvgLength = legacyChunks.reduce((sum, c) => sum + c.content.length, 0) / legacyChunks.length;
-    const astAvgLength = astChunks.reduce((sum, c) => sum + c.content.length, 0) / astChunks.length;
+    if (legacyChunks.length > 0) {
+      const diffPercentage = ((astChunks.length - legacyChunks.length) / legacyChunks.length * 100).toFixed(1);
+      console.log(`Difference:     ${astChunks.length - legacyChunks.length} chunks (${diffPercentage}%)\n`);
+    } else {
+      console.log(`Difference:     ${astChunks.length - legacyChunks.length} chunks\n`);
+    }
+    
+    // Calculate average chunk lengths using the safe helper function
+    const legacyAvgLength = getAvgLength(legacyChunks);
+    const astAvgLength = getAvgLength(astChunks);
     
     console.log(`Average Chunk Length:`);
     console.log(`  Legacy: ${legacyAvgLength.toFixed(0)} characters`);
