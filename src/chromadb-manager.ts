@@ -1,4 +1,4 @@
-import { ChromaClient, Collection } from 'chromadb';
+import { ChromaClient, Collection, EmbeddingFunction } from 'chromadb';
 import { Chunk } from './chunker';
 import { LocalEmbeddings } from './embeddings';
 
@@ -8,13 +8,31 @@ export interface DocumentSimilarity {
   similarity: number;
 }
 
+/**
+ * Custom embedding function for ChromaDB
+ */
+class CustomEmbeddingFunction implements EmbeddingFunction {
+  private embedder: LocalEmbeddings;
+
+  constructor(embedder: LocalEmbeddings) {
+    this.embedder = embedder;
+  }
+
+  async generate(texts: string[]): Promise<number[][]> {
+    return await this.embedder.embedBatch(texts);
+  }
+}
+
 export class ChromaDBManager {
   private client: ChromaClient;
   private collection: Collection | null = null;
   private embeddings: LocalEmbeddings;
 
   constructor() {
-    this.client = new ChromaClient();
+    this.client = new ChromaClient({ 
+      host: 'localhost',
+      port: 8000
+    });
     this.embeddings = new LocalEmbeddings();
   }
 
@@ -31,10 +49,11 @@ export class ChromaDBManager {
       // Collection doesn't exist, that's fine
     }
     
-    // Create new collection
+    // Create new collection with custom embedding function
     this.collection = await this.client.createCollection({
       name: 'documents',
-      metadata: { 'hnsw:space': 'cosine' }
+      metadata: { 'hnsw:space': 'cosine' },
+      embeddingFunction: new CustomEmbeddingFunction(this.embeddings)
     });
     
     console.log('ChromaDB collection created successfully');
@@ -49,6 +68,10 @@ export class ChromaDBManager {
     }
 
     console.log(`Processing ${chunks.length} chunks...`);
+    
+    // Build vocabulary from all chunks
+    const allTexts = chunks.map(c => c.content);
+    this.embeddings.buildVocabulary(allTexts);
     
     // Process in batches to avoid memory issues
     const batchSize = 10;
@@ -99,8 +122,10 @@ export class ChromaDBManager {
       throw new Error('Collection not initialized');
     }
 
-    // Get all documents
-    const allData = await this.collection.get();
+    // Get all documents with embeddings
+    const allData = await this.collection.get({
+      include: ['embeddings', 'metadatas']
+    });
     
     // Group embeddings by source file
     const docEmbeddings = new Map<string, number[][]>();

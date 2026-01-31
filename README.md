@@ -24,6 +24,30 @@ The project includes 20 markdown documents covering three main topics:
 npm install
 ```
 
+## Prerequisites
+
+This application requires a ChromaDB server to be running. Start it using Docker:
+
+```bash
+docker run -d -p 8000:8000 chromadb/chroma:latest
+```
+
+Or use Docker Compose (create a `docker-compose.yml` file):
+
+```yaml
+version: '3.8'
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+```
+
+Then run:
+```bash
+docker-compose up -d
+```
+
 ## Usage
 
 ### Run the full evaluation
