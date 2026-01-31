@@ -15,19 +15,36 @@ export interface ChunkingConfig {
 }
 
 /**
+ * Parse and validate a positive integer from an environment variable.
+ */
+function parsePositiveInt(value: string | undefined, defaultValue: number): number {
+  if (!value) return defaultValue;
+  const parsed = parseInt(value, 10);
+  return !isNaN(parsed) && parsed > 0 ? parsed : defaultValue;
+}
+
+/**
  * Default chunking configuration.
  * Defaults to legacy mode for backward compatibility.
  * 
  * Can be overridden via environment variables:
  * - CHUNKING_MODE: 'legacy' or 'ast'
- * - CHUNK_SIZE: number (default: 1000)
- * - CHUNK_OVERLAP: number (default: 150)
+ * - CHUNK_SIZE: positive integer (default: 1000)
+ * - CHUNK_OVERLAP: positive integer (default: 150, must be less than CHUNK_SIZE)
  */
-export const defaultChunkingConfig: ChunkingConfig = {
-  mode: (process.env.CHUNKING_MODE === 'ast' ? 'ast' : 'legacy') as 'legacy' | 'ast',
-  chunkSize: process.env.CHUNK_SIZE ? parseInt(process.env.CHUNK_SIZE, 10) : 1000,
-  chunkOverlap: process.env.CHUNK_OVERLAP ? parseInt(process.env.CHUNK_OVERLAP, 10) : 150,
-};
+export const defaultChunkingConfig: ChunkingConfig = (() => {
+  const mode = (process.env.CHUNKING_MODE === 'ast' ? 'ast' : 'legacy') as 'legacy' | 'ast';
+  const chunkSize = parsePositiveInt(process.env.CHUNK_SIZE, 1000);
+  let chunkOverlap = parsePositiveInt(process.env.CHUNK_OVERLAP, 150);
+  
+  // Ensure chunkOverlap is less than chunkSize
+  if (chunkOverlap >= chunkSize) {
+    console.warn(`Warning: CHUNK_OVERLAP (${chunkOverlap}) must be less than CHUNK_SIZE (${chunkSize}). Using default overlap of 150.`);
+    chunkOverlap = Math.min(150, Math.floor(chunkSize / 2));
+  }
+  
+  return { mode, chunkSize, chunkOverlap };
+})();
 
 /**
  * Get the current chunking configuration.
