@@ -40,7 +40,7 @@ export class DocumentChunker {
    * Chunk a single text into overlapping segments using semantic boundaries
    * This implementation follows RAG best practices:
    * - Respects semantic boundaries (sentences, paragraphs, markdown sections)
-   * - Uses 10-20% overlap to preserve context at boundaries
+   * - Uses 15% overlap to preserve context at boundaries
    * - Employs recursive splitting to balance semantic integrity with size constraints
    */
   private chunkText(text: string, sourceFile: string): Chunk[] {
@@ -162,7 +162,7 @@ export class DocumentChunker {
   }
 
   /**
-   * Extract overlap text from the end of a chunk (approximately 10-20% of chunk size)
+   * Extract overlap text from the end of a chunk (15% of chunk size)
    * Tries to break at sentence boundaries for better context preservation
    */
   private extractOverlap(text: string): string {
@@ -177,11 +177,12 @@ export class DocumentChunker {
     const overlapText = text.substring(overlapStart);
     
     // Look for sentence boundaries (. ! ?) in the overlap region
-    const sentenceBoundary = overlapText.search(/[.!?]\s+/);
+    const sentenceMatch = overlapText.match(/[.!?]\s+/);
     
-    if (sentenceBoundary !== -1) {
-      // Start from the sentence boundary
-      return overlapText.substring(sentenceBoundary + 2).trim();
+    if (sentenceMatch && sentenceMatch.index !== undefined) {
+      // Start from after the sentence boundary and whitespace
+      const startPos = sentenceMatch.index + sentenceMatch[0].length;
+      return overlapText.substring(startPos).trim();
     }
     
     // If no sentence boundary found, return the overlap as-is
