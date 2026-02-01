@@ -28,8 +28,9 @@ export class ChromaDBManager {
 
   /**
    * Initialize ChromaDB and create/get collection
+   * @param reuseExisting If true, will try to reuse existing collection instead of recreating
    */
-  async initialize(): Promise<void> {
+  async initialize(reuseExisting: boolean = false): Promise<void> {
     // Create embedding function based on configuration
     const embeddingSetup = await createEmbeddingFunction();
     this.embeddingFunction = embeddingSetup.embeddingFunction;
@@ -38,11 +39,26 @@ export class ChromaDBManager {
     this.strategy = embeddingSetup.strategy;
     this.modelName = embeddingSetup.modelName;
     
-    try {
-      // Delete existing collection if it exists
-      await this.client.deleteCollection({ name: 'documents' });
-    } catch (error) {
-      // Collection doesn't exist, that's fine
+    if (reuseExisting) {
+      // Try to get existing collection
+      try {
+        this.collection = await this.client.getCollection({
+          name: 'documents',
+          embeddingFunction: this.embeddingFunction
+        });
+        console.log(`Reusing existing ChromaDB collection with ${this.strategy} embeddings (${this.modelName})`);
+        return;
+      } catch (error) {
+        // Collection doesn't exist, will create below
+        console.log('Existing collection not found, creating new one...');
+      }
+    } else {
+      try {
+        // Delete existing collection if it exists
+        await this.client.deleteCollection({ name: 'documents' });
+      } catch (error) {
+        // Collection doesn't exist, that's fine
+      }
     }
     
     // Create new collection with the configured embedding function

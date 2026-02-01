@@ -93,6 +93,7 @@ jobs:
         env:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ needs.prepare.outputs.model_id }}
+          USE_CACHED_CHROMADB: ${{ needs.prepare.outputs.cache_hit }}
       
       - name: Cleanup
         if: always()
