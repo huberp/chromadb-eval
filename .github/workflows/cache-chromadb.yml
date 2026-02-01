@@ -90,7 +90,7 @@ jobs:
       - name: Cache ChromaDB data
         uses: actions/cache@v4
         with:
-          path: chromadb-data
+          path: ${{ github.workspace }}/chromadb-data
           key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
       
       - name: Summary
@@ -98,5 +98,5 @@ jobs:
           echo "✅ ChromaDB preparation and caching complete!"
           echo "Model: ${{ steps.model-info.outputs.model_id }}"
           echo "Documents processed and embeddings generated"
-          echo "ChromaDB data size: $(du -sh chromadb-data | cut -f1)"
+          echo "ChromaDB data size: $(du -sh ${{ github.workspace }}/chromadb-data | cut -f1)"
           echo "Cache key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}"

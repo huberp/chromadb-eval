@@ -52,7 +52,7 @@ jobs:
         id: chromadb-cache
         uses: actions/cache@v4
         with:
-          path: chromadb-data
+          path: ${{ github.workspace }}/chromadb-data
           key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
       
       - name: Create ChromaDB data directory if not cached
@@ -80,7 +80,8 @@ jobs:
         run: |
           echo "⚠️  Cache miss - preparing ChromaDB with embeddings..."
           echo "Using model: ${{ steps.model-info.outputs.model_id }}"
-          npm start "dummy" > /dev/null 2>&1 || true
+          # Run the app without a question to just prepare the database
+          npm start "" > /dev/null 2>&1 || true
         env:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
