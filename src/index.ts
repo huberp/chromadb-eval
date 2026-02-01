@@ -8,31 +8,45 @@ async function main() {
 
   // Get user question from command line arguments
   const userQuestion = process.argv[2];
+  
+  // Check if we should use cached data
+  const useCached = process.env.USE_CACHED_CHROMADB === 'true';
 
   try {
-    // Get chunking configuration
-    const config = getChunkingConfig();
-    console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
-
-    // Initialize components with Mistral-recommended settings
-    // 1000 chars ≈ 250 tokens (within 200-500 token range)
-    // 150 chars overlap ≈ 1-2 sentences
-    const chunker = config.mode === 'ast'
-      ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
-      : new DocumentChunker(config.chunkSize, config.chunkOverlap);
     const chromaDB = new ChromaDBManager();
 
-    // Step 1: Chunk documents
-    console.log('Step 1: Chunking documents...');
-    const documentsPath = path.join(__dirname, '../documents');
-    const chunks = await chunker.chunkDocuments(documentsPath);
-    console.log(`Created ${chunks.length} chunks from documents\n`);
+    if (useCached) {
+      // Using cached ChromaDB - skip chunking and just connect
+      console.log('✅ Using cached ChromaDB data\n');
+      
+      console.log('Initializing ChromaDB connection...');
+      await chromaDB.initialize(true); // Pass true to reuse existing collection
+      console.log('');
+    } else {
+      // No cache - perform full chunking and initialization
+      // Get chunking configuration
+      const config = getChunkingConfig();
+      console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
 
-    // Step 2: Initialize ChromaDB and add chunks
-    console.log('Step 2: Initializing ChromaDB and storing chunks...');
-    await chromaDB.initialize();
-    await chromaDB.addChunks(chunks);
-    console.log('');
+      // Initialize components with Mistral-recommended settings
+      // 1000 chars ≈ 250 tokens (within 200-500 token range)
+      // 150 chars overlap ≈ 1-2 sentences
+      const chunker = config.mode === 'ast'
+        ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
+        : new DocumentChunker(config.chunkSize, config.chunkOverlap);
+
+      // Step 1: Chunk documents
+      console.log('Step 1: Chunking documents...');
+      const documentsPath = path.join(__dirname, '../documents');
+      const chunks = await chunker.chunkDocuments(documentsPath);
+      console.log(`Created ${chunks.length} chunks from documents\n`);
+
+      // Step 2: Initialize ChromaDB and add chunks
+      console.log('Step 2: Initializing ChromaDB and storing chunks...');
+      await chromaDB.initialize(false); // Pass false to recreate collection
+      await chromaDB.addChunks(chunks);
+      console.log('');
+    }
 
     // Step 3: Compute top 10 document similarities
     console.log('Step 3: Computing top 10 document similarities...');

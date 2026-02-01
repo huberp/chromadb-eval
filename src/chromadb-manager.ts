@@ -28,8 +28,10 @@ export class ChromaDBManager {
 
   /**
    * Initialize ChromaDB and create/get collection
+   * @param tryReuseExisting If true, will try to reuse existing collection instead of recreating.
+   *                         Falls back to creating new collection if it doesn't exist.
    */
-  async initialize(): Promise<void> {
+  async initialize(tryReuseExisting: boolean = false): Promise<void> {
     // Create embedding function based on configuration
     const embeddingSetup = await createEmbeddingFunction();
     this.embeddingFunction = embeddingSetup.embeddingFunction;
@@ -38,11 +40,36 @@ export class ChromaDBManager {
     this.strategy = embeddingSetup.strategy;
     this.modelName = embeddingSetup.modelName;
     
-    try {
-      // Delete existing collection if it exists
-      await this.client.deleteCollection({ name: 'documents' });
-    } catch (error) {
-      // Collection doesn't exist, that's fine
+    if (tryReuseExisting) {
+      // Try to get existing collection
+      try {
+        this.collection = await this.client.getCollection({
+          name: 'documents',
+          embeddingFunction: this.embeddingFunction
+        });
+        
+        // Verify the cached collection has the expected embedding configuration
+        const collectionData = await this.collection.get({ limit: 1, include: ['embeddings'] });
+        if (collectionData.embeddings && collectionData.embeddings.length > 0) {
+          // Collection exists and has data, verify it's usable
+          console.log(`Reusing existing ChromaDB collection with ${this.strategy} embeddings (${this.modelName})`);
+          return;
+        } else {
+          // Collection exists but is empty, fall through to recreation
+          console.log('Existing collection is empty, recreating...');
+          await this.client.deleteCollection({ name: 'documents' });
+        }
+      } catch (error) {
+        // Collection doesn't exist, will create below
+        console.log('Existing collection not found, creating new one...');
+      }
+    } else {
+      try {
+        // Delete existing collection if it exists
+        await this.client.deleteCollection({ name: 'documents' });
+      } catch (error) {
+        // Collection doesn't exist, that's fine
+      }
     }
     
     // Create new collection with the configured embedding function
