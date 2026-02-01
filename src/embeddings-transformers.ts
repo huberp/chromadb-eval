@@ -75,9 +75,14 @@ export class TransformersEmbeddings {
         embeddings.push(embedding);
       }
       
-      if ((i + batchSize) % 100 === 0 || i + batchSize >= texts.length) {
-        console.log(`Processed ${Math.min(i + batchSize, texts.length)}/${texts.length} embeddings`);
+      if (i > 0 && i % 100 === 0) {
+        console.log(`Processed ${i}/${texts.length} embeddings`);
       }
+    }
+    
+    // Log final count if not already logged
+    if (texts.length > 100 && texts.length % 100 !== 0) {
+      console.log(`Processed ${texts.length}/${texts.length} embeddings`);
     }
 
     return embeddings;

@@ -134,19 +134,12 @@ export class ChromaDBManager {
       throw new Error('Collection not initialized');
     }
 
-    // For HuggingFace, ChromaDB will automatically call the embedding function
     // For local TF-IDF and transformers.js, we need to manually create the embedding
-    if (this.localEmbedder) {
-      const embedding = await this.localEmbedder.embed(question);
-      
-      const results = await this.collection.query({
-        queryEmbeddings: [embedding],
-        nResults: topK
-      });
-      
-      return results;
-    } else if (this.transformersEmbedder) {
-      const embedding = await this.transformersEmbedder.embed(question);
+    // For HuggingFace, ChromaDB will automatically call the embedding function
+    if (this.localEmbedder || this.transformersEmbedder) {
+      const embedding = this.localEmbedder 
+        ? await this.localEmbedder.embed(question)
+        : await this.transformersEmbedder!.embed(question);
       
       const results = await this.collection.query({
         queryEmbeddings: [embedding],
