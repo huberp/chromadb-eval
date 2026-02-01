@@ -15,12 +15,6 @@ jobs:
     permissions:
       contents: read
     
-    services:
-      chromadb:
-        image: chromadb/chroma:latest
-        ports:
-          - 8000:8000
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -54,8 +48,22 @@ jobs:
           restore-keys: |
             transformers-js-${{ steps.model-info.outputs.cache_key }}-
       
-      - name: Wait for ChromaDB to be ready
+      - name: Create ChromaDB data directory
         run: |
+          mkdir -p ${{ github.workspace }}/chromadb-data
+          chmod 777 ${{ github.workspace }}/chromadb-data
+      
+      - name: Start ChromaDB with persistent storage
+        run: |
+          docker run -d \
+            --name chromadb \
+            -p 8000:8000 \
+            -v ${{ github.workspace }}/chromadb-data:/chroma/chroma \
+            -e IS_PERSISTENT=TRUE \
+            -e ANONYMIZED_TELEMETRY=FALSE \
+            chromadb/chroma:latest
+          
+          # Wait for ChromaDB to be ready
           timeout 30 bash -c 'until curl -f http://localhost:8000/api/v1/heartbeat; do sleep 2; done' || true
           sleep 5
       
@@ -69,24 +77,20 @@ jobs:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
       
-      - name: Export ChromaDB data
+      - name: Stop ChromaDB container
         run: |
-          # Create directory for ChromaDB data
-          mkdir -p chromadb-cache
+          docker stop chromadb
+          docker rm chromadb
           
-          # Export the collection data
-          echo "Exporting ChromaDB data..."
-          # Note: In a real scenario, you would need to export the actual DB files
-          # For now, we'll just create a marker file indicating the DB was prepared
-          date > chromadb-cache/prepared.txt
-          echo "Model: ${{ steps.model-info.outputs.model_id }}" >> chromadb-cache/prepared.txt
-          echo "Documents hash: ${{ hashFiles('documents/**/*.md') }}" >> chromadb-cache/prepared.txt
-          echo "Source hash: ${{ hashFiles('src/**/*.ts') }}" >> chromadb-cache/prepared.txt
+          # Verify data was written
+          echo "ChromaDB data directory contents:"
+          ls -lah ${{ github.workspace }}/chromadb-data
+          du -sh ${{ github.workspace }}/chromadb-data
       
       - name: Cache ChromaDB data
         uses: actions/cache@v4
         with:
-          path: chromadb-cache
+          path: chromadb-data
           key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
       
       - name: Summary
@@ -94,4 +98,5 @@ jobs:
           echo "✅ ChromaDB preparation and caching complete!"
           echo "Model: ${{ steps.model-info.outputs.model_id }}"
           echo "Documents processed and embeddings generated"
+          echo "ChromaDB data size: $(du -sh chromadb-data | cut -f1)"
           echo "Cache key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}"
