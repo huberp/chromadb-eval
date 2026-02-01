@@ -102,16 +102,34 @@ jobs:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
       
-      - name: Stop ChromaDB container
+      - name: Stop ChromaDB container and verify data
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
+          # Give ChromaDB time to flush data to disk
+          echo "Waiting for ChromaDB to flush data..."
+          sleep 5
+          
+          # Gracefully stop ChromaDB
           docker stop chromadb
           docker rm chromadb
           
           # Verify data was written
           echo "ChromaDB data directory contents:"
           ls -lah ${{ github.workspace }}/chromadb-data
+          echo ""
+          echo "Total size:"
           du -sh ${{ github.workspace }}/chromadb-data
+          echo ""
+          
+          # Check if data directory has substantial content
+          DATA_SIZE=$(du -sb ${{ github.workspace }}/chromadb-data | cut -f1)
+          if [ "$DATA_SIZE" -lt 1000 ]; then
+            echo "⚠️  Warning: ChromaDB data directory is suspiciously small ($DATA_SIZE bytes)"
+            echo "This may indicate that data was not properly persisted"
+            exit 1
+          else
+            echo "✅ ChromaDB data verified ($DATA_SIZE bytes)"
+          fi
       
       - name: Save ChromaDB cache
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
