@@ -63,8 +63,8 @@ jobs:
             -e ANONYMIZED_TELEMETRY=FALSE \
             chromadb/chroma:latest
           
-          # Wait for ChromaDB to be ready
-          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v1/heartbeat; do sleep 2; done' || true
+          # Wait for ChromaDB to be ready (fail if it doesn't start in 30 seconds)
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v1/heartbeat; do sleep 2; done'
           sleep 5
       
       - name: Prepare ChromaDB with embeddings
@@ -77,15 +77,34 @@ jobs:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
       
-      - name: Stop ChromaDB container
+      - name: Stop ChromaDB container and verify data
         run: |
+          # Give ChromaDB time to flush data to disk (5 seconds is sufficient for ChromaDB's write-ahead log)
+          echo "Waiting for ChromaDB to flush data..."
+          sleep 5
+          
+          # Gracefully stop ChromaDB
           docker stop chromadb
           docker rm chromadb
           
           # Verify data was written
           echo "ChromaDB data directory contents:"
           ls -lah ${{ github.workspace }}/chromadb-data
+          echo ""
+          echo "Total size:"
           du -sh ${{ github.workspace }}/chromadb-data
+          echo ""
+          
+          # Check if data directory has substantial content (minimum 1KB indicates successful persistence)
+          # A valid ChromaDB with embeddings should be several KB or larger
+          DATA_SIZE=$(du -sb ${{ github.workspace }}/chromadb-data | cut -f1)
+          if [ "$DATA_SIZE" -lt 1000 ]; then
+            echo "⚠️  Warning: ChromaDB data directory is suspiciously small ($DATA_SIZE bytes)"
+            echo "This may indicate that data was not properly persisted"
+            exit 1
+          else
+            echo "✅ ChromaDB data verified ($DATA_SIZE bytes)"
+          fi
       
       - name: Cache ChromaDB data
         uses: actions/cache@v4
