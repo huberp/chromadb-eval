@@ -1,0 +1,102 @@
+name: Prepare ChromaDB (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      embedding_model_id:
+        description: 'The embedding model ID to use'
+        required: false
+        type: string
+    outputs:
+      cache_hit:
+        description: 'Whether the ChromaDB cache was hit'
+        value: ${{ jobs.prepare.outputs.cache_hit }}
+      model_id:
+        description: 'The model ID used'
+        value: ${{ jobs.prepare.outputs.model_id }}
+      cache_key:
+        description: 'The cache key used for caching'
+        value: ${{ jobs.prepare.outputs.cache_key }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    outputs:
+      cache_hit: ${{ steps.chromadb-cache.outputs.cache-hit }}
+      model_id: ${{ steps.model-info.outputs.model_id }}
+      cache_key: ${{ steps.model-info.outputs.cache_key }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Get model ID for cache key
+        id: model-info
+        run: |
+          MODEL_ID="${EMBEDDING_MODEL_ID:-Xenova/all-mpnet-base-v2}"
+          CACHE_KEY=$(echo "$MODEL_ID" | sed 's/\//-/g')
+          echo "cache_key=$CACHE_KEY" >> $GITHUB_OUTPUT
+          echo "model_id=$MODEL_ID" >> $GITHUB_OUTPUT
+        env:
+          EMBEDDING_MODEL_ID: ${{ inputs.embedding_model_id || vars.EMBEDDING_MODEL_ID }}
+      
+      - name: Restore transformers.js model cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.cache/transformers.js
+          key: transformers-js-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            transformers-js-${{ steps.model-info.outputs.cache_key }}-
+      
+      - name: Restore ChromaDB cache
+        id: chromadb-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/chromadb-data
+          key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
+      
+      - name: Create ChromaDB data directory if not cached
+        if: steps.chromadb-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ${{ github.workspace }}/chromadb-data
+          chmod 777 ${{ github.workspace }}/chromadb-data
+      
+      - name: Start ChromaDB with persistent storage
+        run: |
+          docker run -d \
+            --name chromadb \
+            -p 8000:8000 \
+            -v ${{ github.workspace }}/chromadb-data:/chroma/chroma \
+            -e IS_PERSISTENT=TRUE \
+            -e ANONYMIZED_TELEMETRY=FALSE \
+            chromadb/chroma:latest
+          
+          # Wait for ChromaDB to be ready
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v1/heartbeat; do sleep 2; done' || true
+          sleep 5
+      
+      - name: Prepare ChromaDB if not cached
+        if: steps.chromadb-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "⚠️  Cache miss - preparing ChromaDB with embeddings..."
+          echo "Using model: ${{ steps.model-info.outputs.model_id }}"
+          # Run the app without a question to just prepare the database
+          npm start "" > /dev/null 2>&1 || true
+        env:
+          EMBEDDING_STRATEGY: llm
+          EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
