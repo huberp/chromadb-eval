@@ -25,7 +25,7 @@ function parsePositiveInt(value: string | undefined, defaultValue: number): numb
 
 /**
  * Default chunking configuration.
- * Defaults to legacy mode for backward compatibility.
+ * Defaults to AST mode for better structure-aware chunking.
  * 
  * Can be overridden via environment variables:
  * - CHUNKING_MODE: 'legacy' or 'ast'
@@ -33,7 +33,7 @@ function parsePositiveInt(value: string | undefined, defaultValue: number): numb
  * - CHUNK_OVERLAP: positive integer (default: 150, must be less than CHUNK_SIZE)
  */
 export const defaultChunkingConfig: ChunkingConfig = (() => {
-  const mode = (process.env.CHUNKING_MODE === 'ast' ? 'ast' : 'legacy') as 'legacy' | 'ast';
+  const mode = (process.env.CHUNKING_MODE === 'legacy' ? 'legacy' : 'ast') as 'legacy' | 'ast';
   const chunkSize = parsePositiveInt(process.env.CHUNK_SIZE, 1000);
   let chunkOverlap = parsePositiveInt(process.env.CHUNK_OVERLAP, 150);
   

@@ -9,8 +9,8 @@ Evaluation of using ChromaDB vector store and full text search, based on TypeScr
   - **Local Embeddings**: Uses custom TF-IDF-based embeddings for lightweight operation
   - **HuggingFace Embeddings**: Uses Hugging Face Text Embeddings Inference server with modern AI models
 - **Document Chunking**: Intelligent text chunking with overlap for better context preservation
-  - **Legacy Chunker**: String-based markdown chunking (default)
-  - **AST Chunker**: Structure-aware chunking using remark/mdast (experimental)
+  - **AST Chunker**: Structure-aware chunking using remark/mdast (default)
+  - **Legacy Chunker**: String-based markdown chunking (fallback)
 - **Vector Search**: Semantic search using ChromaDB's vector store
 - **Fulltext Analysis**: Term frequency analysis across documents
 - **Document Similarity**: Computes top 10 most similar document pairs
@@ -80,7 +80,7 @@ npm start
 ```
 
 This will:
-1. Chunk all markdown documents (using legacy chunker by default)
+1. Chunk all markdown documents (using AST chunker by default)
 2. Build and store the local ChromaDB with vectors and fulltext
 3. Compute and display top 10 document similarities
 4. Report 10 most common terms
@@ -90,21 +90,21 @@ This will:
 
 The application supports two chunking modes:
 
-#### Legacy Mode (Default)
-String-based markdown chunking with robust content detection:
+#### AST Mode (Default)
+Structure-aware chunking using remark/mdast for better markdown understanding:
 ```bash
 npm start
 # or explicitly
-CHUNKING_MODE=legacy npm start
-```
-
-#### AST Mode (Experimental)
-Structure-aware chunking using remark/mdast for better markdown understanding:
-```bash
 CHUNKING_MODE=ast npm start
 ```
 
-**Note**: AST mode is experimental and provides improved structural awareness of markdown documents. Both modes follow the same chunking strategies (chunk size, overlap, special handling for code blocks, lists, and tables) but AST mode leverages the Abstract Syntax Tree for more precise parsing.
+#### Legacy Mode (Fallback)
+String-based markdown chunking with robust content detection:
+```bash
+CHUNKING_MODE=legacy npm start
+```
+
+**Note**: AST mode provides improved structural awareness of markdown documents. Both modes follow the same chunking strategies (chunk size, overlap, special handling for code blocks, lists, and tables) but AST mode leverages the Abstract Syntax Tree for more precise parsing.
 
 ### Switch between embedding strategies
 
