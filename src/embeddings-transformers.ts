@@ -63,18 +63,11 @@ export class TransformersEmbeddings {
     }
 
     const embeddings: number[][] = [];
-    const batchSize = this.config.batchSize || 32;
 
-    // Process in batches to manage memory
-    for (let i = 0; i < texts.length; i += batchSize) {
-      const batch = texts.slice(i, i + batchSize);
-      
-      // Process batch sequentially for now (transformers.js handles batching internally)
-      for (const text of batch) {
-        const embedding = await this.embed(text);
-        embeddings.push(embedding);
-      }
-      
+    // Process texts sequentially
+    for (let i = 0; i < texts.length; i++) {
+      const embedding = await this.embed(texts[i]);
+      embeddings.push(embedding);
       const processed = embeddings.length;
       if (processed > 0 && processed % 100 === 0) {
         console.log(`Processed ${processed}/${texts.length} embeddings`);
