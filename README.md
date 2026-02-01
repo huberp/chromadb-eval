@@ -1,11 +1,12 @@
 # chromadb-eval
 
-Evaluation of using ChromaDB vector store and full text search, based on TypeScript and fed with markdown files. This project demonstrates ChromaDB's vector and fulltext search capabilities with both local and modern AI embeddings.
+Evaluation of using ChromaDB vector store and full text search, based on TypeScript and fed with markdown files. This project demonstrates ChromaDB's vector and fulltext search capabilities with multiple embedding strategies, including modern LLM-based embeddings.
 
 ## Features
 
 - **Multiple Embedding Strategies**:
-  - **Local Embeddings** (default): Uses custom TF-IDF-based embeddings for local operation without API calls
+  - **LLM Embeddings** (default): Uses transformers.js for local LLM-based embeddings with `Xenova/all-mpnet-base-v2`
+  - **Local Embeddings**: Uses custom TF-IDF-based embeddings for lightweight operation
   - **HuggingFace Embeddings**: Uses Hugging Face Text Embeddings Inference server with modern AI models
 - **Document Chunking**: Intelligent text chunking with overlap for better context preservation
   - **Legacy Chunker**: String-based markdown chunking (default)
@@ -30,9 +31,9 @@ npm install
 
 ## Prerequisites
 
-This application requires a ChromaDB server to be running. You can also optionally run a Hugging Face Text Embeddings Inference server for modern AI embeddings.
+This application requires a ChromaDB server to be running. The default embedding strategy uses transformers.js for local LLM-based embeddings, which requires no additional setup beyond installing npm dependencies.
 
-### Option 1: ChromaDB only (uses local TF-IDF embeddings)
+### Option 1: ChromaDB with LLM embeddings (default, recommended)
 
 Start ChromaDB using Docker:
 
@@ -40,7 +41,23 @@ Start ChromaDB using Docker:
 docker run -d -p 8000:8000 chromadb/chroma:latest
 ```
 
-### Option 2: ChromaDB + HuggingFace Embeddings (recommended)
+This setup uses transformers.js with the `Xenova/all-mpnet-base-v2` model for high-quality embeddings. The model is automatically downloaded on first use and cached locally for future runs (approximately 80MB download).
+
+### Option 2: ChromaDB with local TF-IDF embeddings (lightweight)
+
+Start ChromaDB using Docker:
+
+```bash
+docker run -d -p 8000:8000 chromadb/chroma:latest
+```
+
+Then run with the local embedding strategy:
+
+```bash
+EMBEDDING_STRATEGY=local npm start
+```
+
+### Option 3: ChromaDB + HuggingFace Embeddings (external server)
 
 Use Docker Compose to start both services:
 
@@ -52,9 +69,7 @@ This will start:
 - ChromaDB server on port 8000
 - Hugging Face Text Embeddings Inference server on port 8001 with the `sentence-transformers/all-MiniLM-L6-v2` model
 
-The `sentence-transformers/all-MiniLM-L6-v2` model is compatible with both Hugging Face TEI and Transformers.js, making it ideal for this use case.
-
-**Note:** The HuggingFace Text Embeddings Inference server requires internet access on first startup to download the model (approximately 80MB). Once downloaded, it will be cached in a Docker volume for future use. If you're in a restricted environment, you can pre-download the model or use the local TF-IDF embeddings instead.
+**Note:** The HuggingFace Text Embeddings Inference server requires internet access on first startup to download the model (approximately 80MB). Once downloaded, it will be cached in a Docker volume for future use.
 
 ## Usage
 
@@ -93,23 +108,34 @@ CHUNKING_MODE=ast npm start
 
 ### Switch between embedding strategies
 
-The application supports two embedding strategies:
+The application supports three embedding strategies:
 
-#### Local Embeddings (Default)
-Uses TF-IDF-based embeddings for local operation without external dependencies:
+#### LLM Embeddings (Default, Recommended)
+Uses transformers.js for local LLM-based embeddings with high-quality semantic understanding:
 ```bash
 npm start
 # or explicitly
+EMBEDDING_STRATEGY=llm npm start
+```
+
+You can customize the model:
+```bash
+EMBEDDING_MODEL_ID=Xenova/all-MiniLM-L6-v2 npm start
+```
+
+#### Local Embeddings (Lightweight)
+Uses TF-IDF-based embeddings for lightweight operation without model downloads:
+```bash
 EMBEDDING_STRATEGY=local npm start
 ```
 
-#### HuggingFace Embeddings (Recommended for production)
+#### HuggingFace Embeddings (External Server)
 Uses Hugging Face Text Embeddings Inference server with modern AI models:
 ```bash
 EMBEDDING_STRATEGY=huggingface npm start
 ```
 
-**Note**: When using HuggingFace embeddings, make sure the embedding server is running (see Prerequisites section). The default configuration uses `sentence-transformers/all-MiniLM-L6-v2` which is compatible with Transformers.js.
+**Note**: When using HuggingFace embeddings, make sure the embedding server is running (see Prerequisites section).
 
 ### Configuration Options
 
@@ -121,13 +147,15 @@ You can customize both chunking and embedding behavior via environment variables
 - `CHUNK_OVERLAP`: Overlap size between chunks in characters (default: 150)
 
 **Embeddings:**
-- `EMBEDDING_STRATEGY`: Set to `local` (default) or `huggingface`
+- `EMBEDDING_STRATEGY`: Set to `llm` (default), `local`, or `huggingface`
+- `EMBEDDING_MODEL_ID`: Model ID for LLM embeddings (default: Xenova/all-mpnet-base-v2)
+- `EMBEDDING_BATCH_SIZE`: Batch size for embedding generation (default: 32)
 - `HUGGINGFACE_EMBEDDING_URL`: URL of the HuggingFace embedding server (default: http://localhost:8001/embed)
-- `EMBEDDING_MODEL`: Model name for reference/logging (default: sentence-transformers/all-MiniLM-L6-v2 for huggingface, TF-IDF for local)
+- `EMBEDDING_MODEL`: Model name for reference/logging
 
 Example with custom settings:
 ```bash
-CHUNKING_MODE=ast CHUNK_SIZE=1500 CHUNK_OVERLAP=200 EMBEDDING_STRATEGY=huggingface npm start
+CHUNKING_MODE=ast CHUNK_SIZE=1500 CHUNK_OVERLAP=200 EMBEDDING_STRATEGY=llm EMBEDDING_MODEL_ID=Xenova/all-MiniLM-L6-v2 npm start
 ```
 
 ### Ask a question
@@ -152,6 +180,29 @@ npm run build
 
 This project includes several GitHub Actions workflows for different operations:
 
+### Cache Embedding Model
+Automatically downloads and caches the transformers.js embedding model for faster workflow runs:
+1. Go to the "Actions" tab in GitHub
+2. Select "Cache Embedding Model" workflow
+3. Click "Run workflow"
+4. The model will be cached and reused across all subsequent workflow runs
+
+This workflow also runs automatically:
+- Weekly to refresh the cache
+- When embedding configuration changes
+
+### Cache Prepared ChromaDB
+Prepares ChromaDB with all documents and embeddings, then caches the result:
+1. Go to the "Actions" tab in GitHub
+2. Select "Cache Prepared ChromaDB" workflow
+3. Click "Run workflow"
+4. The prepared database will be cached and can be reused in other workflows
+
+This workflow runs automatically when:
+- Documents are modified
+- Source code changes
+- Manual trigger (workflow_dispatch)
+
 ### ChromaDB Query
 Ask questions about the documents via GitHub Actions:
 1. Go to the "Actions" tab in GitHub
@@ -161,7 +212,7 @@ Ask questions about the documents via GitHub Actions:
 5. View the results in the workflow run logs
 
 ### Prepare ChromaDB
-Automatically chunks documents and stores them in ChromaDB. Runs on:
+Automatically chunks documents and stores them in ChromaDB with LLM embeddings. Runs on:
 - Manual trigger (workflow_dispatch)
 - When documents or source code changes
 
@@ -170,6 +221,8 @@ Manually trigger this workflow to compute and display the top 10 most similar do
 
 ### Analyze Common Terms
 Manually trigger this workflow to analyze and display the 10 most common terms across all documents.
+
+**Note:** All workflows now use LLM embeddings by default and leverage model caching for improved performance.
 
 ## Architecture
 
@@ -181,6 +234,7 @@ Manually trigger this workflow to analyze and display the 10 most common terms a
 - `src/config.ts`: Configuration module for chunking behavior
 - `src/embedding-config.ts`: Configuration module for embedding strategies
 - `src/embeddings.ts`: Local TF-IDF-based embedding generation (naive approach)
+- `src/embeddings-transformers.ts`: Transformers.js-based LLM embeddings (default)
 - `src/embedding-factory.ts`: Factory for creating embedding functions
 - `src/chromadb-manager.ts`: ChromaDB operations including storage, querying, and analysis
 - `src/index.ts`: Main application orchestrating the workflow
@@ -190,8 +244,9 @@ Manually trigger this workflow to analyze and display the 10 most common terms a
 
 - **Chunk Size**: 1000 characters with 150 character overlap (configurable)
 - **Embedding Models**:
+  - **LLM (default)**: `Xenova/all-mpnet-base-v2` via transformers.js (768-dimensional vectors)
   - **Local**: Custom TF-IDF-based embeddings (384-dimensional vectors)
-  - **HuggingFace**: `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional vectors, compatible with Transformers.js)
+  - **HuggingFace**: `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional vectors)
 - **Similarity Metric**: Cosine similarity
 - **Storage**: Local ChromaDB instance
 

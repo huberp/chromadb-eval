@@ -1,0 +1,83 @@
+name: Cache Embedding Model
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run weekly to refresh the model cache
+    - cron: '0 0 * * 0'
+  push:
+    paths:
+      - 'src/embedding-config.ts'
+      - 'src/embeddings-transformers.ts'
+      - '.github/workflows/cache-model.yml'
+
+jobs:
+  cache-model:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Get model ID
+        id: model-info
+        run: |
+          MODEL_ID="${EMBEDDING_MODEL_ID:-Xenova/all-mpnet-base-v2}"
+          echo "model_id=$MODEL_ID" >> $GITHUB_OUTPUT
+          # Convert model ID to cache-friendly format (replace / with -)
+          CACHE_KEY=$(echo "$MODEL_ID" | sed 's/\//-/g')
+          echo "cache_key=$CACHE_KEY" >> $GITHUB_OUTPUT
+        env:
+          EMBEDDING_MODEL_ID: ${{ vars.EMBEDDING_MODEL_ID }}
+      
+      - name: Cache transformers.js models
+        id: cache-transformers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.cache/transformers.js
+          key: transformers-js-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            transformers-js-${{ steps.model-info.outputs.cache_key }}-
+      
+      - name: Download and cache model
+        if: steps.cache-transformers.outputs.cache-hit != 'true'
+        run: |
+          echo "Downloading embedding model: ${{ steps.model-info.outputs.model_id }}"
+          node -e "
+            const { pipeline } = require('@xenova/transformers');
+            (async () => {
+              console.log('Initializing pipeline...');
+              const extractor = await pipeline('feature-extraction', '${{ steps.model-info.outputs.model_id }}', {
+                quantized: true
+              });
+              console.log('Model downloaded and cached successfully!');
+              
+              // Test the model with a sample text
+              console.log('Testing model with sample text...');
+              const output = await extractor('This is a test sentence.', {
+                pooling: 'mean',
+                normalize: true
+              });
+              console.log('Model test successful! Embedding dimension:', output.data.length);
+            })();
+          "
+      
+      - name: Summary
+        run: |
+          echo "✅ Embedding model cache prepared!"
+          echo "Model: ${{ steps.model-info.outputs.model_id }}"
+          echo "Cache key: transformers-js-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('package-lock.json') }}"
