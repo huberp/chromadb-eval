@@ -64,7 +64,7 @@ jobs:
             chromadb/chroma:latest
           
           # Wait for ChromaDB to be ready (fail if it doesn't start in 30 seconds)
-          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v1/health; do sleep 2; done'
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done'
           sleep 5
       
       - name: Prepare ChromaDB with embeddings
