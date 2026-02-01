@@ -68,7 +68,6 @@ jobs:
           NODE_ENV: production
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
-          CHUNKING_MODE: ast
       
       - name: Summary
         run: |
