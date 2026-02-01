@@ -62,11 +62,13 @@ jobs:
         run: |
           echo "Chunking documents and storing in ChromaDB with LLM embeddings..."
           echo "Using model: ${{ steps.model-info.outputs.model_id }}"
+          echo "Using AST-based chunker for structure-aware parsing..."
           npm start
         env:
           NODE_ENV: production
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
+          CHUNKING_MODE: ast
       
       - name: Summary
         run: |
