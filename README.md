@@ -204,6 +204,15 @@ This workflow runs automatically when:
 - The workflow file itself changes
 - Manual trigger (workflow_dispatch)
 
+### Reusable ChromaDB Preparation
+The project uses a reusable workflow (`.github/workflows/prepare-chromadb.yml`) that handles ChromaDB preparation consistently across all workflows. This workflow:
+- Sets up Node.js and installs dependencies
+- Handles model and ChromaDB caching
+- Prepares the database if the cache is not available
+- Is called by Query, Analyze Terms, and Compute Similarities workflows
+
+This architecture eliminates code duplication and ensures consistent ChromaDB setup across all workflows.
+
 ### ChromaDB Query
 Ask questions about the documents via GitHub Actions:
 1. Go to the "Actions" tab in GitHub
