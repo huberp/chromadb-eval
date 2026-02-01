@@ -75,8 +75,9 @@ export class TransformersEmbeddings {
         embeddings.push(embedding);
       }
       
-      if (i > 0 && i % 100 === 0) {
-        console.log(`Processed ${i}/${texts.length} embeddings`);
+      const processed = embeddings.length;
+      if (processed > 0 && processed % 100 === 0) {
+        console.log(`Processed ${processed}/${texts.length} embeddings`);
       }
     }
     
