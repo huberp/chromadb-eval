@@ -201,6 +201,7 @@ Prepares ChromaDB with all documents and embeddings, then caches the result:
 This workflow runs automatically when:
 - Documents are modified
 - Source code changes
+- The workflow file itself changes
 - Manual trigger (workflow_dispatch)
 
 ### ChromaDB Query
@@ -211,10 +212,7 @@ Ask questions about the documents via GitHub Actions:
 4. Enter your question
 5. View the results in the workflow run logs
 
-### Prepare ChromaDB
-Automatically chunks documents and stores them in ChromaDB with LLM embeddings. Runs on:
-- Manual trigger (workflow_dispatch)
-- When documents or source code changes
+This workflow uses cached ChromaDB data when available, or prepares it on-demand if the cache is not found.
 
 ### Compute Document Similarities
 Manually trigger this workflow to compute and display the top 10 most similar document pairs based on vector embeddings.
@@ -222,7 +220,7 @@ Manually trigger this workflow to compute and display the top 10 most similar do
 ### Analyze Common Terms
 Manually trigger this workflow to analyze and display the 10 most common terms across all documents.
 
-**Note:** All workflows now use LLM embeddings by default and leverage model caching for improved performance.
+**Note:** All workflows now use LLM embeddings by default and leverage model caching for improved performance. The "Cache Prepared ChromaDB" workflow handles all database preparation and caching needs.
 
 ## Architecture
 
