@@ -1,6 +1,7 @@
 import { ChromaClient, Collection, EmbeddingFunction } from 'chromadb';
 import { Chunk } from './chunking';
 import { LocalEmbeddings } from './embeddings';
+import { TransformersEmbeddings } from './embeddings-transformers';
 import { createEmbeddingFunction } from './embedding-factory';
 
 export interface DocumentSimilarity {
@@ -14,6 +15,7 @@ export class ChromaDBManager {
   private collection: Collection | null = null;
   private embeddingFunction: EmbeddingFunction | null = null;
   private localEmbedder: LocalEmbeddings | null = null;
+  private transformersEmbedder: TransformersEmbeddings | null = null;
   private strategy: string = 'unknown';
   private modelName: string = 'unknown';
 
@@ -32,6 +34,7 @@ export class ChromaDBManager {
     const embeddingSetup = await createEmbeddingFunction();
     this.embeddingFunction = embeddingSetup.embeddingFunction;
     this.localEmbedder = embeddingSetup.localEmbedder || null;
+    this.transformersEmbedder = embeddingSetup.transformersEmbedder || null;
     this.strategy = embeddingSetup.strategy;
     this.modelName = embeddingSetup.modelName;
     
@@ -62,7 +65,7 @@ export class ChromaDBManager {
 
     console.log(`Processing ${chunks.length} chunks...`);
     
-    // Build vocabulary from all chunks (only needed for local embeddings)
+    // Build vocabulary from all chunks (only needed for local TF-IDF embeddings)
     if (this.localEmbedder) {
       const allTexts = chunks.map(c => c.content);
       this.localEmbedder.buildVocabulary(allTexts);
@@ -75,10 +78,12 @@ export class ChromaDBManager {
       const texts = batch.map(c => c.content);
       
       // For HuggingFace, we let ChromaDB handle the embedding via the embeddingFunction
-      // For local, we need to compute embeddings ourselves
+      // For local TF-IDF and transformers.js, we need to compute embeddings ourselves
       let embeddings: number[][] | undefined;
       if (this.localEmbedder) {
         embeddings = await this.localEmbedder.embedBatch(texts);
+      } else if (this.transformersEmbedder) {
+        embeddings = await this.transformersEmbedder.embedBatch(texts);
       }
       
       interface AddParams {
@@ -130,9 +135,18 @@ export class ChromaDBManager {
     }
 
     // For HuggingFace, ChromaDB will automatically call the embedding function
-    // For local, we need to manually create the embedding
+    // For local TF-IDF and transformers.js, we need to manually create the embedding
     if (this.localEmbedder) {
       const embedding = await this.localEmbedder.embed(question);
+      
+      const results = await this.collection.query({
+        queryEmbeddings: [embedding],
+        nResults: topK
+      });
+      
+      return results;
+    } else if (this.transformersEmbedder) {
+      const embedding = await this.transformersEmbedder.embed(question);
       
       const results = await this.collection.query({
         queryEmbeddings: [embedding],
