@@ -4,7 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  prepare:
+    uses: ./.github/workflows/prepare-chromadb.yml
+    with:
+      embedding_model_id: ${{ vars.EMBEDDING_MODEL_ID }}
+  
   similarities:
+    needs: prepare
     runs-on: ubuntu-latest
     
     permissions:
@@ -23,35 +29,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Get model ID for cache key
-        id: model-info
-        run: |
-          MODEL_ID="${EMBEDDING_MODEL_ID:-Xenova/all-mpnet-base-v2}"
-          CACHE_KEY=$(echo "$MODEL_ID" | sed 's/\//-/g')
-          echo "cache_key=$CACHE_KEY" >> $GITHUB_OUTPUT
-          echo "model_id=$MODEL_ID" >> $GITHUB_OUTPUT
-        env:
-          EMBEDDING_MODEL_ID: ${{ vars.EMBEDDING_MODEL_ID }}
-      
       - name: Restore transformers.js model cache
         uses: actions/cache@v4
         with:
           path: |
             ~/.cache/huggingface
             ~/.cache/transformers.js
-          key: transformers-js-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('package-lock.json') }}
+          key: transformers-js-${{ needs.prepare.outputs.cache_key }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            transformers-js-${{ steps.model-info.outputs.cache_key }}-
+            transformers-js-${{ needs.prepare.outputs.cache_key }}-
       
       - name: Restore ChromaDB cache
-        id: chromadb-cache
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/chromadb-data
-          key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
+          key: chromadb-${{ needs.prepare.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
       
       - name: Create ChromaDB data directory if not cached
-        if: steps.chromadb-cache.outputs.cache-hit != 'true'
+        if: needs.prepare.outputs.cache_hit != 'true'
         run: |
           mkdir -p ${{ github.workspace }}/chromadb-data
           chmod 777 ${{ github.workspace }}/chromadb-data
@@ -71,23 +66,23 @@ jobs:
           sleep 5
       
       - name: Prepare ChromaDB if not cached
-        if: steps.chromadb-cache.outputs.cache-hit != 'true'
+        if: needs.prepare.outputs.cache_hit != 'true'
         run: |
           echo "⚠️  Cache miss - preparing ChromaDB with embeddings..."
-          echo "Using model: ${{ steps.model-info.outputs.model_id }}"
+          echo "Using model: ${{ needs.prepare.outputs.model_id }}"
           # Run the app without a question to just prepare the database
           npm start "" > /dev/null 2>&1 || true
         env:
           EMBEDDING_STRATEGY: llm
-          EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
+          EMBEDDING_MODEL_ID: ${{ needs.prepare.outputs.model_id }}
       
       - name: Compute similarities
         run: |
-          if [ "${{ steps.chromadb-cache.outputs.cache-hit }}" == "true" ]; then
+          if [ "${{ needs.prepare.outputs.cache_hit }}" == "true" ]; then
             echo "✅ Using cached ChromaDB data"
           fi
           echo "Computing document similarities with LLM embeddings..."
-          echo "Using model: ${{ steps.model-info.outputs.model_id }}"
+          echo "Using model: ${{ needs.prepare.outputs.model_id }}"
           npm start > output.log
           echo ""
           echo "=== Results ==="
@@ -96,7 +91,7 @@ jobs:
         env:
           NODE_ENV: production
           EMBEDDING_STRATEGY: llm
-          EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
+          EMBEDDING_MODEL_ID: ${{ needs.prepare.outputs.model_id }}
       
       - name: Cleanup
         if: always()
