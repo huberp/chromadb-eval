@@ -93,6 +93,7 @@ jobs:
           # Verify collection exists in ChromaDB before stopping
           echo "Verifying ChromaDB collection exists..."
           RETRIES=5
+          COLLECTION_FOUND=false
           for i in $(seq 1 $RETRIES); do
             if curl -sf http://localhost:8000/api/v2/heartbeat > /dev/null; then
               echo "✅ ChromaDB is responsive"
@@ -101,6 +102,7 @@ jobs:
               COLLECTION_CHECK=$(curl -sf http://localhost:8000/api/v1/collections || echo "")
               if echo "$COLLECTION_CHECK" | grep -q "documents"; then
                 echo "✅ Collection 'documents' exists in ChromaDB"
+                COLLECTION_FOUND=true
                 break
               else
                 echo "⚠️  Collection not found, waiting... (attempt $i/$RETRIES)"
@@ -111,6 +113,12 @@ jobs:
               sleep 2
             fi
           done
+          
+          if [ "$COLLECTION_FOUND" = "false" ]; then
+            echo "❌ Error: Collection 'documents' was not found in ChromaDB after $RETRIES attempts"
+            echo "This indicates the data was not properly written to ChromaDB"
+            exit 1
+          fi
           
           # Give ChromaDB extra time to flush data to disk
           # ChromaDB uses SQLite WAL mode which needs time to checkpoint to main file
