@@ -53,15 +53,34 @@ export class ChromaDBManager {
         if (collectionData.embeddings && collectionData.embeddings.length > 0) {
           // Collection exists and has data, verify it's usable
           console.log(`Reusing existing ChromaDB collection with ${this.strategy} embeddings (${this.modelName})`);
+          
+          // For local TF-IDF embeddings, rebuild vocabulary from stored documents
+          if (this.localEmbedder) {
+            try {
+              console.log('Rebuilding vocabulary from cached documents...');
+              const allDocuments = await this.collection.get({ include: ['documents'] });
+              if (allDocuments.documents && allDocuments.documents.length > 0) {
+                this.localEmbedder.buildVocabulary(allDocuments.documents);
+                console.log(`Vocabulary rebuilt successfully from ${allDocuments.documents.length} cached documents`);
+              } else {
+                console.warn('No documents found in cached collection, vocabulary will be empty');
+              }
+            } catch (error) {
+              console.error('Failed to rebuild vocabulary from cached documents:', error);
+              throw new Error('Could not rebuild vocabulary for local embeddings. Please clear cache and recreate the database.');
+            }
+          }
+          
           return;
         } else {
-          // Collection exists but is empty, fall through to recreation
-          console.log('Existing collection is empty, recreating...');
-          await this.client.deleteCollection({ name: 'documents' });
+          // Collection exists but is empty - this indicates cache corruption
+          console.error('Cached collection exists but is empty. Cache may be corrupted.');
+          throw new Error('Cached ChromaDB collection is empty. Please recreate the database with a fresh cache.');
         }
       } catch (error) {
-        // Collection doesn't exist, will create below
-        console.log('Existing collection not found, creating new one...');
+        // Collection doesn't exist - this indicates cache miss or corruption
+        console.error('Expected cached collection not found. Cache may be invalid or not restored properly.');
+        throw new Error('Cached ChromaDB collection not found. If cache restoration was expected, verify the restoration succeeded. Otherwise, run without USE_CACHED_CHROMADB to recreate the database.');
       }
     } else {
       try {
