@@ -41,6 +41,8 @@ export class ChromaDBManager {
     this.strategy = embeddingSetup.strategy;
     this.modelName = embeddingSetup.modelName;
     
+    let cacheFailed = false;
+    
     if (tryReuseExisting) {
       // Try to get existing collection
       try {
@@ -76,11 +78,13 @@ export class ChromaDBManager {
         } else {
           // Collection exists but is empty - fall back to recreation
           console.warn('⚠️  Cached collection exists but is empty. Falling back to recreation...');
+          cacheFailed = true;
         }
       } catch (error) {
         // Collection doesn't exist - fall back to recreation
         console.warn('⚠️  Expected cached collection not found. Cache may be invalid or not restored properly.');
         console.warn('⚠️  Falling back to recreating ChromaDB collection...');
+        cacheFailed = true;
       }
       
       // If we reach here, cache was invalid - fall through to recreation
@@ -103,7 +107,7 @@ export class ChromaDBManager {
     console.log(`ChromaDB collection created successfully with ${this.strategy} embeddings (${this.modelName})`);
     
     // Return flag indicating whether this was a fallback from cache attempt
-    return { success: true, fallbackToRecreation: tryReuseExisting };
+    return { success: true, fallbackToRecreation: cacheFailed };
   }
 
   /**
