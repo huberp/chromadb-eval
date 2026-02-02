@@ -87,18 +87,43 @@ jobs:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
       
-      - name: Stop ChromaDB container and verify data
+      - name: Verify and stop ChromaDB container
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
-          # Give ChromaDB time to flush data to disk (5 seconds is sufficient for ChromaDB's write-ahead log)
-          echo "Waiting for ChromaDB to flush data..."
-          sleep 5
+          # Verify collection exists in ChromaDB before stopping
+          echo "Verifying ChromaDB collection exists..."
+          RETRIES=5
+          for i in $(seq 1 $RETRIES); do
+            if curl -sf http://localhost:8000/api/v2/heartbeat > /dev/null; then
+              echo "✅ ChromaDB is responsive"
+              
+              # Query to verify collection has data
+              COLLECTION_CHECK=$(curl -sf http://localhost:8000/api/v1/collections || echo "")
+              if echo "$COLLECTION_CHECK" | grep -q "documents"; then
+                echo "✅ Collection 'documents' exists in ChromaDB"
+                break
+              else
+                echo "⚠️  Collection not found, waiting... (attempt $i/$RETRIES)"
+                sleep 2
+              fi
+            else
+              echo "⚠️  ChromaDB not responding, waiting... (attempt $i/$RETRIES)"
+              sleep 2
+            fi
+          done
           
-          # Gracefully stop ChromaDB
-          docker stop chromadb
+          # Give ChromaDB extra time to flush data to disk
+          # ChromaDB uses SQLite WAL mode which needs time to checkpoint to main file
+          echo "Waiting 15 seconds for ChromaDB to flush all data to disk..."
+          sleep 15
+          
+          # Gracefully stop ChromaDB (gives it time to finish writes)
+          echo "Stopping ChromaDB gracefully..."
+          docker stop -t 30 chromadb
           docker rm chromadb
           
           # Verify data was written
+          echo ""
           echo "ChromaDB data directory contents:"
           ls -lah ${{ github.workspace }}/chromadb-data
           echo ""
@@ -106,12 +131,26 @@ jobs:
           du -sh ${{ github.workspace }}/chromadb-data
           echo ""
           
-          # Check if data directory has substantial content (minimum 1KB indicates successful persistence)
-          # A valid ChromaDB with embeddings should be several KB or larger
+          # Check if chroma.sqlite3 exists and has substantial content
+          if [ -f "${{ github.workspace }}/chromadb-data/chroma.sqlite3" ]; then
+            SQLITE_SIZE=$(stat -f%z "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || stat -c%s "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || echo "0")
+            echo "chroma.sqlite3 size: $SQLITE_SIZE bytes"
+            
+            if [ "$SQLITE_SIZE" -lt 100000 ]; then
+              echo "⚠️  Warning: chroma.sqlite3 is suspiciously small ($SQLITE_SIZE bytes)"
+              echo "Expected at least 100KB for a database with embeddings"
+              exit 1
+            fi
+          else
+            echo "⚠️  Error: chroma.sqlite3 file not found!"
+            exit 1
+          fi
+          
+          # Check total directory size
           DATA_SIZE=$(du -sb ${{ github.workspace }}/chromadb-data | cut -f1)
-          if [ "$DATA_SIZE" -lt 1000 ]; then
+          if [ "$DATA_SIZE" -lt 500000 ]; then
             echo "⚠️  Warning: ChromaDB data directory is suspiciously small ($DATA_SIZE bytes)"
-            echo "This may indicate that data was not properly persisted"
+            echo "Expected at least 500KB for a database with embeddings"
             exit 1
           else
             echo "✅ ChromaDB data verified ($DATA_SIZE bytes)"
