@@ -73,13 +73,14 @@ export class ChromaDBManager {
           
           return;
         } else {
-          // Collection exists but is empty, fall through to recreation
-          console.log('Existing collection is empty, recreating...');
-          await this.client.deleteCollection({ name: 'documents' });
+          // Collection exists but is empty - this indicates cache corruption
+          console.error('Cached collection exists but is empty. Cache may be corrupted.');
+          throw new Error('Cached ChromaDB collection is empty. Please clear the cache and recreate the database.');
         }
       } catch (error) {
-        // Collection doesn't exist, will create below
-        console.log('Existing collection not found, creating new one...');
+        // Collection doesn't exist - this indicates cache miss or corruption
+        console.error('Expected cached collection not found. Cache may be invalid or not restored properly.');
+        throw new Error('Cached ChromaDB collection not found. Please ensure the cache is properly restored or recreate the database.');
       }
     } else {
       try {
