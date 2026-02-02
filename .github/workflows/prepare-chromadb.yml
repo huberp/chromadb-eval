@@ -65,7 +65,7 @@ jobs:
       
       - name: Restore ChromaDB cache
         id: chromadb-cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ${{ github.workspace }}/chromadb-data
           key: chromadb-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('documents/**/*.md', 'src/**/*.ts') }}
