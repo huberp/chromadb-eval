@@ -53,6 +53,16 @@ export class ChromaDBManager {
         if (collectionData.embeddings && collectionData.embeddings.length > 0) {
           // Collection exists and has data, verify it's usable
           console.log(`Reusing existing ChromaDB collection with ${this.strategy} embeddings (${this.modelName})`);
+          
+          // For local TF-IDF embeddings, rebuild vocabulary from stored documents
+          if (this.localEmbedder) {
+            console.log('Rebuilding vocabulary from cached documents...');
+            const allDocuments = await this.collection.get({ include: ['documents'] });
+            if (allDocuments.documents && allDocuments.documents.length > 0) {
+              this.localEmbedder.buildVocabulary(allDocuments.documents);
+            }
+          }
+          
           return;
         } else {
           // Collection exists but is empty, fall through to recreation

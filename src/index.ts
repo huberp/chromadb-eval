@@ -80,7 +80,7 @@ async function main() {
       console.log('Top 5 Relevant Chunks:');
       console.log('======================');
       
-      if (results.documents && results.documents[0]) {
+      if (results.documents && results.documents[0] && results.documents[0].length > 0) {
         results.documents[0].forEach((doc: string, idx: number) => {
           const metadata = results.metadatas?.[0]?.[idx] as { sourceFile: string };
           const distance = results.distances?.[0]?.[idx];
@@ -89,6 +89,8 @@ async function main() {
           console.log(`   Distance: ${distance?.toFixed(4)}`);
           console.log(`   Content: ${doc.substring(0, 200)}...`);
         });
+      } else {
+        console.log('\nNo matching chunks found.');
       }
     } else {
       console.log('Step 5: No question provided');
