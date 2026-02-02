@@ -56,10 +56,18 @@ export class ChromaDBManager {
           
           // For local TF-IDF embeddings, rebuild vocabulary from stored documents
           if (this.localEmbedder) {
-            console.log('Rebuilding vocabulary from cached documents...');
-            const allDocuments = await this.collection.get({ include: ['documents'] });
-            if (allDocuments.documents && allDocuments.documents.length > 0) {
-              this.localEmbedder.buildVocabulary(allDocuments.documents);
+            try {
+              console.log('Rebuilding vocabulary from cached documents...');
+              const allDocuments = await this.collection.get({ include: ['documents'] });
+              if (allDocuments.documents && allDocuments.documents.length > 0) {
+                this.localEmbedder.buildVocabulary(allDocuments.documents);
+                console.log(`Vocabulary rebuilt successfully from ${allDocuments.documents.length} cached documents`);
+              } else {
+                console.warn('No documents found in cached collection, vocabulary will be empty');
+              }
+            } catch (error) {
+              console.error('Failed to rebuild vocabulary from cached documents:', error);
+              throw new Error('Could not rebuild vocabulary for local embeddings. Please clear cache and recreate the database.');
             }
           }
           
