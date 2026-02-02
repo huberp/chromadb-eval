@@ -75,12 +75,12 @@ export class ChromaDBManager {
         } else {
           // Collection exists but is empty - this indicates cache corruption
           console.error('Cached collection exists but is empty. Cache may be corrupted.');
-          throw new Error('Cached ChromaDB collection is empty. Please clear the cache and recreate the database.');
+          throw new Error('Cached ChromaDB collection is empty. Please recreate the database with a fresh cache.');
         }
       } catch (error) {
         // Collection doesn't exist - this indicates cache miss or corruption
         console.error('Expected cached collection not found. Cache may be invalid or not restored properly.');
-        throw new Error('Cached ChromaDB collection not found. Please ensure the cache is properly restored or recreate the database.');
+        throw new Error('Cached ChromaDB collection not found. If cache restoration was expected, verify the restoration succeeded. Otherwise, run without USE_CACHED_CHROMADB to recreate the database.');
       }
     } else {
       try {
