@@ -14,18 +14,38 @@ async function main() {
 
   try {
     const chromaDB = new ChromaDBManager();
+    
+    // Get chunking configuration (we'll need it if cache fallback occurs)
+    const config = getChunkingConfig();
 
     if (useCached) {
       // Using cached ChromaDB - skip chunking and just connect
       console.log('✅ Using cached ChromaDB data\n');
       
       console.log('Initializing ChromaDB connection...');
-      await chromaDB.initialize(true); // Pass true to reuse existing collection
+      const result = await chromaDB.initialize(true); // Pass true to reuse existing collection
       console.log('');
+      
+      // Check if we need to fallback to full recreation due to cache issues
+      if (result.fallbackToRecreation) {
+        console.log('⚠️  Cache was invalid, performing full document processing...\n');
+        console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
+        
+        const chunker = config.mode === 'ast'
+          ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
+          : new DocumentChunker(config.chunkSize, config.chunkOverlap);
+        
+        console.log('Chunking documents...');
+        const documentsPath = path.join(__dirname, '../documents');
+        const chunks = await chunker.chunkDocuments(documentsPath);
+        console.log(`Created ${chunks.length} chunks from documents\n`);
+        
+        console.log('Storing chunks in ChromaDB...');
+        await chromaDB.addChunks(chunks);
+        console.log('');
+      }
     } else {
       // No cache - perform full chunking and initialization
-      // Get chunking configuration
-      const config = getChunkingConfig();
       console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
 
       // Initialize components with Mistral-recommended settings

@@ -30,8 +30,9 @@ export class ChromaDBManager {
    * Initialize ChromaDB and create/get collection
    * @param tryReuseExisting If true, will try to reuse existing collection instead of recreating.
    *                         Falls back to creating new collection if it doesn't exist.
+   * @returns Object with success flag and whether fallback to recreation occurred
    */
-  async initialize(tryReuseExisting: boolean = false): Promise<void> {
+  async initialize(tryReuseExisting: boolean = false): Promise<{ success: boolean; fallbackToRecreation: boolean }> {
     // Create embedding function based on configuration
     const embeddingSetup = await createEmbeddingFunction();
     this.embeddingFunction = embeddingSetup.embeddingFunction;
@@ -39,6 +40,8 @@ export class ChromaDBManager {
     this.transformersEmbedder = embeddingSetup.transformersEmbedder || null;
     this.strategy = embeddingSetup.strategy;
     this.modelName = embeddingSetup.modelName;
+    
+    let fallbackToRecreation = false;
     
     if (tryReuseExisting) {
       // Try to get existing collection
@@ -71,17 +74,20 @@ export class ChromaDBManager {
             }
           }
           
-          return;
+          return { success: true, fallbackToRecreation: false };
         } else {
-          // Collection exists but is empty - this indicates cache corruption
-          console.error('Cached collection exists but is empty. Cache may be corrupted.');
-          throw new Error('Cached ChromaDB collection is empty. Please recreate the database with a fresh cache.');
+          // Collection exists but is empty - fall back to recreation
+          console.warn('⚠️  Cached collection exists but is empty. Falling back to recreation...');
+          fallbackToRecreation = true;
         }
       } catch (error) {
-        // Collection doesn't exist - this indicates cache miss or corruption
-        console.error('Expected cached collection not found. Cache may be invalid or not restored properly.');
-        throw new Error('Cached ChromaDB collection not found. If cache restoration was expected, verify the restoration succeeded. Otherwise, run without USE_CACHED_CHROMADB to recreate the database.');
+        // Collection doesn't exist - fall back to recreation
+        console.warn('⚠️  Expected cached collection not found. Cache may be invalid or not restored properly.');
+        console.warn('⚠️  Falling back to recreating ChromaDB collection...');
+        fallbackToRecreation = true;
       }
+      
+      // If we reach here, cache was invalid - fall through to recreation
     } else {
       try {
         // Delete existing collection if it exists
@@ -99,6 +105,9 @@ export class ChromaDBManager {
     });
     
     console.log(`ChromaDB collection created successfully with ${this.strategy} embeddings (${this.modelName})`);
+    
+    // Return flag indicating whether this was a fallback from cache attempt
+    return { success: true, fallbackToRecreation };
   }
 
   /**
