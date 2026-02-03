@@ -20,9 +20,12 @@ export class ChromaDBManager {
   private modelName: string = 'unknown';
 
   constructor() {
-    // Use persistent client with filesystem storage - no server needed
+    // Connect to ChromaDB server with persistent filesystem storage
+    // The server uses the path specified via CHROMADB_PATH or default ./chromadb-data
     this.client = new ChromaClient({ 
-      path: process.env.CHROMADB_PATH || './chromadb-data'
+      host: process.env.CHROMADB_HOST || 'localhost',
+      port: parseInt(process.env.CHROMADB_PORT || '8000'),
+      ssl: false
     });
   }
 
@@ -63,8 +66,9 @@ export class ChromaDBManager {
               console.log('Rebuilding vocabulary from cached documents...');
               const allDocuments = await this.collection.get({ include: ['documents'] });
               if (allDocuments.documents && allDocuments.documents.length > 0) {
-                this.localEmbedder.buildVocabulary(allDocuments.documents);
-                console.log(`Vocabulary rebuilt successfully from ${allDocuments.documents.length} cached documents`);
+                const validDocuments = allDocuments.documents.filter((doc): doc is string => doc !== null);
+                this.localEmbedder.buildVocabulary(validDocuments);
+                console.log(`Vocabulary rebuilt successfully from ${validDocuments.length} cached documents`);
               } else {
                 console.warn('No documents found in cached collection, vocabulary will be empty');
               }

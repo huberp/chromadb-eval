@@ -50,17 +50,24 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/chromadb-data
       
+      - name: Start ChromaDB server
+        run: |
+          # Start ChromaDB server with persistent filesystem storage
+          npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 > /tmp/chroma.log 2>&1 &
+          
+          # Wait for ChromaDB to be ready
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done'
+          echo "ChromaDB server started"
+      
       - name: Prepare ChromaDB if not cached
         if: needs.prepare.outputs.cache_hit != 'true'
         run: |
           echo "⚠️  Cache miss - preparing ChromaDB with embeddings..."
           echo "Using model: ${{ needs.prepare.outputs.model_id }}"
-          # Run the app without a question to just prepare the database
-          npm start "" > /dev/null 2>&1 || true
+          npm start ""
         env:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ needs.prepare.outputs.model_id }}
-          CHROMADB_PATH: ${{ github.workspace }}/chromadb-data
       
       - name: Analyze common terms
         run: |
@@ -78,7 +85,6 @@ jobs:
           NODE_ENV: production
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ needs.prepare.outputs.model_id }}
-          CHROMADB_PATH: ${{ github.workspace }}/chromadb-data
       
       - name: Summary
         run: |

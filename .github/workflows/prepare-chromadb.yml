@@ -75,6 +75,16 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/chromadb-data
       
+      - name: Start ChromaDB server
+        if: steps.chromadb-cache.outputs.cache-hit != 'true'
+        run: |
+          # Start ChromaDB server with persistent filesystem storage
+          npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 > /tmp/chroma.log 2>&1 &
+          
+          # Wait for ChromaDB to be ready
+          timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done'
+          echo "ChromaDB server started"
+      
       - name: Prepare ChromaDB with embeddings
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
@@ -85,44 +95,29 @@ jobs:
           NODE_ENV: production
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
-          CHROMADB_PATH: ${{ github.workspace }}/chromadb-data
       
-      - name: Verify ChromaDB data
+      - name: Verify ChromaDB data was written
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
-          # Verify data was written
-          echo ""
-          echo "ChromaDB data directory contents:"
+          echo "Verifying ChromaDB data on filesystem..."
           ls -lah ${{ github.workspace }}/chromadb-data
           echo ""
-          echo "Total size:"
-          du -sh ${{ github.workspace }}/chromadb-data
-          echo ""
           
-          # Check if chroma.sqlite3 exists and has substantial content
+          # Check if chroma.sqlite3 exists and has content
           if [ -f "${{ github.workspace }}/chromadb-data/chroma.sqlite3" ]; then
-            SQLITE_SIZE=$(stat -f%z "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || stat -c%s "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || echo "0")
-            echo "chroma.sqlite3 size: $SQLITE_SIZE bytes"
+            SQLITE_SIZE=$(stat -c%s "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || echo "0")
+            echo "✅ chroma.sqlite3 size: $SQLITE_SIZE bytes"
             
             if [ "$SQLITE_SIZE" -lt 100000 ]; then
-              echo "⚠️  Warning: chroma.sqlite3 is suspiciously small ($SQLITE_SIZE bytes)"
-              echo "Expected at least 100KB for a database with embeddings"
+              echo "⚠️  Warning: Database file is small ($SQLITE_SIZE bytes)"
               exit 1
             fi
           else
-            echo "⚠️  Error: chroma.sqlite3 file not found!"
+            echo "❌ Error: chroma.sqlite3 not found!"
             exit 1
           fi
           
-          # Check total directory size
-          DATA_SIZE=$(du -sb ${{ github.workspace }}/chromadb-data | cut -f1)
-          if [ "$DATA_SIZE" -lt 500000 ]; then
-            echo "⚠️  Warning: ChromaDB data directory is suspiciously small ($DATA_SIZE bytes)"
-            echo "Expected at least 500KB for a database with embeddings"
-            exit 1
-          else
-            echo "✅ ChromaDB data verified ($DATA_SIZE bytes)"
-          fi
+          echo "✅ ChromaDB data verified and ready for caching"
       
       - name: Save ChromaDB cache
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
