@@ -31,35 +31,43 @@ npm install
 
 ## Prerequisites
 
-This application requires a ChromaDB server to be running. The default embedding strategy uses transformers.js for local LLM-based embeddings, which requires no additional setup beyond installing npm dependencies.
+This application uses ChromaDB for vector storage. ChromaDB is included as an npm dependency and runs locally via the built-in CLI - no Docker or external services are required.
 
-### Option 1: ChromaDB with LLM embeddings (default, recommended)
+The default embedding strategy uses transformers.js for local LLM-based embeddings, which requires no additional setup beyond installing npm dependencies.
 
-Start ChromaDB using Docker:
+### Running ChromaDB
 
-```bash
-docker run -d -p 8000:8000 chromadb/chroma:latest
-```
-
-This setup uses transformers.js with the `Xenova/all-mpnet-base-v2` model for high-quality embeddings. The model is automatically downloaded on first use and cached locally for future runs (approximately 80MB download).
-
-### Option 2: ChromaDB with local TF-IDF embeddings (lightweight)
-
-Start ChromaDB using Docker:
+ChromaDB runs automatically when you start the application. If you need to run it manually for testing, you can use:
 
 ```bash
-docker run -d -p 8000:8000 chromadb/chroma:latest
+npx chroma run --path ./chromadb-data
 ```
 
-Then run with the local embedding strategy:
+This will start a local ChromaDB server on port 8000 with persistent storage in the `./chromadb-data` directory.
+
+### Embedding Strategies
+
+The application supports three embedding strategies:
+
+**Option 1: LLM embeddings (default, recommended)**
+
+Uses transformers.js with the `Xenova/all-mpnet-base-v2` model for high-quality embeddings. The model is automatically downloaded on first use and cached locally for future runs (approximately 80MB download).
+
+```bash
+npm start
+```
+
+**Option 2: Local TF-IDF embeddings (lightweight)**
+
+Uses custom TF-IDF-based embeddings for lightweight operation without model downloads:
 
 ```bash
 EMBEDDING_STRATEGY=local npm start
 ```
 
-### Option 3: ChromaDB + HuggingFace Embeddings (external server)
+**Option 3: HuggingFace Embeddings (external server)**
 
-Use Docker Compose to start both services:
+Uses Hugging Face Text Embeddings Inference server with modern AI models. This option requires Docker:
 
 ```bash
 docker-compose up -d
