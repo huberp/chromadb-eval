@@ -105,7 +105,7 @@ jobs:
           
           # Check if chroma.sqlite3 exists and has content
           if [ -f "${{ github.workspace }}/chromadb-data/chroma.sqlite3" ]; then
-            SQLITE_SIZE=$(stat -c%s "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || echo "0")
+            SQLITE_SIZE=$(stat -f%z "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || stat -c%s "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || echo "0")
             echo "✅ chroma.sqlite3 size: $SQLITE_SIZE bytes"
             
             if [ "$SQLITE_SIZE" -lt 100000 ]; then
