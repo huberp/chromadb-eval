@@ -3,4 +3,5 @@ dist/
 *.log
 .env
 chroma_data/
+chromadb-data/
 .DS_Store
