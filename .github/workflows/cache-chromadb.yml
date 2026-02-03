@@ -123,7 +123,7 @@ jobs:
           # Gracefully stop ChromaDB server by finding and killing the node process
           echo "Stopping ChromaDB server gracefully..."
           # Find the ChromaDB node process(es) and send TERM signal
-          CHROMA_PIDS=$(pgrep -f "node.*chroma run" || true)
+          CHROMA_PIDS=$(pgrep -f "chroma run --path" || true)
           if [ -n "$CHROMA_PIDS" ]; then
             echo "Found ChromaDB process(es): $CHROMA_PIDS"
             for pid in $CHROMA_PIDS; do
@@ -132,7 +132,7 @@ jobs:
             
             # Wait for process to terminate
             for i in $(seq 1 30); do
-              if ! pgrep -f "node.*chroma run" > /dev/null 2>&1; then
+              if ! pgrep -f "chroma run --path" > /dev/null 2>&1; then
                 echo "ChromaDB server stopped successfully"
                 break
               fi
@@ -140,9 +140,9 @@ jobs:
             done
             
             # Force kill if still running
-            if pgrep -f "node.*chroma run" > /dev/null 2>&1; then
+            if pgrep -f "chroma run --path" > /dev/null 2>&1; then
               echo "Forcing ChromaDB server to stop..."
-              pkill -9 -f "node.*chroma run" || true
+              pkill -9 -f "chroma run --path" || true
             fi
           else
             echo "No ChromaDB process found to stop"
