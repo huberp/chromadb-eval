@@ -102,7 +102,7 @@ jobs:
             done
             
             # Wait for process to terminate
-            for i in $(seq 1 10); do
+            for i in $(seq 1 15); do
               if ! pgrep -f "chroma run --path" > /dev/null 2>&1; then
                 echo "ChromaDB server stopped successfully"
                 break
