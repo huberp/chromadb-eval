@@ -20,9 +20,9 @@ export class ChromaDBManager {
   private modelName: string = 'unknown';
 
   constructor() {
+    // Use persistent client with filesystem storage - no server needed
     this.client = new ChromaClient({ 
-      host: 'localhost',
-      port: 8000
+      path: process.env.CHROMADB_PATH || './chromadb-data'
     });
   }
 
