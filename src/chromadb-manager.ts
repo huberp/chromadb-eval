@@ -21,11 +21,12 @@ export class ChromaDBManager {
 
   constructor() {
     // Connect to ChromaDB server with persistent filesystem storage
-    // The server uses the path specified via CHROMADB_PATH or default ./chromadb-data
+    // The server uses the path specified via npx chroma run --path (see workflows)
+    // SSL is disabled for local development/CI (localhost connections)
     this.client = new ChromaClient({ 
       host: process.env.CHROMADB_HOST || 'localhost',
       port: parseInt(process.env.CHROMADB_PORT || '8000'),
-      ssl: false
+      ssl: (process.env.CHROMADB_SSL || 'false') === 'true'
     });
   }
 
