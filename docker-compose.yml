@@ -1,6 +1,14 @@
 version: '3.8'
 
+# This docker-compose file is OPTIONAL and only needed if you want to use
+# the HuggingFace embedding strategy with an external Text Embeddings Inference server.
+# 
+# For the default LLM embedding strategy (transformers.js) or local TF-IDF embeddings,
+# Docker is NOT required - ChromaDB runs locally via the built-in CLI.
+
 services:
+  # ChromaDB server (OPTIONAL - only for HuggingFace embedding strategy)
+  # For default LLM embeddings, use: npx chroma run --path ./chromadb-data
   chromadb:
     image: chromadb/chroma:latest
     ports:
@@ -8,6 +16,7 @@ services:
     volumes:
       - chroma_data:/chroma/chroma
 
+  # HuggingFace Text Embeddings Inference server
   huggingface-embeddings:
     image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.2
     ports:
