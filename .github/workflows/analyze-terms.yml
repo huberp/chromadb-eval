@@ -49,21 +49,16 @@ jobs:
         if: needs.prepare.outputs.cache_hit != 'true'
         run: |
           mkdir -p ${{ github.workspace }}/chromadb-data
-          chmod 777 ${{ github.workspace }}/chromadb-data
       
-      - name: Start ChromaDB with persistent storage
+      - name: Start ChromaDB server with persistent storage
         run: |
-          docker run -d \
-            --name chromadb \
-            -p 8000:8000 \
-            -v ${{ github.workspace }}/chromadb-data:/chroma/chroma \
-            -e IS_PERSISTENT=TRUE \
-            -e ANONYMIZED_TELEMETRY=FALSE \
-            chromadb/chroma:latest
+          # Start ChromaDB server using the built-in CLI (no Docker needed)
+          npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 > /tmp/chroma.log 2>&1 &
           
           # Wait for ChromaDB to be ready
           timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done' || true
-          sleep 5
+          sleep 2
+          echo "ChromaDB server started successfully"
       
       - name: Prepare ChromaDB if not cached
         if: needs.prepare.outputs.cache_hit != 'true'
@@ -96,8 +91,28 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          docker stop chromadb || true
-          docker rm chromadb || true
+          # Stop ChromaDB server gracefully by finding and killing the node process
+          CHROMA_PIDS=$(pgrep -f "chroma run --path" || true)
+          if [ -n "$CHROMA_PIDS" ]; then
+            echo "Stopping ChromaDB server (PIDs: $CHROMA_PIDS)..."
+            for pid in $CHROMA_PIDS; do
+              kill -TERM $pid 2>/dev/null || true
+            done
+            
+            # Wait for process to terminate
+            for i in $(seq 1 15); do
+              if ! pgrep -f "chroma run --path" > /dev/null 2>&1; then
+                echo "ChromaDB server stopped successfully"
+                break
+              fi
+              sleep 1
+            done
+            
+            # Force kill if still running
+            if pgrep -f "chroma run --path" > /dev/null 2>&1; then
+              pkill -9 -f "chroma run --path" || true
+            fi
+          fi
       
       - name: Summary
         run: |

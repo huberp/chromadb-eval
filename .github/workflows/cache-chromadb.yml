@@ -59,22 +59,17 @@ jobs:
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p ${{ github.workspace }}/chromadb-data
-          chmod 777 ${{ github.workspace }}/chromadb-data
       
-      - name: Start ChromaDB with persistent storage
+      - name: Start ChromaDB server with persistent storage
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
-          docker run -d \
-            --name chromadb \
-            -p 8000:8000 \
-            -v ${{ github.workspace }}/chromadb-data:/chroma/chroma \
-            -e IS_PERSISTENT=TRUE \
-            -e ANONYMIZED_TELEMETRY=FALSE \
-            chromadb/chroma:latest
+          # Start ChromaDB server using the built-in CLI (no Docker needed)
+          npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 > /tmp/chroma.log 2>&1 &
           
           # Wait for ChromaDB to be ready (fail if it doesn't start in 30 seconds)
           timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done'
-          sleep 5
+          sleep 2
+          echo "ChromaDB server started successfully"
       
       - name: Prepare ChromaDB with embeddings
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
@@ -87,7 +82,7 @@ jobs:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
       
-      - name: Verify and stop ChromaDB container
+      - name: Verify and stop ChromaDB server
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
           # Verify collection exists in ChromaDB before stopping
@@ -125,10 +120,33 @@ jobs:
           echo "Waiting 15 seconds for ChromaDB to flush all data to disk..."
           sleep 15
           
-          # Gracefully stop ChromaDB (gives it time to finish writes)
-          echo "Stopping ChromaDB gracefully..."
-          docker stop -t 30 chromadb
-          docker rm chromadb
+          # Gracefully stop ChromaDB server by finding and killing the node process
+          echo "Stopping ChromaDB server gracefully..."
+          # Find the ChromaDB node process(es) and send TERM signal
+          CHROMA_PIDS=$(pgrep -f "chroma run --path" || true)
+          if [ -n "$CHROMA_PIDS" ]; then
+            echo "Found ChromaDB process(es): $CHROMA_PIDS"
+            for pid in $CHROMA_PIDS; do
+              kill -TERM $pid 2>/dev/null || true
+            done
+            
+            # Wait for process to terminate
+            for i in $(seq 1 30); do
+              if ! pgrep -f "chroma run --path" > /dev/null 2>&1; then
+                echo "ChromaDB server stopped successfully"
+                break
+              fi
+              sleep 1
+            done
+            
+            # Force kill if still running
+            if pgrep -f "chroma run --path" > /dev/null 2>&1; then
+              echo "Forcing ChromaDB server to stop..."
+              pkill -9 -f "chroma run --path" || true
+            fi
+          else
+            echo "No ChromaDB process found to stop"
+          fi
           
           # Verify data was written
           echo ""
