@@ -58,14 +58,12 @@ jobs:
       - name: Start ChromaDB server with persistent storage
         run: |
           # Start ChromaDB server using the built-in CLI (no Docker needed)
-          npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 &
-          CHROMA_PID=$!
-          echo "CHROMA_PID=$CHROMA_PID" >> $GITHUB_ENV
+          npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 > /tmp/chroma.log 2>&1 &
           
           # Wait for ChromaDB to be ready
           timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done' || true
           sleep 2
-          echo "ChromaDB server started successfully (PID: $CHROMA_PID)"
+          echo "ChromaDB server started successfully"
       
       - name: Prepare ChromaDB if not cached
         if: needs.prepare.outputs.cache_hit != 'true'
@@ -95,19 +93,25 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          # Stop ChromaDB server gracefully
-          if [ -n "$CHROMA_PID" ]; then
-            kill -TERM $CHROMA_PID || true
+          # Stop ChromaDB server gracefully by finding and killing the node process
+          CHROMA_PIDS=$(pgrep -f "node.*chroma run" || true)
+          if [ -n "$CHROMA_PIDS" ]; then
+            echo "Stopping ChromaDB server (PIDs: $CHROMA_PIDS)..."
+            for pid in $CHROMA_PIDS; do
+              kill -TERM $pid 2>/dev/null || true
+            done
+            
             # Wait for process to terminate
             for i in {1..10}; do
-              if ! kill -0 $CHROMA_PID 2>/dev/null; then
+              if ! pgrep -f "node.*chroma run" > /dev/null 2>&1; then
                 echo "ChromaDB server stopped successfully"
                 break
               fi
               sleep 1
             done
+            
             # Force kill if still running
-            if kill -0 $CHROMA_PID 2>/dev/null; then
-              kill -9 $CHROMA_PID || true
+            if pgrep -f "node.*chroma run" > /dev/null 2>&1; then
+              pkill -9 -f "node.*chroma run" || true
             fi
           fi
