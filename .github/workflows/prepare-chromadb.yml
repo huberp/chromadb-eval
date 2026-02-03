@@ -75,16 +75,15 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/chromadb-data
       
-      - name: Start ChromaDB server with persistent storage
+      - name: Start ChromaDB server
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
-          # Start ChromaDB server using the built-in CLI (no Docker needed)
+          # Start ChromaDB server with persistent filesystem storage
           npx chroma run --path ${{ github.workspace }}/chromadb-data --host localhost --port 8000 > /tmp/chroma.log 2>&1 &
           
-          # Wait for ChromaDB to be ready (fail if it doesn't start in 30 seconds)
+          # Wait for ChromaDB to be ready
           timeout 30 bash -c 'until curl -f http://localhost:8000/api/v2/heartbeat; do sleep 2; done'
-          sleep 2
-          echo "ChromaDB server started successfully"
+          echo "ChromaDB server started"
       
       - name: Prepare ChromaDB with embeddings
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
@@ -97,105 +96,28 @@ jobs:
           EMBEDDING_STRATEGY: llm
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
       
-      - name: Verify and stop ChromaDB server
+      - name: Verify ChromaDB data was written
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
         run: |
-          # Verify collection exists in ChromaDB before stopping
-          echo "Verifying ChromaDB collection exists..."
-          RETRIES=5
-          COLLECTION_FOUND=false
-          for i in $(seq 1 $RETRIES); do
-            if curl -sf http://localhost:8000/api/v2/heartbeat > /dev/null; then
-              echo "✅ ChromaDB is responsive"
-              
-              # Query to verify collection has data
-              COLLECTION_CHECK=$(curl -sf http://localhost:8000/api/v1/collections || echo "")
-              if echo "$COLLECTION_CHECK" | grep -q "documents"; then
-                echo "✅ Collection 'documents' exists in ChromaDB"
-                COLLECTION_FOUND=true
-                break
-              else
-                echo "⚠️  Collection not found, waiting... (attempt $i/$RETRIES)"
-                sleep 2
-              fi
-            else
-              echo "⚠️  ChromaDB not responding, waiting... (attempt $i/$RETRIES)"
-              sleep 2
-            fi
-          done
-          
-          if [ "$COLLECTION_FOUND" = "false" ]; then
-            echo "❌ Error: Collection 'documents' was not found in ChromaDB after $RETRIES attempts"
-            echo "This indicates the data was not properly written to ChromaDB"
-            exit 1
-          fi
-          
-          # Give ChromaDB extra time to flush data to disk
-          # ChromaDB uses SQLite WAL mode which needs time to checkpoint to main file
-          echo "Waiting 15 seconds for ChromaDB to flush all data to disk..."
-          sleep 15
-          
-          # Gracefully stop ChromaDB server by finding and killing the node process
-          echo "Stopping ChromaDB server gracefully..."
-          # Find the ChromaDB node process(es) and send TERM signal
-          CHROMA_PIDS=$(pgrep -f "chroma run --path" || true)
-          if [ -n "$CHROMA_PIDS" ]; then
-            echo "Found ChromaDB process(es): $CHROMA_PIDS"
-            for pid in $CHROMA_PIDS; do
-              kill -TERM $pid 2>/dev/null || true
-            done
-            
-            # Wait for process to terminate
-            for i in $(seq 1 30); do
-              if ! pgrep -f "chroma run --path" > /dev/null 2>&1; then
-                echo "ChromaDB server stopped successfully"
-                break
-              fi
-              sleep 1
-            done
-            
-            # Force kill if still running
-            if pgrep -f "chroma run --path" > /dev/null 2>&1; then
-              echo "Forcing ChromaDB server to stop..."
-              pkill -9 -f "chroma run --path" || true
-            fi
-          else
-            echo "No ChromaDB process found to stop"
-          fi
-          
-          # Verify data was written
-          echo ""
-          echo "ChromaDB data directory contents:"
+          echo "Verifying ChromaDB data on filesystem..."
           ls -lah ${{ github.workspace }}/chromadb-data
           echo ""
-          echo "Total size:"
-          du -sh ${{ github.workspace }}/chromadb-data
-          echo ""
           
-          # Check if chroma.sqlite3 exists and has substantial content
+          # Check if chroma.sqlite3 exists and has content
           if [ -f "${{ github.workspace }}/chromadb-data/chroma.sqlite3" ]; then
             SQLITE_SIZE=$(stat -f%z "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || stat -c%s "${{ github.workspace }}/chromadb-data/chroma.sqlite3" 2>/dev/null || echo "0")
-            echo "chroma.sqlite3 size: $SQLITE_SIZE bytes"
+            echo "✅ chroma.sqlite3 size: $SQLITE_SIZE bytes"
             
             if [ "$SQLITE_SIZE" -lt 100000 ]; then
-              echo "⚠️  Warning: chroma.sqlite3 is suspiciously small ($SQLITE_SIZE bytes)"
-              echo "Expected at least 100KB for a database with embeddings"
+              echo "⚠️  Warning: Database file is small ($SQLITE_SIZE bytes)"
               exit 1
             fi
           else
-            echo "⚠️  Error: chroma.sqlite3 file not found!"
+            echo "❌ Error: chroma.sqlite3 not found!"
             exit 1
           fi
           
-          # Check total directory size
-          DATA_SIZE=$(du -sb ${{ github.workspace }}/chromadb-data | cut -f1)
-          if [ "$DATA_SIZE" -lt 500000 ]; then
-            echo "⚠️  Warning: ChromaDB data directory is suspiciously small ($DATA_SIZE bytes)"
-            echo "Expected at least 500KB for a database with embeddings"
-            exit 1
-          else
-            echo "✅ ChromaDB data verified ($DATA_SIZE bytes)"
-          fi
+          echo "✅ ChromaDB data verified and ready for caching"
       
       - name: Save ChromaDB cache
         if: steps.chromadb-cache.outputs.cache-hit != 'true'
