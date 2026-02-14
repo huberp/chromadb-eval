@@ -116,7 +116,7 @@
     <script type="module">
         import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
         env.allowLocalModels = false;
-        env.useBrowserCache = false;
+        env.useBrowserCache = true;
         
         let extractor;
         let embeddingHistory = [];
@@ -165,8 +165,8 @@
                         },
                         y: {
                             type: 'linear',
-                            min: -0.1,
-                            max: 0.1,
+                            min: -0.3,
+                            max: 0.3,
                             title: {
                                 display: true,
                                 text: 'Value'
@@ -195,7 +195,7 @@
             embeddingChart.data.datasets.push({
                 label: label,
                 data: embedding.map((val, i) => ({ x: i, y: val })),
-                borderColor: color.replace('0.5', '1'),
+                borderColor: color.replace('0.3', '1'),
                 backgroundColor: color,
                 tension: 0.1,
                 pointRadius: 0
