@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChromaDB Eval Web App</title>
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,6 +49,8 @@
             padding: 10px;
             white-space: pre-wrap;
             font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
         }
         button {
             background-color: #3498db;
@@ -61,6 +64,11 @@
         button:hover {
             background-color: #2980b9;
         }
+        #status {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
@@ -68,23 +76,58 @@
         <h1>ChromaDB Eval Web App</h1>
         <div class="input-group">
             <label for="input">Input:</label>
-            <textarea id="input" placeholder="Enter your input here..."></textarea>
+            <textarea id="input" placeholder="Enter your text here..."></textarea>
         </div>
-        <button id="process">Process</button>
+        <button id="process">Compute Embedding</button>
+        <div id="status">Model loading, please wait...</div>
         <div class="input-group">
-            <label for="output">Output:</label>
-            <div id="output">Results will appear here...</div>
+            <label for="output">Embedding (768 dimensions):</label>
+            <div id="output">Embedding will appear here...</div>
         </div>
     </div>
     <script>
-        document.getElementById('process').addEventListener('click', function() {
+        let model;
+        async function loadModel() {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = 'Loading model...';
+            try {
+                model = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                statusElement.textContent = 'Model loaded. Ready to compute embeddings.';
+            } catch (error) {
+                statusElement.textContent = 'Error loading model: ' + error.message;
+                console.error(error);
+            }
+        }
+        document.getElementById('process').addEventListener('click', async function() {
             const input = document.getElementById('input').value;
             const output = document.getElementById('output');
+            const statusElement = document.getElementById('status');
             
-            // Placeholder for transformer.js logic
-            // This will be replaced with actual transformer.js calls later
-            output.textContent = `Processing input:\n\n${input}\n\nTransformer.js will be integrated here.`;
+            if (!input.trim()) {
+                output.textContent = 'Please enter some text.';
+                return;
+            }
+            if (!model) {
+                output.textContent = 'Model not loaded yet. Please wait.';
+                return;
+            }
+            
+            statusElement.textContent = 'Computing embedding...';
+            try {
+                const result = await model(input, {
+                    pooling: 'mean',
+                    normalize: true
+                });
+                const embedding = result.data;
+                output.textContent = embedding.map((val, i) => `Dim ${i + 1}: ${val.toFixed(6)}`).join('\n');
+                statusElement.textContent = 'Embedding computed.';
+            } catch (error) {
+                output.textContent = 'Error computing embedding: ' + error.message;
+                statusElement.textContent = 'Error.';
+                console.error(error);
+            }
         });
+        loadModel();
     </script>
 </body>
 </html>
