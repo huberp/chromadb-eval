@@ -86,12 +86,12 @@
         </div>
     </div>
     <script>
-        let model;
+        let extractor;
         async function loadModel() {
             const statusElement = document.getElementById('status');
             statusElement.textContent = 'Loading model...';
             try {
-                model = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                extractor = await window.transformers.pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
                 statusElement.textContent = 'Model loaded. Ready to compute embeddings.';
             } catch (error) {
                 statusElement.textContent = 'Error loading model: ' + error.message;
@@ -107,18 +107,18 @@
                 output.textContent = 'Please enter some text.';
                 return;
             }
-            if (!model) {
+            if (!extractor) {
                 output.textContent = 'Model not loaded yet. Please wait.';
                 return;
             }
             
             statusElement.textContent = 'Computing embedding...';
             try {
-                const result = await model(input, {
+                const result = await extractor(input, {
                     pooling: 'mean',
                     normalize: true
                 });
-                const embedding = result.data;
+                const embedding = Array.from(result.data);
                 output.textContent = embedding.map((val, i) => `Dim ${i + 1}: ${val.toFixed(6)}`).join('\n');
                 statusElement.textContent = 'Embedding computed.';
             } catch (error) {
