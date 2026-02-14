@@ -188,9 +188,9 @@
                 embeddingHistory.map((_, i) => `Embedding ${i + 1}`).join(', ');
         }
         
-        function updateGraph(embedding, label) {
+        function updateGraph(embedding, idx, label) {
             const colors = ['rgba(52, 152, 219, 0.5)', 'rgba(231, 76, 60, 0.5)', 'rgba(46, 204, 113, 0.5)', 'rgba(243, 156, 18, 0.5)', 'rgba(155, 89, 182, 0.5)'];
-            const color = colors[embeddingHistory.length % colors.length];
+            const color = colors[idx % colors.length];
             
             embeddingChart.data.datasets.push({
                 label: label,
@@ -237,7 +237,7 @@
                 // Update graph
                 embeddingChart.data.datasets = [];
                 embeddingHistory.forEach((emb, i) => {
-                    updateGraph(emb, `Embedding ${i + 1}`);
+                    updateGraph(emb, i, `Embedding ${i + 1}`);
                 });
                 
                 statusElement.textContent = 'Embedding computed.';
