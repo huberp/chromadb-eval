@@ -151,17 +151,32 @@
                             type: 'linear',
                             min: 0,
                             max: 767,
-                            title: { display: true, text: 'Vector Dimension' }
+                            ticks: {
+                                stepSize: 100,
+                                maxTicksLimit: 10
+                            },
+                            grid: {
+                                display: true
+                            },
+                            title: {
+                                display: true,
+                                text: 'Vector Dimension (0–767)'
+                            }
                         },
                         y: {
                             type: 'linear',
-                            min: -0.5,
-                            max: 0.5,
-                            title: { display: true, text: 'Value' }
+                            min: -0.1,
+                            max: 0.1,
+                            title: {
+                                display: true,
+                                text: 'Value'
+                            }
                         }
                     },
                     plugins: {
-                        legend: { position: 'bottom' }
+                        legend: {
+                            position: 'bottom'
+                        }
                     }
                 }
             });
