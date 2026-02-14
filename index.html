@@ -85,7 +85,11 @@
         </div>
     </div>
     <script type="module">
-        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
+        // Disable local models and browser cache to avoid issues
+        env.allowLocalModels = false;
+        env.useBrowserCache = false;
+        
         let extractor;
         async function loadModel() {
             const statusElement = document.getElementById('status');
