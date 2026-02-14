@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChromaDB Eval Web App</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
+        env.allowLocalModels = false;
+        env.useBrowserCache = false;
+    </script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,7 +54,7 @@
             padding: 10px;
             white-space: pre-wrap;
             font-family: monospace;
-            max-height: 300px;
+            max-height: 150px;
             overflow-y: auto;
         }
         button {
@@ -68,6 +74,16 @@
             font-style: italic;
             color: #7f8c8d;
         }
+        .graph-container {
+            margin-top: 20px;
+            height: 300px;
+            width: 100%;
+        }
+        #history {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
@@ -80,28 +96,74 @@
         <button id="process">Compute Embedding</button>
         <div id="status">Loading Transformers.js, please wait...</div>
         <div class="input-group">
-            <label for="output">Embedding (768 dimensions):</label>
+            <label for="output">Embedding (768 dimensions, first 20 shown):</label>
             <div id="output">Embedding will appear here...</div>
         </div>
+        <div class="graph-container">
+            <canvas id="embeddingGraph"></canvas>
+        </div>
+        <div id="history"></div>
     </div>
     <script type="module">
         import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
-        // Disable local models and browser cache to avoid issues
         env.allowLocalModels = false;
         env.useBrowserCache = false;
         
         let extractor;
+        let embeddingHistory = [];
+        const maxHistory = 5;
+        let embeddingChart;
+        
         async function loadModel() {
             const statusElement = document.getElementById('status');
             statusElement.textContent = 'Loading model...';
             try {
                 extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
                 statusElement.textContent = 'Model loaded. Ready to compute embeddings.';
+                initChart();
             } catch (error) {
                 statusElement.textContent = 'Error loading model: ' + error.message;
                 console.error(error);
             }
         }
+        
+        function initChart() {
+            const ctx = document.getElementById('embeddingGraph').getContext('2d');
+            embeddingChart = new Chart(ctx, {
+                type: 'line',
+                data: { datasets: [] },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Vector Dimension' } },
+                        y: { title: { display: true, text: 'Value' }, min: -0.5, max: 0.5 }
+                    },
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+        
+        function updateHistoryDisplay() {
+            const historyElement = document.getElementById('history');
+            historyElement.innerHTML = '<strong>History:</strong> ' +
+                embeddingHistory.map((_, i) => `Embedding ${i + 1}`).join(', ');
+        }
+        
+        function updateGraph(embedding, label) {
+            const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6'];
+            const color = colors[embeddingHistory.length % colors.length];
+            
+            embeddingChart.data.datasets.push({
+                label: label,
+                data: embedding.map((val, i) => ({ x: i, y: val })),
+                borderColor: color,
+                backgroundColor: color,
+                tension: 0.1,
+                pointRadius: 0
+            });
+            embeddingChart.update();
+        }
+        
         document.getElementById('process').addEventListener('click', async function() {
             const input = document.getElementById('input').value;
             const output = document.getElementById('output');
@@ -123,7 +185,22 @@
                     normalize: true
                 });
                 const embedding = Array.from(result.data);
-                output.textContent = embedding.map((val, i) => `Dim ${i + 1}: ${val.toFixed(6)}`).join('\n');
+                output.textContent = embedding.slice(0, 20).map((val, i) => `Dim ${i + 1}: ${val.toFixed(4)}`).join('\n') +
+                    '\n... (showing first 20 of 768 dimensions)';
+                
+                // Add to history
+                embeddingHistory.push(embedding);
+                if (embeddingHistory.length > maxHistory) {
+                    embeddingHistory.shift();
+                }
+                updateHistoryDisplay();
+                
+                // Update graph
+                embeddingChart.data.datasets = [];
+                embeddingHistory.forEach((emb, i) => {
+                    updateGraph(emb, `Embedding ${i + 1}`);
+                });
+                
                 statusElement.textContent = 'Embedding computed.';
             } catch (error) {
                 output.textContent = 'Error computing embedding: ' + error.message;
@@ -131,6 +208,7 @@
                 console.error(error);
             }
         });
+        
         loadModel();
     </script>
 </body>
