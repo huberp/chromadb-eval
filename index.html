@@ -115,7 +115,7 @@
     </div>
     <script type="module">
         import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
-        env.allowLocalModels = false;
+        env.allowLocalModels = true;
         env.useBrowserCache = true;
         
         let extractor;
@@ -127,7 +127,7 @@
             const statusElement = document.getElementById('status');
             statusElement.textContent = 'Loading model...';
             try {
-                extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                extractor = await pipeline('feature-extraction', 'Xenova/all-mpnet-base-v2');
                 statusElement.textContent = 'Model loaded. Ready to compute embeddings.';
                 initChart();
             } catch (error) {
