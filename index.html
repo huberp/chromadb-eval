@@ -136,6 +136,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         x: {
                             type: 'linear',
@@ -164,13 +165,13 @@
         }
         
         function updateGraph(embedding, label) {
-            const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6'];
+            const colors = ['rgba(52, 152, 219, 0.5)', 'rgba(231, 76, 60, 0.5)', 'rgba(46, 204, 113, 0.5)', 'rgba(243, 156, 18, 0.5)', 'rgba(155, 89, 182, 0.5)'];
             const color = colors[embeddingHistory.length % colors.length];
             
             embeddingChart.data.datasets.push({
                 label: label,
                 data: embedding.map((val, i) => ({ x: i, y: val })),
-                borderColor: color,
+                borderColor: color.replace('0.5', '1'),
                 backgroundColor: color,
                 tension: 0.1,
                 pointRadius: 0
