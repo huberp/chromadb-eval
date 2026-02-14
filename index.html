@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChromaDB Eval Web App</title>
-    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -79,19 +78,20 @@
             <textarea id="input" placeholder="Enter your text here..."></textarea>
         </div>
         <button id="process">Compute Embedding</button>
-        <div id="status">Model loading, please wait...</div>
+        <div id="status">Loading Transformers.js, please wait...</div>
         <div class="input-group">
             <label for="output">Embedding (768 dimensions):</label>
             <div id="output">Embedding will appear here...</div>
         </div>
     </div>
-    <script>
+    <script type="module">
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.10.0';
         let extractor;
         async function loadModel() {
             const statusElement = document.getElementById('status');
             statusElement.textContent = 'Loading model...';
             try {
-                extractor = await window.transformers.pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
                 statusElement.textContent = 'Model loaded. Ready to compute embeddings.';
             } catch (error) {
                 statusElement.textContent = 'Error loading model: ' + error.message;
