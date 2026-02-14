@@ -131,14 +131,28 @@
             const ctx = document.getElementById('embeddingGraph').getContext('2d');
             embeddingChart = new Chart(ctx, {
                 type: 'line',
-                data: { datasets: [] },
+                data: {
+                    datasets: []
+                },
                 options: {
                     responsive: true,
                     scales: {
-                        x: { title: { display: true, text: 'Vector Dimension' } },
-                        y: { title: { display: true, text: 'Value' }, min: -0.5, max: 0.5 }
+                        x: {
+                            type: 'linear',
+                            min: 0,
+                            max: 767,
+                            title: { display: true, text: 'Vector Dimension' }
+                        },
+                        y: {
+                            type: 'linear',
+                            min: -0.5,
+                            max: 0.5,
+                            title: { display: true, text: 'Value' }
+                        }
                     },
-                    plugins: { legend: { position: 'bottom' } }
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
                 }
             });
         }
