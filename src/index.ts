@@ -1,7 +1,36 @@
 import * as path from 'path';
 import { DocumentChunker, AstDocumentChunker } from './chunking';
 import { ChromaDBManager } from './chromadb-manager';
-import { getChunkingConfig } from './config';
+import { ChunkingConfig, getChunkingConfig } from './config';
+
+/**
+ * Create a chunker instance based on the chunking configuration.
+ */
+function createChunker(config: ChunkingConfig): DocumentChunker | AstDocumentChunker {
+  return config.mode === 'ast'
+    ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
+    : new DocumentChunker(config.chunkSize, config.chunkOverlap);
+}
+
+/**
+ * Chunk all markdown documents and store them in ChromaDB.
+ * Consolidates the duplicated chunking + storing logic used by both
+ * the fresh-build path and the cache-fallback path.
+ */
+async function chunkAndStoreDocuments(chromaDB: ChromaDBManager, config: ChunkingConfig): Promise<void> {
+  console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
+
+  const chunker = createChunker(config);
+
+  console.log('Chunking documents...');
+  const documentsPath = path.join(__dirname, '../documents');
+  const chunks = await chunker.chunkDocuments(documentsPath);
+  console.log(`Created ${chunks.length} chunks from documents\n`);
+
+  console.log('Storing chunks in ChromaDB...');
+  await chromaDB.addChunks(chunks);
+  console.log('');
+}
 
 async function main() {
   console.log('=== ChromaDB Evaluator ===\n');
@@ -14,58 +43,31 @@ async function main() {
 
   try {
     const chromaDB = new ChromaDBManager();
-    
-    // Get chunking configuration (we'll need it if cache fallback occurs)
     const config = getChunkingConfig();
 
+    // Determine whether documents need to be (re-)processed
+    let needsDocumentProcessing = true;
+
     if (useCached) {
-      // Using cached ChromaDB - skip chunking and just connect
+      // Try to reuse an existing ChromaDB collection
       console.log('✅ Using cached ChromaDB data\n');
-      
       console.log('Initializing ChromaDB connection...');
-      const result = await chromaDB.initialize(true); // Pass true to reuse existing collection
+      const result = await chromaDB.initialize(true);
       console.log('');
-      
-      // Check if we need to fallback to full recreation due to cache issues
+
       if (result.fallbackToRecreation) {
         console.log('⚠️  Cache was invalid, performing full document processing...\n');
-        console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
-        
-        const chunker = config.mode === 'ast'
-          ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
-          : new DocumentChunker(config.chunkSize, config.chunkOverlap);
-        
-        console.log('Chunking documents...');
-        const documentsPath = path.join(__dirname, '../documents');
-        const chunks = await chunker.chunkDocuments(documentsPath);
-        console.log(`Created ${chunks.length} chunks from documents\n`);
-        
-        console.log('Storing chunks in ChromaDB...');
-        await chromaDB.addChunks(chunks);
-        console.log('');
+      } else {
+        needsDocumentProcessing = false;
       }
     } else {
-      // No cache - perform full chunking and initialization
-      console.log(`Using ${config.mode} chunker (chunkSize: ${config.chunkSize}, chunkOverlap: ${config.chunkOverlap})\n`);
+      // Fresh build – recreate the collection
+      console.log('Initializing ChromaDB and storing chunks...');
+      await chromaDB.initialize(false);
+    }
 
-      // Initialize components with Mistral-recommended settings
-      // 1000 chars ≈ 250 tokens (within 200-500 token range)
-      // 150 chars overlap ≈ 1-2 sentences
-      const chunker = config.mode === 'ast'
-        ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
-        : new DocumentChunker(config.chunkSize, config.chunkOverlap);
-
-      // Step 1: Chunk documents
-      console.log('Step 1: Chunking documents...');
-      const documentsPath = path.join(__dirname, '../documents');
-      const chunks = await chunker.chunkDocuments(documentsPath);
-      console.log(`Created ${chunks.length} chunks from documents\n`);
-
-      // Step 2: Initialize ChromaDB and add chunks
-      console.log('Step 2: Initializing ChromaDB and storing chunks...');
-      await chromaDB.initialize(false); // Pass false to recreate collection
-      await chromaDB.addChunks(chunks);
-      console.log('');
+    if (needsDocumentProcessing) {
+      await chunkAndStoreDocuments(chromaDB, config);
     }
 
     // Step 3: Compute top 10 document similarities
