@@ -29,7 +29,7 @@ async function main() {
   console.log(`  Chunk Overlap: ${chunkOverlap} characters`);
   console.log(`  Documents Path: ${documentsPath}\n`);
   
-  const legacyChunker = new DocumentChunker(chunkSize, chunkOverlap);
+  const legacyChunker = new DocumentChunker({ chunkSize, chunkOverlap });
   const astChunker = new AstDocumentChunker({ chunkSize, chunkOverlap });
   
   try {

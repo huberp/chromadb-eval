@@ -19,6 +19,16 @@ export interface Chunk {
 }
 
 /**
+ * Configuration options for the legacy chunker.
+ */
+export interface DocumentChunkerOptions {
+  /** Target chunk size in characters (default: 1000) */
+  chunkSize?: number;
+  /** Overlap size between chunks in characters (default: 150) */
+  chunkOverlap?: number;
+}
+
+/**
  * Legacy string-based markdown document chunker.
  * 
  * This implementation uses string parsing to chunk markdown documents based on
@@ -38,9 +48,9 @@ export class DocumentChunker {
 
   // Default: 1000 chars ≈ 250 tokens (middle of 200-500 token range)
   // Overlap: 150 chars ≈ 1-2 sentences
-  constructor(chunkSize: number = 1000, chunkOverlap: number = 150) {
-    this.chunkSize = chunkSize;
-    this.chunkOverlap = chunkOverlap;
+  constructor(options: DocumentChunkerOptions = {}) {
+    this.chunkSize = options.chunkSize ?? 1000;
+    this.chunkOverlap = options.chunkOverlap ?? 150;
   }
 
   /**
