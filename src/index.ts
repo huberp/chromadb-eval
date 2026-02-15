@@ -1,16 +1,7 @@
 import * as path from 'path';
-import { DocumentChunker, AstDocumentChunker } from './chunking';
+import { DocumentChunker, AstDocumentChunker, createChunker } from './chunking';
 import { ChromaDBManager } from './chromadb-manager';
 import { ChunkingConfig, getChunkingConfig } from './config';
-
-/**
- * Create a chunker instance based on the chunking configuration.
- */
-function createChunker(config: ChunkingConfig): DocumentChunker | AstDocumentChunker {
-  return config.mode === 'ast'
-    ? new AstDocumentChunker({ chunkSize: config.chunkSize, chunkOverlap: config.chunkOverlap })
-    : new DocumentChunker(config.chunkSize, config.chunkOverlap);
-}
 
 /**
  * Chunk all markdown documents and store them in ChromaDB.
