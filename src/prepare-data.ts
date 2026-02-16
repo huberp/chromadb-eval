@@ -8,9 +8,10 @@
  * 4. Copies full documents into <outputDir>/documents
  * 5. Computes embeddings for every chunk via transformers.js
  * 6. Produces a single JSON file (<outputDir>/embeddings.json) containing an
- *    array of objects with the embedding vector and rich metadata (resolvable
- *    raw-content links for chunk, before/after neighbours, and the full
- *    document, plus sizes).
+ *    array of objects with the embedding vector and rich metadata:
+ *    - before/after neighbour chunks as structured objects (file, rawUrl, size)
+ *    - compact single-line embedding vectors
+ *    - resolvable raw-content links for chunks and full documents
  */
 
 import * as fs from 'fs';
@@ -51,6 +52,14 @@ function rawUrl(relativePath: string): string {
  * Custom JSON stringifier that keeps embedding arrays compact (single line).
  * This significantly reduces file size by not adding line breaks for each
  * vector dimension.
+ * 
+ * Design Decision: We use compact JSON format instead of binary formats
+ * (e.g., base64-encoded Float32Array) because:
+ * - No browser decoding penalty (native JSON parsing is highly optimized)
+ * - Maximum compatibility and simplicity
+ * - HTTP compression (gzip) compresses JSON very efficiently
+ * - While binary formats save ~70% of raw JSON size, they add complexity
+ *   and a processing step that negates benefits for browser usage
  */
 function stringifyWithCompactEmbeddings(data: any): string {
   return JSON.stringify(data, (key, value) => {
