@@ -58,11 +58,11 @@ jobs:
         run: |
           echo "Downloading embedding model: ${{ steps.model-info.outputs.model_id }}"
           node -e "
-            const { pipeline } = require('@xenova/transformers');
+            const { pipeline } = require('@huggingface/transformers');
             (async () => {
               console.log('Initializing pipeline...');
               const extractor = await pipeline('feature-extraction', '${{ steps.model-info.outputs.model_id }}', {
-                quantized: true
+                dtype: 'q8'
               });
               console.log('Model downloaded and cached successfully!');
               

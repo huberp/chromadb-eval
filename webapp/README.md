@@ -5,7 +5,7 @@ This is a browser-based semantic search application that demonstrates vector sea
 ## Features
 
 - **Browser-only vector database**: No server required, all processing happens in the browser
-- **LLM-based embeddings**: Uses transformers.js with the same model as the backend (`Xenova/all-mpnet-base-v2`)
+- **LLM-based embeddings**: Uses `@huggingface/transformers` with the same model as the backend (`Xenova/all-mpnet-base-v2`)
 - **Real-time semantic search**: Find the top 5 most similar document chunks to your query
 - **Similarity scores**: Shows percentage match for each result
 - **Content preview**: View chunk content with expand/collapse functionality
@@ -18,7 +18,7 @@ This is a browser-based semantic search application that demonstrates vector sea
    - Stored in `embeddings.json` with metadata for each chunk
 
 2. **Model Initialization**: Loads the same embedding model used by the backend
-   - Uses transformers.js CDN for zero-install experience
+   - Uses `@huggingface/transformers` CDN for zero-install experience
    - Model: `Xenova/all-mpnet-base-v2` (768-dimensional vectors)
 
 3. **Query Processing**: When you enter a search query:
@@ -36,7 +36,7 @@ This is a browser-based semantic search application that demonstrates vector sea
 
 - **Pure HTML/CSS/JavaScript**: No build step required
 - **ES6 Modules**: Uses modern JavaScript with native module imports
-- **CDN Dependencies**: transformers.js loaded from CDN
+- **CDN Dependencies**: `@huggingface/transformers` loaded from CDN
 - **Static Hosting**: Can be served from GitHub Pages or any static host
 
 ## Data Flow
