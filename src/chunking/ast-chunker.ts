@@ -113,6 +113,9 @@ export class AstDocumentChunker {
     // Group nodes into chunk candidates
     const nodeGroups = this.groupNodesIntoChunks(section.nodes);
     
+    // Format the section heading to prepend to chunks
+    const headingPrefix = this.formatHeadingHierarchy(section.headings);
+    
     let previousChunkContent = '';
     
     for (const group of nodeGroups) {
@@ -128,6 +131,11 @@ export class AstDocumentChunker {
         if (overlap) {
           finalContent = overlap + '\n\n' + content;
         }
+      }
+      
+      // Prepend the heading to the chunk content
+      if (headingPrefix) {
+        finalContent = headingPrefix + '\n\n' + finalContent;
       }
       
       chunks.push({
@@ -383,6 +391,27 @@ export class AstDocumentChunker {
       }
     }
     return undefined;
+  }
+
+  /**
+   * Format the heading hierarchy into markdown heading format.
+   * Only formats the deepest (current) heading.
+   * 
+   * @param headings - Array of heading texts from top to bottom of hierarchy
+   * @returns Formatted markdown heading (e.g., "## Section Name")
+   */
+  private formatHeadingHierarchy(headings: string[]): string {
+    if (headings.length === 0) {
+      return '';
+    }
+    
+    // Use the deepest heading level
+    const currentHeading = headings[headings.length - 1];
+    const level = headings.length;
+    
+    // Format as markdown heading with appropriate number of #
+    const prefix = '#'.repeat(level);
+    return `${prefix} ${currentHeading}`;
   }
 
   /**
