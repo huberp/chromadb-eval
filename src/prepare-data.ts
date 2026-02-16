@@ -107,6 +107,13 @@ async function main(): Promise<void> {
   console.log('Embeddings computed\n');
 
   // 7. Build the metadata JSON
+
+  // Pre-compute document sizes to avoid redundant stat calls
+  const docSizes = new Map<string, number>();
+  for (const file of mdFiles) {
+    docSizes.set(file, fs.statSync(path.join(DOCUMENTS_DIR, file)).size);
+  }
+
   interface EmbeddingEntry {
     id: string;
     chunkIndex: number;
@@ -153,8 +160,6 @@ async function main(): Promise<void> {
       ? `${docName(afterChunk.sourceFile)}.${afterChunk.chunkIndex}.md`
       : null;
 
-    const docFileSize = fs.statSync(path.join(DOCUMENTS_DIR, chunk.sourceFile)).size;
-
     entries.push({
       id: chunk.id,
       chunkIndex: chunk.chunkIndex,
@@ -170,7 +175,7 @@ async function main(): Promise<void> {
       afterChunkSize: afterChunk ? afterChunk.content.length : null,
       documentFile: chunk.sourceFile,
       documentRawUrl: rawUrl(`documents/${chunk.sourceFile}`),
-      documentSize: docFileSize,
+      documentSize: docSizes.get(chunk.sourceFile) || 0,
       section: chunk.metadata?.section,
       headerHierarchy: chunk.metadata?.headerHierarchy,
       chunkType: chunk.metadata?.chunkType,

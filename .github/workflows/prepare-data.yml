@@ -58,16 +58,19 @@ jobs:
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
 
       - name: Deploy to data-main branch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           cd ${{ github.workspace }}/data-output
 
           git init
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config credential.helper '!f() { echo "username=x-access-token"; echo "password=${GITHUB_TOKEN}"; }; f'
 
           git checkout -b data-main
           git add .
           git commit -m "Update data from ${{ github.sha }}"
 
-          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git remote add origin "https://github.com/${{ github.repository }}.git"
           git push --force origin data-main
