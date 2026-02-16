@@ -2,6 +2,18 @@
 
 Evaluation of using ChromaDB vector store and full text search, based on TypeScript and fed with markdown files. This project demonstrates ChromaDB's vector and fulltext search capabilities with multiple embedding strategies, including modern LLM-based embeddings.
 
+## 🌐 Browser-Based Vector Search
+
+Try the interactive web demo: **[Vector Search Webapp](https://huberp.github.io/chromadb-eval/)**
+
+The webapp provides a browser-based semantic search experience powered entirely by JavaScript:
+- **Zero-install**: Runs completely in your browser using transformers.js
+- **Real-time search**: Find the top 5 most similar document chunks to your query
+- **LLM embeddings**: Uses the same `Xenova/all-mpnet-base-v2` model as the backend
+- **Similarity scores**: Shows percentage match for each result
+
+See [`webapp/README.md`](webapp/README.md) for more details on the implementation.
+
 ## Features
 
 - **Multiple Embedding Strategies**:
@@ -15,6 +27,7 @@ Evaluation of using ChromaDB vector store and full text search, based on TypeScr
 - **Fulltext Analysis**: Term frequency analysis across documents
 - **Document Similarity**: Computes top 10 most similar document pairs
 - **Interactive Queries**: Ask questions via command line or GitHub Actions workflow
+- **Browser-Based Webapp**: Interactive web interface for semantic search (see above)
 
 ## Documents
 
@@ -239,6 +252,22 @@ Manually trigger this workflow to compute and display the top 10 most similar do
 ### Analyze Common Terms
 Manually trigger this workflow to analyze and display the 10 most common terms across all documents.
 
+### Prepare Data for gh-pages
+This workflow prepares embedding data for the browser-based webapp:
+1. Chunks all markdown documents
+2. Computes embeddings for each chunk
+3. Generates `embeddings.json` with metadata
+4. Deploys to the `data-main` branch
+
+Runs automatically when documents or source code changes.
+
+### Deploy to GitHub Pages
+Deploys the webapp to GitHub Pages:
+1. Copies the `webapp/` directory to the `gh-pages` branch
+2. Enables the webapp at `https://huberp.github.io/chromadb-eval/`
+
+Runs automatically when webapp files change.
+
 **Note:** All workflows now use LLM embeddings by default and leverage model caching for improved performance. The "Cache Prepared ChromaDB" workflow handles all database preparation and caching needs.
 
 ## Architecture
@@ -254,7 +283,11 @@ Manually trigger this workflow to analyze and display the 10 most common terms a
 - `src/embeddings-transformers.ts`: Transformers.js-based LLM embeddings (default)
 - `src/embedding-factory.ts`: Factory for creating embedding functions
 - `src/chromadb-manager.ts`: ChromaDB operations including storage, querying, and analysis
+- `src/prepare-data.ts`: Generates embeddings data for the webapp
 - `src/index.ts`: Main application orchestrating the workflow
+- `webapp/`: Browser-based vector search application
+  - `index.html`: Single-page web app with transformers.js integration
+  - `README.md`: Webapp documentation
 - `documents/`: 20 markdown documents for demonstration
 
 ## Technical Details

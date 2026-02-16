@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChromaDB Eval - Vector Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+            border-left: 4px solid #1976d2;
+        }
+
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-header {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .result-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .similarity-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .result-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .result-meta span {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .result-content {
+            color: #555;
+            line-height: 1.6;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .result-content.expanded {
+            max-height: none;
+        }
+
+        .result-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(transparent, #f8f9fa);
+            pointer-events: none;
+        }
+
+        .result-content.expanded::after {
+            display: none;
+        }
+
+        .expand-button {
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 5px;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .expand-button:hover {
+            text-decoration: underline;
+        }
+
+        .result-links {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .result-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .result-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Embeddings Graph Styles */
+        .graph-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .graph-section.visible {
+            display: block;
+        }
+
+        .graph-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .graph-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .toggle-graph-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .toggle-graph-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #embeddingsCanvas {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: crosshair;
+        }
+
+        .graph-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .graph-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+            #embeddingsCanvas {
+                height: 400px;
+            }
+
+            .graph-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .toggle-graph-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 ChromaDB Eval - Vector Search</h1>
+            <p>Semantic search powered by browser-based embeddings</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="Enter your query (e.g., 'What are the benefits of apples?')"
+                    autocomplete="off"
+                >
+                <button class="search-button" id="searchButton">Search</button>
+            </div>
+            <div class="status loading" id="status">Loading embeddings database...</div>
+        </div>
+
+        <div class="graph-section" id="graphSection">
+            <div class="graph-header">
+                <h2 class="graph-title">📊 Embeddings Visualization</h2>
+                <button class="toggle-graph-button" id="toggleGraphButton">Hide Graph</button>
+            </div>
+            <canvas id="embeddingsCanvas"></canvas>
+            <div class="graph-legend" id="graphLegend"></div>
+            <div class="graph-info">
+                <strong>About:</strong> This graph shows a 2D projection of the high-dimensional embedding vectors using PCA (Principal Component Analysis). 
+                Each point represents a document chunk. Hover over points to see details. Click to view the chunk.
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h2 class="results-header">Top 5 Matches</h2>
+            <div id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+
+        // Configure transformers.js to use CDN models
+        env.allowLocalModels = false;
+        env.allowRemoteModels = true;
+
+        // State
+        let embeddings = [];
+        let embedder = null;
+        let isReady = false;
+
+        // Configuration
+        const OWNER = 'huberp';
+        const REPO = 'chromadb-eval';
+        const EMBEDDINGS_URL = `https://raw.githubusercontent.com/${OWNER}/${REPO}/data-main/embeddings.json`;
+        const MODEL_ID = 'Xenova/all-mpnet-base-v2';
+
+        // UI Elements
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const status = document.getElementById('status');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const graphSection = document.getElementById('graphSection');
+        const toggleGraphButton = document.getElementById('toggleGraphButton');
+        const embeddingsCanvas = document.getElementById('embeddingsCanvas');
+        const graphLegend = document.getElementById('graphLegend');
+
+        // Graph state
+        let reducedEmbeddings = [];
+        let graphVisible = false;
+
+        // Graph constants
+        const MAX_PCA_DIMENSIONS = 50; // Limit dimensions for performance
+        const POWER_ITERATION_COUNT = 20; // Number of iterations for PCA
+        const POINT_RADIUS = 4; // Radius of points on graph
+        const HOVER_RADIUS = 6; // Radius for hover detection
+
+        // Update status message
+        function updateStatus(message, type = 'loading') {
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        // Get scaling functions for coordinate mapping
+        function getScalingFunctions(reducedEmbeddings, width, height, padding) {
+            const xValues = reducedEmbeddings.map(p => p.coords[0]);
+            const yValues = reducedEmbeddings.map(p => p.coords[1]);
+            const xMin = Math.min(...xValues);
+            const xMax = Math.max(...xValues);
+            const yMin = Math.min(...yValues);
+            const yMax = Math.max(...yValues);
+
+            return {
+                scaleX: (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding),
+                scaleY: (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding)
+            };
+        }
+
+        // Simple PCA implementation for dimensionality reduction
+        function performPCA(vectors, targetDimensions = 2) {
+            const n = vectors.length;
+            const d = vectors[0].length;
+
+            // Center the data
+            const mean = new Array(d).fill(0);
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < d; j++) {
+                    mean[j] += vectors[i][j];
+                }
+            }
+            for (let j = 0; j < d; j++) {
+                mean[j] /= n;
+            }
+
+            const centered = vectors.map(v => v.map((val, idx) => val - mean[idx]));
+
+            // Compute covariance matrix (using a subset of dimensions for performance)
+            const maxDims = Math.min(MAX_PCA_DIMENSIONS, d);
+            const cov = Array.from({ length: maxDims }, () => Array(maxDims).fill(0));
+            
+            for (let i = 0; i < maxDims; i++) {
+                for (let j = i; j < maxDims; j++) {
+                    let sum = 0;
+                    for (let k = 0; k < n; k++) {
+                        sum += centered[k][i] * centered[k][j];
+                    }
+                    cov[i][j] = sum / (n - 1);
+                    cov[j][i] = cov[i][j];
+                }
+            }
+
+            // Power iteration for first 2 principal components
+            const components = [];
+            for (let comp = 0; comp < targetDimensions; comp++) {
+                let v = Array(maxDims).fill(0).map(() => Math.random() - 0.5);
+                
+                // Normalize
+                let norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
+                v = v.map(val => val / norm);
+
+                // Deflate previous components
+                for (let prevComp of components) {
+                    const dot = v.reduce((sum, val, idx) => sum + val * prevComp[idx], 0);
+                    v = v.map((val, idx) => val - dot * prevComp[idx]);
+                }
+
+                // Power iteration
+                for (let iter = 0; iter < POWER_ITERATION_COUNT; iter++) {
+                    const Av = Array(maxDims).fill(0);
+                    for (let i = 0; i < maxDims; i++) {
+                        for (let j = 0; j < maxDims; j++) {
+                            Av[i] += cov[i][j] * v[j];
+                        }
+                    }
+                    
+                    // Deflate previous components
+                    for (let prevComp of components) {
+                        const dot = Av.reduce((sum, val, idx) => sum + val * prevComp[idx], 0);
+                        Av.forEach((val, idx) => Av[idx] = val - dot * prevComp[idx]);
+                    }
+                    
+                    norm = Math.sqrt(Av.reduce((sum, val) => sum + val * val, 0));
+                    v = Av.map(val => val / norm);
+                }
+                
+                components.push(v);
+            }
+
+            // Project data onto principal components
+            const projected = centered.map(point => {
+                return components.map(comp => {
+                    let sum = 0;
+                    for (let i = 0; i < maxDims; i++) {
+                        sum += point[i] * comp[i];
+                    }
+                    return sum;
+                });
+            });
+
+            return projected;
+        }
+
+        // Get color for document type based on filename prefix
+        function getColorForDocument(filename) {
+            const prefix = parseInt(filename.split('-')[0]);
+            if (prefix >= 1 && prefix <= 5) {
+                return '#ff6b6b'; // Red for fruits (01-05)
+            } else if (prefix >= 6 && prefix <= 10) {
+                return '#4ecdc4'; // Cyan for SIMD (06-10)
+            } else {
+                return '#95e1d3'; // Green for mathematics (11-20)
+            }
+        }
+
+        // Draw embeddings graph
+        function drawEmbeddingsGraph() {
+            const canvas = embeddingsCanvas;
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            // Clear canvas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+
+            if (reducedEmbeddings.length === 0) return;
+
+            // Get scaling functions
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
+
+            // Draw axes
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+
+            // Draw points
+            reducedEmbeddings.forEach((point, idx) => {
+                const x = scaleX(point.coords[0]);
+                const y = scaleY(point.coords[1]);
+                const color = point.color;
+
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, POINT_RADIUS, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Draw border
+                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+
+            // Add labels
+            ctx.fillStyle = '#666';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('PC1', width - padding + 5, height - padding + 5);
+            ctx.fillText('PC2', padding - 5, padding - 10);
+        }
+
+        // Setup graph legend
+        function setupGraphLegend() {
+            const categories = [
+                { name: 'Fruits', color: '#ff6b6b' },
+                { name: 'SIMD', color: '#4ecdc4' },
+                { name: 'Mathematics', color: '#95e1d3' }
+            ];
+
+            graphLegend.innerHTML = categories.map(cat => `
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${cat.color}"></div>
+                    <span>${cat.name}</span>
+                </div>
+            `).join('');
+        }
+
+        // Toggle graph visibility
+        function toggleGraph() {
+            graphVisible = !graphVisible;
+            if (graphVisible) {
+                graphSection.classList.add('visible');
+                toggleGraphButton.textContent = 'Hide Graph';
+                if (reducedEmbeddings.length > 0) {
+                    drawEmbeddingsGraph();
+                }
+            } else {
+                graphSection.classList.remove('visible');
+                toggleGraphButton.textContent = 'Show Graph';
+            }
+        }
+
+        // Initialize graph with embeddings
+        function initializeGraph() {
+            if (embeddings.length === 0) return;
+
+            updateStatus('Computing PCA for visualization...', 'loading');
+
+            // Perform PCA
+            const vectors = embeddings.map(e => e.embedding);
+            const projected = performPCA(vectors, 2);
+
+            // Store reduced embeddings with metadata
+            reducedEmbeddings = projected.map((coords, idx) => ({
+                coords,
+                color: getColorForDocument(embeddings[idx].sourceFile),
+                entry: embeddings[idx]
+            }));
+
+            setupGraphLegend();
+            
+            // Show graph by default
+            graphVisible = true;
+            graphSection.classList.add('visible');
+            toggleGraphButton.textContent = 'Hide Graph';
+            
+            drawEmbeddingsGraph();
+            
+            updateStatus(`✨ Ready! Enter your query and press Search`, 'success');
+        }
+
+        // Add canvas interaction
+        embeddingsCanvas.addEventListener('mousemove', (e) => {
+            if (reducedEmbeddings.length === 0) return;
+
+            const rect = embeddingsCanvas.getBoundingClientRect();
+            const canvas = embeddingsCanvas;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            const mouseX = (e.clientX - rect.left) * (width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (height / rect.height);
+
+            // Get scaling functions
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
+
+            // Check if hovering over a point
+            let hoveredPoint = null;
+            for (let i = 0; i < reducedEmbeddings.length; i++) {
+                const point = reducedEmbeddings[i];
+                const x = scaleX(point.coords[0]);
+                const y = scaleY(point.coords[1]);
+                const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+                
+                if (dist < HOVER_RADIUS) {
+                    hoveredPoint = point;
+                    canvas.style.cursor = 'pointer';
+                    break;
+                }
+            }
+
+            if (!hoveredPoint) {
+                canvas.style.cursor = 'crosshair';
+            }
+        });
+
+        // Add click handler for canvas
+        embeddingsCanvas.addEventListener('click', (e) => {
+            if (reducedEmbeddings.length === 0) return;
+
+            const rect = embeddingsCanvas.getBoundingClientRect();
+            const canvas = embeddingsCanvas;
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            const mouseX = (e.clientX - rect.left) * (width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (height / rect.height);
+
+            // Get scaling functions
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
+
+            // Find clicked point
+            for (let i = 0; i < reducedEmbeddings.length; i++) {
+                const point = reducedEmbeddings[i];
+                const x = scaleX(point.coords[0]);
+                const y = scaleY(point.coords[1]);
+                const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+                
+                if (dist < HOVER_RADIUS) {
+                    // Open chunk URL in new tab
+                    window.open(point.entry.chunkRawUrl, '_blank');
+                    break;
+                }
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (graphVisible && reducedEmbeddings.length > 0) {
+                drawEmbeddingsGraph();
+            }
+        });
+
+        // Toggle button handler
+        toggleGraphButton.addEventListener('click', toggleGraph);
+
+        // Calculate cosine similarity between two vectors
+        function cosineSimilarity(vecA, vecB) {
+            if (vecA.length !== vecB.length) {
+                throw new Error('Vectors must have the same length');
+            }
+            
+            let dotProduct = 0;
+            let normA = 0;
+            let normB = 0;
+            
+            for (let i = 0; i < vecA.length; i++) {
+                dotProduct += vecA[i] * vecB[i];
+                normA += vecA[i] * vecA[i];
+                normB += vecB[i] * vecB[i];
+            }
+            
+            normA = Math.sqrt(normA);
+            normB = Math.sqrt(normB);
+            
+            if (normA === 0 || normB === 0) {
+                return 0;
+            }
+            
+            return dotProduct / (normA * normB);
+        }
+
+        // Load embeddings from data-main branch
+        async function loadEmbeddings() {
+            try {
+                updateStatus('Loading embeddings database...', 'loading');
+                const response = await fetch(EMBEDDINGS_URL);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch embeddings: ${response.status}`);
+                }
+                embeddings = await response.json();
+                updateStatus(`Loaded ${embeddings.length} document chunks`, 'success');
+                return true;
+            } catch (error) {
+                updateStatus(`Error loading embeddings: ${error.message}`, 'error');
+                console.error('Error loading embeddings:', error);
+                return false;
+            }
+        }
+
+        // Initialize the embedding model
+        async function initializeModel() {
+            try {
+                updateStatus('Initializing embedding model (this may take a moment)...', 'loading');
+                embedder = await pipeline('feature-extraction', MODEL_ID);
+                updateStatus('Model initialized successfully', 'success');
+                return true;
+            } catch (error) {
+                updateStatus(`Error initializing model: ${error.message}`, 'error');
+                console.error('Error initializing model:', error);
+                return false;
+            }
+        }
+
+        // Compute embedding for a query
+        async function computeQueryEmbedding(query) {
+            if (!embedder) {
+                throw new Error('Embedder not initialized');
+            }
+
+            const output = await embedder(query, { pooling: 'mean', normalize: true });
+            return Array.from(output.data);
+        }
+
+        // Find top K similar documents
+        function findTopMatches(queryEmbedding, k = 5) {
+            const similarities = embeddings.map((entry, index) => ({
+                index,
+                similarity: cosineSimilarity(queryEmbedding, entry.embedding),
+                entry
+            }));
+
+            // Sort by similarity (descending)
+            similarities.sort((a, b) => b.similarity - a.similarity);
+
+            // Return top K
+            return similarities.slice(0, k);
+        }
+
+        // Display results
+        function displayResults(matches, query) {
+            resultsContainer.innerHTML = '';
+            resultsSection.classList.add('visible');
+
+            matches.forEach((match, idx) => {
+                const { entry, similarity } = match;
+                const similarityPercent = (similarity * 100).toFixed(1);
+
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+
+                const resultHeader = document.createElement('div');
+                resultHeader.className = 'result-header';
+
+                const resultTitle = document.createElement('div');
+                resultTitle.className = 'result-title';
+                resultTitle.textContent = `${idx + 1}. ${entry.sourceFile}`;
+
+                const similarityBadge = document.createElement('div');
+                similarityBadge.className = 'similarity-badge';
+                similarityBadge.textContent = `${similarityPercent}% match`;
+
+                resultHeader.appendChild(resultTitle);
+                resultHeader.appendChild(similarityBadge);
+
+                const resultMeta = document.createElement('div');
+                resultMeta.className = 'result-meta';
+                resultMeta.innerHTML = `
+                    <span>📄 Chunk ${entry.chunkIndex}</span>
+                    <span>📏 ${entry.chunkSize} chars</span>
+                    ${entry.section ? `<span>📑 ${entry.section}</span>` : ''}
+                `;
+
+                const resultContent = document.createElement('div');
+                resultContent.className = 'result-content';
+                resultContent.id = `content-${idx}`;
+                
+                // Create a container for the expand button
+                const expandButtonContainer = document.createElement('div');
+                
+                // Fetch and display chunk content
+                fetch(entry.chunkRawUrl)
+                    .then(res => res.text())
+                    .then(content => {
+                        // Store full content for toggling
+                        const fullContent = content;
+                        const truncatedContent = content.substring(0, 300) + '...';
+                        
+                        resultContent.textContent = content.length > 300 ? truncatedContent : content;
+                        
+                        if (content.length > 300) {
+                            const expandButton = document.createElement('div');
+                            expandButton.className = 'expand-button';
+                            expandButton.textContent = 'Show more';
+                            expandButton.onclick = () => {
+                                if (resultContent.classList.contains('expanded')) {
+                                    resultContent.classList.remove('expanded');
+                                    resultContent.textContent = truncatedContent;
+                                    expandButton.textContent = 'Show more';
+                                } else {
+                                    resultContent.classList.add('expanded');
+                                    resultContent.textContent = fullContent;
+                                    expandButton.textContent = 'Show less';
+                                }
+                            };
+                            // Insert expand button in the container
+                            expandButtonContainer.appendChild(expandButton);
+                        }
+                    })
+                    .catch(err => {
+                        resultContent.textContent = 'Error loading content';
+                        console.error('Error loading chunk content:', err);
+                    });
+
+                const resultLinks = document.createElement('div');
+                resultLinks.className = 'result-links';
+                resultLinks.innerHTML = `
+                    <a href="${entry.chunkRawUrl}" target="_blank" class="result-link">View Chunk</a>
+                    <a href="${entry.documentRawUrl}" target="_blank" class="result-link">View Full Document</a>
+                `;
+
+                resultItem.appendChild(resultHeader);
+                resultItem.appendChild(resultMeta);
+                resultItem.appendChild(resultContent);
+                resultItem.appendChild(expandButtonContainer);
+                resultItem.appendChild(resultLinks);
+
+                resultsContainer.appendChild(resultItem);
+            });
+        }
+
+        // Handle search
+        async function handleSearch() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                updateStatus('Please enter a search query', 'error');
+                return;
+            }
+
+            if (!isReady) {
+                updateStatus('System is still initializing, please wait...', 'error');
+                return;
+            }
+
+            try {
+                searchButton.disabled = true;
+                updateStatus('Computing query embedding...', 'loading');
+
+                const queryEmbedding = await computeQueryEmbedding(query);
+                
+                updateStatus('Finding similar documents...', 'loading');
+                const matches = findTopMatches(queryEmbedding, 5);
+
+                updateStatus(`Found ${matches.length} results for "${query}"`, 'success');
+                displayResults(matches, query);
+            } catch (error) {
+                updateStatus(`Search error: ${error.message}`, 'error');
+                console.error('Search error:', error);
+            } finally {
+                searchButton.disabled = false;
+            }
+        }
+
+        // Event listeners
+        searchButton.addEventListener('click', handleSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+        // Initialize application
+        async function initialize() {
+            const embeddingsLoaded = await loadEmbeddings();
+            if (!embeddingsLoaded) {
+                return;
+            }
+
+            const modelInitialized = await initializeModel();
+            if (!modelInitialized) {
+                return;
+            }
+
+            isReady = true;
+            searchButton.disabled = false;
+
+            // Initialize the graph visualization
+            initializeGraph();
+        }
+
+        // Start initialization
+        initialize();
+    </script>
+</body>
+</html>
