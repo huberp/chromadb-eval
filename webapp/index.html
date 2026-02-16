@@ -398,7 +398,7 @@
     </div>
 
     <script type="module">
-        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
 
         // Configure transformers.js to use CDN models
         env.allowLocalModels = false;
@@ -794,7 +794,7 @@
         async function initializeModel() {
             try {
                 updateStatus('Initializing embedding model (this may take a moment)...', 'loading');
-                embedder = await pipeline('feature-extraction', MODEL_ID);
+                embedder = await pipeline('feature-extraction', MODEL_ID, { dtype: 'q8' });
                 updateStatus('Model initialized successfully', 'success');
                 return true;
             } catch (error) {

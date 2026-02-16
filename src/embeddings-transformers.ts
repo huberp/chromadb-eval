@@ -1,9 +1,9 @@
 /**
  * Transformers.js-based embedding provider using LLM models.
- * Uses @xenova/transformers for local LLM-based embeddings without external API calls.
+ * Uses @huggingface/transformers for local LLM-based embeddings without external API calls.
  */
 
-import { pipeline, type FeatureExtractionPipeline } from '@xenova/transformers';
+import { pipeline, type FeatureExtractionPipeline } from '@huggingface/transformers';
 
 export interface TransformersEmbeddingConfig {
   modelId: string;
@@ -28,9 +28,9 @@ export class TransformersEmbeddings {
     console.log(`Initializing transformers.js embedding model: ${this.config.modelId}...`);
     
     // Lazy-initialize the pipeline with feature extraction
+    // @ts-ignore - pipeline overload types are too complex for TypeScript
     this.pipeline = await pipeline('feature-extraction', this.config.modelId, {
-      // These options ensure optimal embedding generation
-      quantized: true, // Use quantized models for better performance
+      dtype: 'q8', // Use quantized models for better performance
     });
     
     console.log('Transformers.js model loaded successfully');

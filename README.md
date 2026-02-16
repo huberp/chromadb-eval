@@ -17,7 +17,7 @@ See [`webapp/README.md`](webapp/README.md) for more details on the implementatio
 ## Features
 
 - **Multiple Embedding Strategies**:
-  - **LLM Embeddings** (default): Uses transformers.js for local LLM-based embeddings with `Xenova/all-mpnet-base-v2`
+  - **LLM Embeddings** (default): Uses transformers.js for local LLM-based embeddings with `Xenova/all-mpnet-base-v2` (via `@huggingface/transformers`)
   - **Local Embeddings**: Uses custom TF-IDF-based embeddings for lightweight operation
   - **HuggingFace Embeddings**: Uses Hugging Face Text Embeddings Inference server with modern AI models
 - **Document Chunking**: Intelligent text chunking with overlap for better context preservation
