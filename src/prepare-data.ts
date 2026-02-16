@@ -60,8 +60,15 @@ function rawUrl(relativePath: string): string {
  * - HTTP compression (gzip) compresses JSON very efficiently
  * - While binary formats save ~70% of raw JSON size, they add complexity
  *   and a processing step that negates benefits for browser usage
+ * 
+ * Note: This function is specifically designed for the EmbeddingEntry interface
+ * and depends on the "embedding" field name. If the field name changes,
+ * this function must be updated accordingly.
+ * 
+ * @param data - The data to stringify (expected to be an array of EmbeddingEntry)
+ * @returns JSON string with compact embedding arrays
  */
-function stringifyWithCompactEmbeddings(data: any): string {
+function stringifyWithCompactEmbeddings(data: unknown): string {
   return JSON.stringify(data, (key, value) => {
     // Keep embedding arrays as-is (they'll be compacted in the final output)
     return value;
@@ -70,7 +77,9 @@ function stringifyWithCompactEmbeddings(data: any): string {
     /"embedding":\s*\[\s*([\s\S]*?)\s*\]/g,
     (match, contents) => {
       // Extract all numbers from the array content
-      const numbers = contents.match(/-?\d+\.?\d*(?:e[+-]?\d+)?/g) || [];
+      // This regex matches JSON number format: optional minus, digits, optional decimal and digits,
+      // optional exponent (e or E) with optional sign and digits
+      const numbers = contents.match(/-?\d+\.?\d*(?:[eE][+-]?\d+)?/g) || [];
       return `"embedding": [${numbers.join(', ')}]`;
     }
   );
