@@ -430,10 +430,31 @@
         let reducedEmbeddings = [];
         let graphVisible = false;
 
+        // Graph constants
+        const MAX_PCA_DIMENSIONS = 50; // Limit dimensions for performance
+        const POWER_ITERATION_COUNT = 20; // Number of iterations for PCA
+        const POINT_RADIUS = 4; // Radius of points on graph
+        const HOVER_RADIUS = 6; // Radius for hover detection
+
         // Update status message
         function updateStatus(message, type = 'loading') {
             status.textContent = message;
             status.className = `status ${type}`;
+        }
+
+        // Get scaling functions for coordinate mapping
+        function getScalingFunctions(reducedEmbeddings, width, height, padding) {
+            const xValues = reducedEmbeddings.map(p => p.coords[0]);
+            const yValues = reducedEmbeddings.map(p => p.coords[1]);
+            const xMin = Math.min(...xValues);
+            const xMax = Math.max(...xValues);
+            const yMin = Math.min(...yValues);
+            const yMax = Math.max(...yValues);
+
+            return {
+                scaleX: (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding),
+                scaleY: (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding)
+            };
         }
 
         // Simple PCA implementation for dimensionality reduction
@@ -455,7 +476,7 @@
             const centered = vectors.map(v => v.map((val, idx) => val - mean[idx]));
 
             // Compute covariance matrix (using a subset of dimensions for performance)
-            const maxDims = Math.min(50, d); // Use first 50 dimensions for speed
+            const maxDims = Math.min(MAX_PCA_DIMENSIONS, d);
             const cov = Array(maxDims).fill(0).map(() => Array(maxDims).fill(0));
             
             for (let i = 0; i < maxDims; i++) {
@@ -485,7 +506,7 @@
                 }
 
                 // Power iteration
-                for (let iter = 0; iter < 20; iter++) {
+                for (let iter = 0; iter < POWER_ITERATION_COUNT; iter++) {
                     const Av = Array(maxDims).fill(0);
                     for (let i = 0; i < maxDims; i++) {
                         for (let j = 0; j < maxDims; j++) {
@@ -554,17 +575,8 @@
 
             if (reducedEmbeddings.length === 0) return;
 
-            // Find min and max for scaling
-            const xValues = reducedEmbeddings.map(p => p.coords[0]);
-            const yValues = reducedEmbeddings.map(p => p.coords[1]);
-            const xMin = Math.min(...xValues);
-            const xMax = Math.max(...xValues);
-            const yMin = Math.min(...yValues);
-            const yMax = Math.max(...yValues);
-
-            // Scale function
-            const scaleX = (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
-            const scaleY = (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding);
+            // Get scaling functions
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
 
             // Draw axes
             ctx.strokeStyle = '#e0e0e0';
@@ -583,7 +595,7 @@
 
                 ctx.fillStyle = color;
                 ctx.beginPath();
-                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.arc(x, y, POINT_RADIUS, 0, 2 * Math.PI);
                 ctx.fill();
 
                 // Draw border
@@ -673,16 +685,8 @@
             const mouseX = (e.clientX - rect.left) * (width / rect.width);
             const mouseY = (e.clientY - rect.top) * (height / rect.height);
 
-            // Find min and max for scaling
-            const xValues = reducedEmbeddings.map(p => p.coords[0]);
-            const yValues = reducedEmbeddings.map(p => p.coords[1]);
-            const xMin = Math.min(...xValues);
-            const xMax = Math.max(...xValues);
-            const yMin = Math.min(...yValues);
-            const yMax = Math.max(...yValues);
-
-            const scaleX = (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
-            const scaleY = (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding);
+            // Get scaling functions
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
 
             // Check if hovering over a point
             let hoveredPoint = null;
@@ -692,7 +696,7 @@
                 const y = scaleY(point.coords[1]);
                 const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
                 
-                if (dist < 6) {
+                if (dist < HOVER_RADIUS) {
                     hoveredPoint = point;
                     canvas.style.cursor = 'pointer';
                     break;
@@ -717,16 +721,8 @@
             const mouseX = (e.clientX - rect.left) * (width / rect.width);
             const mouseY = (e.clientY - rect.top) * (height / rect.height);
 
-            // Find min and max for scaling
-            const xValues = reducedEmbeddings.map(p => p.coords[0]);
-            const yValues = reducedEmbeddings.map(p => p.coords[1]);
-            const xMin = Math.min(...xValues);
-            const xMax = Math.max(...xValues);
-            const yMin = Math.min(...yValues);
-            const yMax = Math.max(...yValues);
-
-            const scaleX = (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
-            const scaleY = (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding);
+            // Get scaling functions
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
 
             // Find clicked point
             for (let i = 0; i < reducedEmbeddings.length; i++) {
@@ -735,7 +731,7 @@
                 const y = scaleY(point.coords[1]);
                 const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
                 
-                if (dist < 6) {
+                if (dist < HOVER_RADIUS) {
                     // Open chunk URL in new tab
                     window.open(point.entry.chunkRawUrl, '_blank');
                     break;
@@ -968,7 +964,6 @@
             }
         });
 
-        // Initialize application
         // Initialize application
         async function initialize() {
             const embeddingsLoaded = await loadEmbeddings();
