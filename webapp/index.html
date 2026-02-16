@@ -438,11 +438,18 @@
                 resultContent.className = 'result-content';
                 resultContent.id = `content-${idx}`;
                 
+                // Create a container for the expand button
+                const expandButtonContainer = document.createElement('div');
+                
                 // Fetch and display chunk content
                 fetch(entry.chunkRawUrl)
                     .then(res => res.text())
                     .then(content => {
-                        resultContent.textContent = content.substring(0, 300) + (content.length > 300 ? '...' : '');
+                        // Store full content for toggling
+                        const fullContent = content;
+                        const truncatedContent = content.substring(0, 300) + '...';
+                        
+                        resultContent.textContent = content.length > 300 ? truncatedContent : content;
                         
                         if (content.length > 300) {
                             const expandButton = document.createElement('div');
@@ -451,15 +458,16 @@
                             expandButton.onclick = () => {
                                 if (resultContent.classList.contains('expanded')) {
                                     resultContent.classList.remove('expanded');
-                                    resultContent.textContent = content.substring(0, 300) + '...';
+                                    resultContent.textContent = truncatedContent;
                                     expandButton.textContent = 'Show more';
                                 } else {
                                     resultContent.classList.add('expanded');
-                                    resultContent.textContent = content;
+                                    resultContent.textContent = fullContent;
                                     expandButton.textContent = 'Show less';
                                 }
                             };
-                            resultItem.appendChild(expandButton);
+                            // Insert expand button in the container
+                            expandButtonContainer.appendChild(expandButton);
                         }
                     })
                     .catch(err => {
@@ -477,6 +485,7 @@
                 resultItem.appendChild(resultHeader);
                 resultItem.appendChild(resultMeta);
                 resultItem.appendChild(resultContent);
+                resultItem.appendChild(expandButtonContainer);
                 resultItem.appendChild(resultLinks);
 
                 resultsContainer.appendChild(resultItem);
