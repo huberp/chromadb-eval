@@ -244,6 +244,12 @@
             text-decoration: underline;
         }
 
+        /* Graph Toggle Container */
+        .graph-toggle-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
         /* Embeddings Graph Styles */
         .graph-section {
             background: white;
@@ -378,10 +384,13 @@
             <div class="status loading" id="status">Loading embeddings database...</div>
         </div>
 
+        <div class="graph-toggle-container" id="graphToggleContainer" style="display: none;">
+            <button class="toggle-graph-button" id="toggleGraphButton">Show Graph</button>
+        </div>
+
         <div class="graph-section" id="graphSection">
             <div class="graph-header">
                 <h2 class="graph-title">📊 Embeddings Visualization</h2>
-                <button class="toggle-graph-button" id="toggleGraphButton">Hide Graph</button>
             </div>
             <canvas id="embeddingsCanvas"></canvas>
             <div class="graph-legend" id="graphLegend"></div>
@@ -422,6 +431,7 @@
         const resultsSection = document.getElementById('resultsSection');
         const resultsContainer = document.getElementById('resultsContainer');
         const graphSection = document.getElementById('graphSection');
+        const graphToggleContainer = document.getElementById('graphToggleContainer');
         const toggleGraphButton = document.getElementById('toggleGraphButton');
         const embeddingsCanvas = document.getElementById('embeddingsCanvas');
         const graphLegend = document.getElementById('graphLegend');
@@ -429,6 +439,9 @@
         // Graph state
         let reducedEmbeddings = [];
         let graphVisible = false;
+        let queryPoint = null; // Stores the projected query embedding point
+        let pcaMean = null; // PCA mean for projecting new points
+        let pcaComponents = null; // PCA components for projecting new points
 
         // Graph constants
         const MAX_PCA_DIMENSIONS = 50; // Limit dimensions for performance
@@ -443,17 +456,21 @@
         }
 
         // Get scaling functions for coordinate mapping
-        function getScalingFunctions(reducedEmbeddings, width, height, padding) {
-            const xValues = reducedEmbeddings.map(p => p.coords[0]);
-            const yValues = reducedEmbeddings.map(p => p.coords[1]);
+        function getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints) {
+            const allPoints = extraPoints ? [...reducedEmbeddings, ...extraPoints] : reducedEmbeddings;
+            const xValues = allPoints.map(p => p.coords[0]);
+            const yValues = allPoints.map(p => p.coords[1]);
             const xMin = Math.min(...xValues);
             const xMax = Math.max(...xValues);
             const yMin = Math.min(...yValues);
             const yMax = Math.max(...yValues);
 
+            const xRange = xMax - xMin;
+            const yRange = yMax - yMin;
+
             return {
-                scaleX: (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding),
-                scaleY: (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding)
+                scaleX: (x) => xRange === 0 ? width / 2 : padding + ((x - xMin) / xRange) * (width - 2 * padding),
+                scaleY: (y) => yRange === 0 ? height / 2 : height - padding - ((y - yMin) / yRange) * (height - 2 * padding)
             };
         }
 
@@ -527,6 +544,10 @@
                 components.push(v);
             }
 
+            // Store PCA parameters for projecting new points later
+            pcaMean = mean;
+            pcaComponents = components;
+
             // Project data onto principal components
             const projected = centered.map(point => {
                 return components.map(comp => {
@@ -539,6 +560,23 @@
             });
 
             return projected;
+        }
+
+        // Project a single new vector into the existing PCA space
+        function projectIntoPCA(vector) {
+            if (!pcaMean || !pcaComponents) return null;
+            const maxDims = Math.min(MAX_PCA_DIMENSIONS, vector.length, pcaMean.length);
+            const centered = new Array(maxDims);
+            for (let i = 0; i < maxDims; i++) {
+                centered[i] = vector[i] - pcaMean[i];
+            }
+            return pcaComponents.map(comp => {
+                let sum = 0;
+                for (let i = 0; i < maxDims; i++) {
+                    sum += centered[i] * comp[i];
+                }
+                return sum;
+            });
         }
 
         // Get color for document type based on filename prefix
@@ -572,8 +610,11 @@
 
             if (reducedEmbeddings.length === 0) return;
 
+            // Include query point in scaling if present
+            const extraPoints = queryPoint ? [queryPoint] : [];
+
             // Get scaling functions
-            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints);
 
             // Draw axes
             ctx.strokeStyle = '#e0e0e0';
@@ -601,6 +642,36 @@
                 ctx.stroke();
             });
 
+            // Draw query point as a star shape
+            if (queryPoint) {
+                const qx = scaleX(queryPoint.coords[0]);
+                const qy = scaleY(queryPoint.coords[1]);
+                const outerRadius = 8;
+                const innerRadius = 4;
+                const spikes = 5;
+
+                ctx.fillStyle = '#FFD700';
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                for (let i = 0; i < spikes * 2; i++) {
+                    const radius = i % 2 === 0 ? outerRadius : innerRadius;
+                    const angle = (Math.PI / 2 * 3) + (i * Math.PI / spikes);
+                    const sx = qx + Math.cos(angle) * radius;
+                    const sy = qy + Math.sin(angle) * radius;
+                    if (i === 0) ctx.moveTo(sx, sy);
+                    else ctx.lineTo(sx, sy);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Draw label
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillText('Query', qx + 12, qy + 4);
+            }
+
             // Add labels
             ctx.fillStyle = '#666';
             ctx.font = '12px sans-serif';
@@ -613,7 +684,8 @@
             const categories = [
                 { name: 'Fruits', color: '#ff6b6b' },
                 { name: 'SIMD', color: '#4ecdc4' },
-                { name: 'Mathematics', color: '#95e1d3' }
+                { name: 'Mathematics', color: '#95e1d3' },
+                { name: 'Query', color: '#FFD700' }
             ];
 
             graphLegend.innerHTML = categories.map(cat => `
@@ -658,8 +730,9 @@
 
             setupGraphLegend();
             
-            // Show graph by default
+            // Show graph and toggle button by default
             graphVisible = true;
+            graphToggleContainer.style.display = '';
             graphSection.classList.add('visible');
             toggleGraphButton.textContent = 'Hide Graph';
             
@@ -683,7 +756,8 @@
             const mouseY = (e.clientY - rect.top) * (height / rect.height);
 
             // Get scaling functions
-            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
+            const extraPoints = queryPoint ? [queryPoint] : [];
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints);
 
             // Check if hovering over a point
             let hoveredPoint = null;
@@ -719,7 +793,8 @@
             const mouseY = (e.clientY - rect.top) * (height / rect.height);
 
             // Get scaling functions
-            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding);
+            const extraPoints = queryPoint ? [queryPoint] : [];
+            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints);
 
             // Find clicked point
             for (let i = 0; i < reducedEmbeddings.length; i++) {
@@ -836,7 +911,7 @@
 
             matches.forEach((match, idx) => {
                 const { entry, similarity } = match;
-                const similarityPercent = (similarity * 100).toFixed(1);
+                const similarityPercent = (((similarity + 1) / 2) * 100).toFixed(1);
 
                 const resultItem = document.createElement('div');
                 resultItem.className = 'result-item';
@@ -942,6 +1017,15 @@
                 
                 updateStatus('Finding similar documents...', 'loading');
                 const matches = findTopMatches(queryEmbedding, 5);
+
+                // Project query embedding onto graph
+                const queryCoords = projectIntoPCA(queryEmbedding);
+                if (queryCoords) {
+                    queryPoint = { coords: queryCoords, color: '#FFD700' };
+                    if (graphVisible) {
+                        drawEmbeddingsGraph();
+                    }
+                }
 
                 updateStatus(`Found ${matches.length} results for "${query}"`, 'success');
                 displayResults(matches, query);
