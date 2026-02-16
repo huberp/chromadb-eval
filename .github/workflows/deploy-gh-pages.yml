@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'webapp/**'
+      - '.github/workflows/deploy-gh-pages.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to gh-pages
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd ${{ github.workspace }}/webapp
+          
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config credential.helper '!f() { echo "username=x-access-token"; echo "password=${GITHUB_TOKEN}"; }; f'
+          
+          git checkout -b gh-pages
+          git add .
+          git commit -m "Deploy webapp to gh-pages from ${{ github.sha }}"
+          
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          git push --force origin gh-pages
