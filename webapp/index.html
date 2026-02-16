@@ -244,6 +244,90 @@
             text-decoration: underline;
         }
 
+        /* Embeddings Graph Styles */
+        .graph-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .graph-section.visible {
+            display: block;
+        }
+
+        .graph-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .graph-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .toggle-graph-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .toggle-graph-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #embeddingsCanvas {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: crosshair;
+        }
+
+        .graph-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .graph-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -254,6 +338,20 @@
             }
 
             .search-button {
+                width: 100%;
+            }
+
+            #embeddingsCanvas {
+                height: 400px;
+            }
+
+            .graph-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .toggle-graph-button {
                 width: 100%;
             }
         }
@@ -278,6 +376,19 @@
                 <button class="search-button" id="searchButton">Search</button>
             </div>
             <div class="status loading" id="status">Loading embeddings database...</div>
+        </div>
+
+        <div class="graph-section" id="graphSection">
+            <div class="graph-header">
+                <h2 class="graph-title">📊 Embeddings Visualization</h2>
+                <button class="toggle-graph-button" id="toggleGraphButton">Hide Graph</button>
+            </div>
+            <canvas id="embeddingsCanvas"></canvas>
+            <div class="graph-legend" id="graphLegend"></div>
+            <div class="graph-info">
+                <strong>About:</strong> This graph shows a 2D projection of the high-dimensional embedding vectors using PCA (Principal Component Analysis). 
+                Each point represents a document chunk. Hover over points to see details. Click to view the chunk.
+            </div>
         </div>
 
         <div class="results-section" id="resultsSection">
@@ -310,12 +421,337 @@
         const status = document.getElementById('status');
         const resultsSection = document.getElementById('resultsSection');
         const resultsContainer = document.getElementById('resultsContainer');
+        const graphSection = document.getElementById('graphSection');
+        const toggleGraphButton = document.getElementById('toggleGraphButton');
+        const embeddingsCanvas = document.getElementById('embeddingsCanvas');
+        const graphLegend = document.getElementById('graphLegend');
+
+        // Graph state
+        let reducedEmbeddings = [];
+        let graphVisible = false;
 
         // Update status message
         function updateStatus(message, type = 'loading') {
             status.textContent = message;
             status.className = `status ${type}`;
         }
+
+        // Simple PCA implementation for dimensionality reduction
+        function performPCA(vectors, targetDimensions = 2) {
+            const n = vectors.length;
+            const d = vectors[0].length;
+
+            // Center the data
+            const mean = new Array(d).fill(0);
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < d; j++) {
+                    mean[j] += vectors[i][j];
+                }
+            }
+            for (let j = 0; j < d; j++) {
+                mean[j] /= n;
+            }
+
+            const centered = vectors.map(v => v.map((val, idx) => val - mean[idx]));
+
+            // Compute covariance matrix (using a subset of dimensions for performance)
+            const maxDims = Math.min(50, d); // Use first 50 dimensions for speed
+            const cov = Array(maxDims).fill(0).map(() => Array(maxDims).fill(0));
+            
+            for (let i = 0; i < maxDims; i++) {
+                for (let j = i; j < maxDims; j++) {
+                    let sum = 0;
+                    for (let k = 0; k < n; k++) {
+                        sum += centered[k][i] * centered[k][j];
+                    }
+                    cov[i][j] = sum / (n - 1);
+                    cov[j][i] = cov[i][j];
+                }
+            }
+
+            // Power iteration for first 2 principal components
+            const components = [];
+            for (let comp = 0; comp < targetDimensions; comp++) {
+                let v = Array(maxDims).fill(0).map(() => Math.random() - 0.5);
+                
+                // Normalize
+                let norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
+                v = v.map(val => val / norm);
+
+                // Deflate previous components
+                for (let prevComp of components) {
+                    const dot = v.reduce((sum, val, idx) => sum + val * prevComp[idx], 0);
+                    v = v.map((val, idx) => val - dot * prevComp[idx]);
+                }
+
+                // Power iteration
+                for (let iter = 0; iter < 20; iter++) {
+                    const Av = Array(maxDims).fill(0);
+                    for (let i = 0; i < maxDims; i++) {
+                        for (let j = 0; j < maxDims; j++) {
+                            Av[i] += cov[i][j] * v[j];
+                        }
+                    }
+                    
+                    // Deflate previous components
+                    for (let prevComp of components) {
+                        const dot = Av.reduce((sum, val, idx) => sum + val * prevComp[idx], 0);
+                        Av.forEach((val, idx) => Av[idx] = val - dot * prevComp[idx]);
+                    }
+                    
+                    norm = Math.sqrt(Av.reduce((sum, val) => sum + val * val, 0));
+                    v = Av.map(val => val / norm);
+                }
+                
+                components.push(v);
+            }
+
+            // Project data onto principal components
+            const projected = centered.map(point => {
+                return components.map(comp => {
+                    let sum = 0;
+                    for (let i = 0; i < maxDims; i++) {
+                        sum += point[i] * comp[i];
+                    }
+                    return sum;
+                });
+            });
+
+            return projected;
+        }
+
+        // Get color for document type
+        function getColorForDocument(filename) {
+            if (filename.startsWith('01-') || filename.startsWith('02-') || 
+                filename.startsWith('03-') || filename.startsWith('04-') || 
+                filename.startsWith('05-')) {
+                return '#ff6b6b'; // Red for fruits
+            } else if (filename.startsWith('06-') || filename.startsWith('07-') || 
+                       filename.startsWith('08-') || filename.startsWith('09-') || 
+                       filename.startsWith('10-')) {
+                return '#4ecdc4'; // Cyan for SIMD
+            } else {
+                return '#95e1d3'; // Green for mathematics
+            }
+        }
+
+        // Draw embeddings graph
+        function drawEmbeddingsGraph() {
+            const canvas = embeddingsCanvas;
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            // Clear canvas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+
+            if (reducedEmbeddings.length === 0) return;
+
+            // Find min and max for scaling
+            const xValues = reducedEmbeddings.map(p => p.coords[0]);
+            const yValues = reducedEmbeddings.map(p => p.coords[1]);
+            const xMin = Math.min(...xValues);
+            const xMax = Math.max(...xValues);
+            const yMin = Math.min(...yValues);
+            const yMax = Math.max(...yValues);
+
+            // Scale function
+            const scaleX = (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
+            const scaleY = (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding);
+
+            // Draw axes
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+
+            // Draw points
+            reducedEmbeddings.forEach((point, idx) => {
+                const x = scaleX(point.coords[0]);
+                const y = scaleY(point.coords[1]);
+                const color = point.color;
+
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Draw border
+                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+
+            // Add labels
+            ctx.fillStyle = '#666';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('PC1', width - padding + 5, height - padding + 5);
+            ctx.fillText('PC2', padding - 5, padding - 10);
+        }
+
+        // Setup graph legend
+        function setupGraphLegend() {
+            const categories = [
+                { name: 'Fruits', color: '#ff6b6b' },
+                { name: 'SIMD', color: '#4ecdc4' },
+                { name: 'Mathematics', color: '#95e1d3' }
+            ];
+
+            graphLegend.innerHTML = categories.map(cat => `
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: ${cat.color}"></div>
+                    <span>${cat.name}</span>
+                </div>
+            `).join('');
+        }
+
+        // Toggle graph visibility
+        function toggleGraph() {
+            graphVisible = !graphVisible;
+            if (graphVisible) {
+                graphSection.classList.add('visible');
+                toggleGraphButton.textContent = 'Hide Graph';
+                if (reducedEmbeddings.length > 0) {
+                    drawEmbeddingsGraph();
+                }
+            } else {
+                graphSection.classList.remove('visible');
+                toggleGraphButton.textContent = 'Show Graph';
+            }
+        }
+
+        // Initialize graph with embeddings
+        function initializeGraph() {
+            if (embeddings.length === 0) return;
+
+            updateStatus('Computing PCA for visualization...', 'loading');
+
+            // Perform PCA
+            const vectors = embeddings.map(e => e.embedding);
+            const projected = performPCA(vectors, 2);
+
+            // Store reduced embeddings with metadata
+            reducedEmbeddings = projected.map((coords, idx) => ({
+                coords,
+                color: getColorForDocument(embeddings[idx].sourceFile),
+                entry: embeddings[idx]
+            }));
+
+            setupGraphLegend();
+            
+            // Show graph by default
+            graphVisible = true;
+            graphSection.classList.add('visible');
+            toggleGraphButton.textContent = 'Hide Graph';
+            
+            drawEmbeddingsGraph();
+            
+            updateStatus(`✨ Ready! Enter your query and press Search`, 'success');
+        }
+
+        // Add canvas interaction
+        embeddingsCanvas.addEventListener('mousemove', (e) => {
+            if (reducedEmbeddings.length === 0) return;
+
+            const rect = embeddingsCanvas.getBoundingClientRect();
+            const canvas = embeddingsCanvas;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            const mouseX = (e.clientX - rect.left) * (width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (height / rect.height);
+
+            // Find min and max for scaling
+            const xValues = reducedEmbeddings.map(p => p.coords[0]);
+            const yValues = reducedEmbeddings.map(p => p.coords[1]);
+            const xMin = Math.min(...xValues);
+            const xMax = Math.max(...xValues);
+            const yMin = Math.min(...yValues);
+            const yMax = Math.max(...yValues);
+
+            const scaleX = (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
+            const scaleY = (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding);
+
+            // Check if hovering over a point
+            let hoveredPoint = null;
+            for (let i = 0; i < reducedEmbeddings.length; i++) {
+                const point = reducedEmbeddings[i];
+                const x = scaleX(point.coords[0]);
+                const y = scaleY(point.coords[1]);
+                const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+                
+                if (dist < 6) {
+                    hoveredPoint = point;
+                    canvas.style.cursor = 'pointer';
+                    break;
+                }
+            }
+
+            if (!hoveredPoint) {
+                canvas.style.cursor = 'crosshair';
+            }
+        });
+
+        // Add click handler for canvas
+        embeddingsCanvas.addEventListener('click', (e) => {
+            if (reducedEmbeddings.length === 0) return;
+
+            const rect = embeddingsCanvas.getBoundingClientRect();
+            const canvas = embeddingsCanvas;
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            const mouseX = (e.clientX - rect.left) * (width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (height / rect.height);
+
+            // Find min and max for scaling
+            const xValues = reducedEmbeddings.map(p => p.coords[0]);
+            const yValues = reducedEmbeddings.map(p => p.coords[1]);
+            const xMin = Math.min(...xValues);
+            const xMax = Math.max(...xValues);
+            const yMin = Math.min(...yValues);
+            const yMax = Math.max(...yValues);
+
+            const scaleX = (x) => padding + ((x - xMin) / (xMax - xMin)) * (width - 2 * padding);
+            const scaleY = (y) => height - padding - ((y - yMin) / (yMax - yMin)) * (height - 2 * padding);
+
+            // Find clicked point
+            for (let i = 0; i < reducedEmbeddings.length; i++) {
+                const point = reducedEmbeddings[i];
+                const x = scaleX(point.coords[0]);
+                const y = scaleY(point.coords[1]);
+                const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+                
+                if (dist < 6) {
+                    // Open chunk URL in new tab
+                    window.open(point.entry.chunkRawUrl, '_blank');
+                    break;
+                }
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (graphVisible && reducedEmbeddings.length > 0) {
+                drawEmbeddingsGraph();
+            }
+        });
+
+        // Toggle button handler
+        toggleGraphButton.addEventListener('click', toggleGraph);
 
         // Calculate cosine similarity between two vectors
         function cosineSimilarity(vecA, vecB) {
@@ -533,6 +969,7 @@
         });
 
         // Initialize application
+        // Initialize application
         async function initialize() {
             const embeddingsLoaded = await loadEmbeddings();
             if (!embeddingsLoaded) {
@@ -545,8 +982,10 @@
             }
 
             isReady = true;
-            updateStatus('✨ Ready! Enter your query and press Search', 'success');
             searchButton.disabled = false;
+
+            // Initialize the graph visualization
+            initializeGraph();
         }
 
         // Start initialization
