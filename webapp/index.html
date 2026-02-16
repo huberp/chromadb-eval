@@ -465,9 +465,12 @@
             const yMin = Math.min(...yValues);
             const yMax = Math.max(...yValues);
 
+            const xRange = xMax - xMin;
+            const yRange = yMax - yMin;
+
             return {
-                scaleX: (x) => padding + ((x - xMin) / (xMax - xMin || 1)) * (width - 2 * padding),
-                scaleY: (y) => height - padding - ((y - yMin) / (yMax - yMin || 1)) * (height - 2 * padding)
+                scaleX: (x) => xRange === 0 ? width / 2 : padding + ((x - xMin) / xRange) * (width - 2 * padding),
+                scaleY: (y) => yRange === 0 ? height / 2 : height - padding - ((y - yMin) / yRange) * (height - 2 * padding)
             };
         }
 
@@ -562,8 +565,11 @@
         // Project a single new vector into the existing PCA space
         function projectIntoPCA(vector) {
             if (!pcaMean || !pcaComponents) return null;
-            const maxDims = Math.min(MAX_PCA_DIMENSIONS, vector.length);
-            const centered = vector.map((val, idx) => idx < pcaMean.length ? val - pcaMean[idx] : val);
+            const maxDims = Math.min(MAX_PCA_DIMENSIONS, vector.length, pcaMean.length);
+            const centered = new Array(maxDims);
+            for (let i = 0; i < maxDims; i++) {
+                centered[i] = vector[i] - pcaMean[i];
+            }
             return pcaComponents.map(comp => {
                 let sum = 0;
                 for (let i = 0; i < maxDims; i++) {
@@ -905,7 +911,7 @@
 
             matches.forEach((match, idx) => {
                 const { entry, similarity } = match;
-                const similarityPercent = ((similarity + 1) / 2 * 100).toFixed(1);
+                const similarityPercent = (((similarity + 1) / 2) * 100).toFixed(1);
 
                 const resultItem = document.createElement('div');
                 resultItem.className = 'result-item';
