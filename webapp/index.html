@@ -477,7 +477,7 @@
 
             // Compute covariance matrix (using a subset of dimensions for performance)
             const maxDims = Math.min(MAX_PCA_DIMENSIONS, d);
-            const cov = Array(maxDims).fill(0).map(() => Array(maxDims).fill(0));
+            const cov = Array.from({ length: maxDims }, () => Array(maxDims).fill(0));
             
             for (let i = 0; i < maxDims; i++) {
                 for (let j = i; j < maxDims; j++) {
@@ -541,18 +541,15 @@
             return projected;
         }
 
-        // Get color for document type
+        // Get color for document type based on filename prefix
         function getColorForDocument(filename) {
-            if (filename.startsWith('01-') || filename.startsWith('02-') || 
-                filename.startsWith('03-') || filename.startsWith('04-') || 
-                filename.startsWith('05-')) {
-                return '#ff6b6b'; // Red for fruits
-            } else if (filename.startsWith('06-') || filename.startsWith('07-') || 
-                       filename.startsWith('08-') || filename.startsWith('09-') || 
-                       filename.startsWith('10-')) {
-                return '#4ecdc4'; // Cyan for SIMD
+            const prefix = parseInt(filename.split('-')[0]);
+            if (prefix >= 1 && prefix <= 5) {
+                return '#ff6b6b'; // Red for fruits (01-05)
+            } else if (prefix >= 6 && prefix <= 10) {
+                return '#4ecdc4'; // Cyan for SIMD (06-10)
             } else {
-                return '#95e1d3'; // Green for mathematics
+                return '#95e1d3'; // Green for mathematics (11-20)
             }
         }
 
