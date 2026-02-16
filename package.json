@@ -9,7 +9,8 @@
     "dev": "tsx watch src/index.ts",
     "verify-ast": "tsx src/verify-ast-parsing.ts",
     "verify-ast-chunker": "tsx src/verify-ast-chunker.ts",
-    "compare-chunkers": "tsx src/chunking/compare-chunkers.ts"
+    "compare-chunkers": "tsx src/chunking/compare-chunkers.ts",
+    "prepare-data": "tsx src/prepare-data.ts"
   },
   "keywords": [],
   "author": "",
