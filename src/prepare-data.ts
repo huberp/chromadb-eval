@@ -47,6 +47,26 @@ function rawUrl(relativePath: string): string {
   return `${RAW_BASE_URL}/${relativePath}`;
 }
 
+/**
+ * Custom JSON stringifier that keeps embedding arrays compact (single line).
+ * This significantly reduces file size by not adding line breaks for each
+ * vector dimension.
+ */
+function stringifyWithCompactEmbeddings(data: any): string {
+  return JSON.stringify(data, (key, value) => {
+    // Keep embedding arrays as-is (they'll be compacted in the final output)
+    return value;
+  }, 2).replace(
+    // Replace multi-line embedding arrays with single-line compact format
+    /"embedding":\s*\[\s*([\s\S]*?)\s*\]/g,
+    (match, contents) => {
+      // Extract all numbers from the array content
+      const numbers = contents.match(/-?\d+\.?\d*(?:e[+-]?\d+)?/g) || [];
+      return `"embedding": [${numbers.join(', ')}]`;
+    }
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -114,6 +134,12 @@ async function main(): Promise<void> {
     docSizes.set(file, fs.statSync(path.join(DOCUMENTS_DIR, file)).size);
   }
 
+  interface ChunkReference {
+    file: string;
+    rawUrl: string;
+    size: number;
+  }
+
   interface EmbeddingEntry {
     id: string;
     chunkIndex: number;
@@ -121,12 +147,8 @@ async function main(): Promise<void> {
     chunkFile: string;
     chunkRawUrl: string;
     chunkSize: number;
-    beforeChunkFile: string | null;
-    beforeChunkRawUrl: string | null;
-    beforeChunkSize: number | null;
-    afterChunkFile: string | null;
-    afterChunkRawUrl: string | null;
-    afterChunkSize: number | null;
+    before: ChunkReference | null;
+    after: ChunkReference | null;
     documentFile: string;
     documentRawUrl: string;
     documentSize: number;
@@ -153,11 +175,22 @@ async function main(): Promise<void> {
       afterChunk = allChunks[i + 1];
     }
 
-    const beforeFileName = beforeChunk
-      ? `${docName(beforeChunk.sourceFile)}.${beforeChunk.chunkIndex}.md`
+    // Create before reference object if there's a previous chunk
+    const before: ChunkReference | null = beforeChunk
+      ? {
+          file: `${docName(beforeChunk.sourceFile)}.${beforeChunk.chunkIndex}.md`,
+          rawUrl: rawUrl(`chunks/${docName(beforeChunk.sourceFile)}.${beforeChunk.chunkIndex}.md`),
+          size: beforeChunk.content.length,
+        }
       : null;
-    const afterFileName = afterChunk
-      ? `${docName(afterChunk.sourceFile)}.${afterChunk.chunkIndex}.md`
+
+    // Create after reference object if there's a next chunk
+    const after: ChunkReference | null = afterChunk
+      ? {
+          file: `${docName(afterChunk.sourceFile)}.${afterChunk.chunkIndex}.md`,
+          rawUrl: rawUrl(`chunks/${docName(afterChunk.sourceFile)}.${afterChunk.chunkIndex}.md`),
+          size: afterChunk.content.length,
+        }
       : null;
 
     entries.push({
@@ -167,12 +200,8 @@ async function main(): Promise<void> {
       chunkFile: chunkFileName,
       chunkRawUrl: rawUrl(`chunks/${chunkFileName}`),
       chunkSize: chunk.content.length,
-      beforeChunkFile: beforeFileName,
-      beforeChunkRawUrl: beforeFileName ? rawUrl(`chunks/${beforeFileName}`) : null,
-      beforeChunkSize: beforeChunk ? beforeChunk.content.length : null,
-      afterChunkFile: afterFileName,
-      afterChunkRawUrl: afterFileName ? rawUrl(`chunks/${afterFileName}`) : null,
-      afterChunkSize: afterChunk ? afterChunk.content.length : null,
+      before,
+      after,
       documentFile: chunk.sourceFile,
       documentRawUrl: rawUrl(`documents/${chunk.sourceFile}`),
       documentSize: docSizes.get(chunk.sourceFile) || 0,
@@ -184,7 +213,7 @@ async function main(): Promise<void> {
   }
 
   const outputJsonPath = path.join(OUTPUT_DIR, 'embeddings.json');
-  fs.writeFileSync(outputJsonPath, JSON.stringify(entries, null, 2), 'utf-8');
+  fs.writeFileSync(outputJsonPath, stringifyWithCompactEmbeddings(entries), 'utf-8');
   console.log(`Wrote ${entries.length} embedding entries to ${outputJsonPath}`);
 
   console.log('\n=== Data preparation complete ===');
