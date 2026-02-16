@@ -1,0 +1,73 @@
+name: Prepare Data for gh-pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'documents/**'
+      - 'src/**'
+      - '.github/workflows/prepare-data.yml'
+
+jobs:
+  prepare-data:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get model ID
+        id: model-info
+        run: |
+          MODEL_ID="${EMBEDDING_MODEL_ID:-Xenova/all-mpnet-base-v2}"
+          echo "model_id=$MODEL_ID" >> $GITHUB_OUTPUT
+          CACHE_KEY=$(echo "$MODEL_ID" | sed 's/\//-/g')
+          echo "cache_key=$CACHE_KEY" >> $GITHUB_OUTPUT
+        env:
+          EMBEDDING_MODEL_ID: ${{ vars.EMBEDDING_MODEL_ID }}
+
+      - name: Restore transformers.js model cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.cache/transformers.js
+          key: transformers-js-${{ steps.model-info.outputs.cache_key }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            transformers-js-${{ steps.model-info.outputs.cache_key }}-
+
+      - name: Prepare data
+        run: npm run prepare-data
+        env:
+          OUTPUT_DIR: ${{ github.workspace }}/data-output
+          RAW_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/data-main
+          EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
+
+      - name: Deploy to data-main branch
+        run: |
+          cd ${{ github.workspace }}/data-output
+
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b data-main
+          git add .
+          git commit -m "Update data from ${{ github.sha }}"
+
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git push --force origin data-main
