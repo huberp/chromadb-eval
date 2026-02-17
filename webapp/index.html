@@ -553,29 +553,28 @@
             <button class="modal-close" id="closeModal" aria-label="Close dialog">&times;</button>
             <h2 id="modalTitle">About Browser-based Vector Search</h2>
             
-            <p>This is a fully browser-based semantic search application demonstrating vector search capabilities entirely client-side, with no server required.</p>
+            <p>A standalone browser demo of semantic search using vector embeddings. All processing happens in your browser with no backend or database required.</p>
             
             <h3>🔧 Technologies</h3>
             <ul>
                 <li><strong>Transformers.js</strong>: Browser-native ML via <code>@huggingface/transformers</code></li>
                 <li><strong>Embedding Model</strong>: <code>Xenova/all-mpnet-base-v2</code> (768-dim vectors)</li>
-                <li><strong>Vector Similarity</strong>: Cosine similarity for semantic matching</li>
-                <li><strong>Static Hosting</strong>: GitHub Pages with zero build step</li>
+                <li><strong>In-Memory Search</strong>: JavaScript-based cosine similarity</li>
+                <li><strong>Static Hosting</strong>: GitHub Pages</li>
             </ul>
             
             <h3>⚙️ How It Works</h3>
             <ul>
-                <li>Pre-computed embeddings are loaded from the <code>data-main</code> branch</li>
-                <li>Your query is embedded using the same model in your browser</li>
-                <li>Cosine similarity finds the top 5 most relevant document chunks</li>
-                <li>All processing happens locally - no data sent to servers</li>
+                <li>Pre-computed embeddings loaded from GitHub at runtime</li>
+                <li>Your query is embedded in-browser using Transformers.js</li>
+                <li>JavaScript computes cosine similarity to find top matches</li>
+                <li>No server, no database - everything runs locally</li>
             </ul>
             
             <h3>📚 Learn More</h3>
             <ul>
-                <li><a href="https://github.com/huberp/chromadb-eval" target="_blank">View source code on GitHub</a></li>
-                <li><a href="https://github.com/huberp/chromadb-eval/blob/main/README.md" target="_blank">Read the documentation</a></li>
-                <li><a href="https://huggingface.co/Xenova/all-mpnet-base-v2" target="_blank">Embedding model details</a></li>
+                <li><a href="https://github.com/huberp/chromadb-eval/tree/gh-pages" target="_blank">View webapp source</a></li>
+                <li><a href="https://huggingface.co/Xenova/all-mpnet-base-v2" target="_blank">About the embedding model</a></li>
             </ul>
         </div>
     </div>
