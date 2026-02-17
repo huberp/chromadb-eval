@@ -486,6 +486,9 @@
 
         // Simple PCA implementation for dimensionality reduction
         function performPCA(vectors, targetDimensions = 2) {
+            // Reset PRNG for deterministic results across multiple PCA calls
+            const localPrng = seededRandom(42);
+            
             const n = vectors.length;
             const d = vectors[0].length;
 
@@ -520,7 +523,7 @@
             // Power iteration for first 2 principal components
             const components = [];
             for (let comp = 0; comp < targetDimensions; comp++) {
-                let v = Array(maxDims).fill(0).map((_, i) => Math.sin(i + comp));
+                let v = Array(maxDims).fill(0).map(() => localPrng() - 0.5);
                 
                 // Normalize
                 let norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
