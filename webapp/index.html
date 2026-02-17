@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChromaDB Eval - Vector Search</title>
+    <title>Browser-based Vector Search</title>
     <style>
         * {
             margin: 0;
@@ -27,12 +27,14 @@
             text-align: center;
             color: white;
             margin-bottom: 30px;
+            position: relative;
         }
 
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: inline-block;
         }
 
         .header p {
@@ -334,6 +336,144 @@
             color: #666;
         }
 
+        /* About Button */
+        .about-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .modal-content h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .modal-content p {
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .modal-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .modal-content a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .modal-content a:hover {
+            text-decoration: underline;
+        }
+
+        .modal-content code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -366,7 +506,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔍 ChromaDB Eval - Vector Search</h1>
+            <h1>🔍 Browser-based Vector Search</h1>
+            <button class="about-button" id="aboutButton" title="About this app" aria-label="About this application">i</button>
             <p>Semantic search powered by browser-based embeddings</p>
         </div>
 
@@ -403,6 +544,46 @@
         <div class="results-section" id="resultsSection">
             <h2 class="results-header">Top 5 Matches</h2>
             <div id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal" aria-label="Close dialog">&times;</button>
+            <h2 id="modalTitle">About Browser-based Vector Search</h2>
+            
+            <p>A standalone browser demo of semantic search using vector embeddings. All processing happens in your browser with no backend or database required.</p>
+            
+            <h3>🔧 Technologies</h3>
+            <ul>
+                <li><strong>Transformers.js</strong>: Browser-native ML via <code>@huggingface/transformers</code></li>
+                <li><strong>Embedding Model</strong>: <code>Xenova/all-mpnet-base-v2</code> (768-dim vectors)</li>
+                <li><strong>In-Memory Search</strong>: JavaScript-based cosine similarity</li>
+                <li><strong>Static Hosting</strong>: GitHub Pages</li>
+            </ul>
+            
+            <h3>📦 Embedding Preparation</h3>
+            <ul>
+                <li><strong>Structure-based chunking</strong> of Markdown files using AST parsing</li>
+                <li><strong>Semantic sections</strong> preserved with configurable chunk size & overlap</li>
+                <li><strong>Pre-computed embeddings</strong> generated via GitHub Actions workflow</li>
+                <li><strong>Stored on GitHub</strong> in the <code>data-main</code> branch</li>
+            </ul>
+            
+            <h3>⚙️ How It Works</h3>
+            <ul>
+                <li>Pre-computed embeddings loaded from GitHub at runtime</li>
+                <li>Your query is embedded in-browser using Transformers.js</li>
+                <li>JavaScript computes cosine similarity to find top matches</li>
+                <li>No server, no database - everything runs locally</li>
+            </ul>
+            
+            <h3>📚 Learn More</h3>
+            <ul>
+                <li><a href="https://github.com/huberp/chromadb-eval/tree/gh-pages" target="_blank">View webapp source</a></li>
+                <li><a href="https://huggingface.co/Xenova/all-mpnet-base-v2" target="_blank">About the embedding model</a></li>
+            </ul>
         </div>
     </div>
 
@@ -1055,6 +1236,36 @@
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 handleSearch();
+            }
+        });
+
+        // About modal event listeners
+        const aboutModal = document.getElementById('aboutModal');
+        const aboutButton = document.getElementById('aboutButton');
+        const closeModal = document.getElementById('closeModal');
+
+        aboutButton.addEventListener('click', () => {
+            aboutModal.classList.add('show');
+        });
+
+        closeModal.addEventListener('click', () => {
+            aboutModal.classList.remove('show');
+            aboutButton.focus();
+        });
+
+        // Close modal when clicking outside of it
+        aboutModal.addEventListener('click', (e) => {
+            if (e.target === aboutModal) {
+                aboutModal.classList.remove('show');
+                aboutButton.focus();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && aboutModal.classList.contains('show')) {
+                aboutModal.classList.remove('show');
+                aboutButton.focus();
             }
         });
 
