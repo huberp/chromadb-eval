@@ -507,7 +507,7 @@
     <div class="container">
         <div class="header">
             <h1>🔍 Browser-based Vector Search</h1>
-            <button class="about-button" id="aboutButton" title="About this app">i</button>
+            <button class="about-button" id="aboutButton" title="About this app" aria-label="About this application">i</button>
             <p>Semantic search powered by browser-based embeddings</p>
         </div>
 
@@ -548,10 +548,10 @@
     </div>
 
     <!-- About Modal -->
-    <div id="aboutModal" class="modal">
+    <div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-content">
-            <button class="modal-close" id="closeModal">&times;</button>
-            <h2>About Browser-based Vector Search</h2>
+            <button class="modal-close" id="closeModal" aria-label="Close dialog">&times;</button>
+            <h2 id="modalTitle">About Browser-based Vector Search</h2>
             
             <p>This is a fully browser-based semantic search application demonstrating vector search capabilities entirely client-side, with no server required.</p>
             
