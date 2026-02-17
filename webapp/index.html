@@ -1243,12 +1243,14 @@
 
         closeModal.addEventListener('click', () => {
             aboutModal.classList.remove('show');
+            aboutButton.focus();
         });
 
         // Close modal when clicking outside of it
         aboutModal.addEventListener('click', (e) => {
             if (e.target === aboutModal) {
                 aboutModal.classList.remove('show');
+                aboutButton.focus();
             }
         });
 
@@ -1256,6 +1258,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && aboutModal.classList.contains('show')) {
                 aboutModal.classList.remove('show');
+                aboutButton.focus();
             }
         });
 
