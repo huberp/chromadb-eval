@@ -413,6 +413,16 @@
         env.allowLocalModels = false;
         env.allowRemoteModels = true;
 
+        // Seeded PRNG for deterministic random number generation
+        function seededRandom(seed) {
+            let state = seed;
+            return function() {
+                state = (state * 1664525 + 1013904223) % 4294967296;
+                return state / 4294967296;
+            };
+        }
+        const prng = seededRandom(42); // Fixed seed for reproducibility
+
         // State
         let embeddings = [];
         let embedder = null;
@@ -445,7 +455,7 @@
 
         // Graph constants
         const MAX_PCA_DIMENSIONS = 50; // Limit dimensions for performance
-        const POWER_ITERATION_COUNT = 20; // Number of iterations for PCA
+        const POWER_ITERATION_COUNT = 100; // More iterations for better convergence
         const POINT_RADIUS = 4; // Radius of points on graph
         const HOVER_RADIUS = 6; // Radius for hover detection
 
@@ -476,6 +486,9 @@
 
         // Simple PCA implementation for dimensionality reduction
         function performPCA(vectors, targetDimensions = 2) {
+            // Reset PRNG for deterministic results across multiple PCA calls
+            const localPrng = seededRandom(42);
+            
             const n = vectors.length;
             const d = vectors[0].length;
 
@@ -510,7 +523,7 @@
             // Power iteration for first 2 principal components
             const components = [];
             for (let comp = 0; comp < targetDimensions; comp++) {
-                let v = Array(maxDims).fill(0).map(() => Math.random() - 0.5);
+                let v = Array(maxDims).fill(0).map(() => localPrng() - 0.5);
                 
                 // Normalize
                 let norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
