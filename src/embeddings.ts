@@ -111,35 +111,7 @@ export class LocalEmbeddings {
     return text.toLowerCase()
       .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
-      .filter(word => word.length > 2)
-      .map(word => this.stem(word));
-  }
-
-  /**
-   * Basic English stemmer to normalize morphological variants.
-   * Reduces plural forms, gerunds, and common suffixes to a shared root
-   * so that e.g. "apples" and "apple" map to the same token.
-   */
-  private stem(word: string): string {
-    // Handle -sses → -ss (e.g., "grasses" -> "grass")
-    if (word.endsWith('sses')) {
-      return word.slice(0, -2);
-    }
-    // Handle -ies → -y (e.g., "varieties" -> "variety")
-    if (word.endsWith('ies') && word.length > 4) {
-      return word.slice(0, -3) + 'y';
-    }
-    // Handle -es after sibilants: sh, ch, x, z (e.g., "boxes" -> "box", "watches" -> "watch")
-    if (word.length >= 4 &&
-        (word.endsWith('shes') || word.endsWith('ches') || word.endsWith('xes') || word.endsWith('zes'))) {
-      return word.slice(0, -2);
-    }
-    // Handle regular -s plurals (e.g., "apples" -> "apple", "fruits" -> "fruit")
-    if (word.endsWith('s') && !word.endsWith('ss') && !word.endsWith('us') && word.length > 3) {
-      return word.slice(0, -1);
-    }
-
-    return word;
+      .filter(word => word.length > 2);
   }
 
   /**
