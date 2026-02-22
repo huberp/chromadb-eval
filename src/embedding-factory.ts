@@ -55,7 +55,7 @@ export async function createEmbeddingFunction(config?: EmbeddingConfig): Promise
   
   if (embedConfig.strategy === 'llm') {
     // Use transformers.js for local LLM-based embeddings
-    const modelId = embedConfig.modelId || 'Xenova/paraphrase-mpnet-base-v2';
+    const modelId = embedConfig.modelId!;
     const transformersEmbedder = new TransformersEmbeddings({
       modelId,
       batchSize: embedConfig.batchSize

@@ -19,6 +19,7 @@ import * as path from 'path';
 import removeMd from 'remove-markdown';
 import { AstDocumentChunker, AstChunk } from './chunking/ast-chunker';
 import { TransformersEmbeddings } from './embeddings-transformers';
+import { getEmbeddingConfig } from './embedding-config';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -32,8 +33,6 @@ const DOCS_DIR = path.join(OUTPUT_DIR, 'documents');
 // GitHub raw-content base URL.  The workflow sets this env-var; during local
 // runs we fall back to a placeholder so the script still works.
 const RAW_BASE_URL = process.env.RAW_BASE_URL || 'https://raw.githubusercontent.com/{owner}/{repo}/data-main';
-
-const MODEL_ID = process.env.EMBEDDING_MODEL_ID || 'Xenova/all-mpnet-base-v2';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -136,8 +135,9 @@ async function main(): Promise<void> {
   console.log(`Wrote ${allChunks.length} chunk files to ${CHUNKS_DIR}\n`);
 
   // 6. Compute embeddings using transformers.js
-  console.log(`Initializing embedding model: ${MODEL_ID}`);
-  const embedder = new TransformersEmbeddings({ modelId: MODEL_ID });
+  const embeddingConfig = getEmbeddingConfig();
+  console.log(`Initializing embedding model: ${embeddingConfig.modelId}`);
+  const embedder = new TransformersEmbeddings({ modelId: embeddingConfig.modelId! });
   await embedder.initialize();
 
   const texts = allChunks.map(c => removeMd(c.content));
