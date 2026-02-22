@@ -130,7 +130,7 @@ export class LocalEmbeddings {
       return word.slice(0, -3) + 'y';
     }
     // Handle -es after sibilants: sh, ch, x, z (e.g., "boxes" -> "box", "watches" -> "watch")
-    if (word.length > 4 &&
+    if (word.length >= 4 &&
         (word.endsWith('shes') || word.endsWith('ches') || word.endsWith('xes') || word.endsWith('zes'))) {
       return word.slice(0, -2);
     }
