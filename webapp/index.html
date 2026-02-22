@@ -61,7 +61,7 @@
             <h3>🔧 Technologies</h3>
             <ul>
                 <li><strong>Transformers.js</strong>: Browser-native ML via <code>@huggingface/transformers</code></li>
-                <li><strong>Embedding Model</strong>: <code>Xenova/all-mpnet-base-v2</code> (768-dim vectors)</li>
+                <li><strong>Embedding Model</strong>: <code id="embeddingModelName"></code></li>
                 <li><strong>In-Memory Search</strong>: JavaScript-based cosine similarity</li>
                 <li><strong>Static Hosting</strong>: GitHub Pages</li>
             </ul>
@@ -85,7 +85,7 @@
             <h3>📚 Learn More</h3>
             <ul>
                 <li><a href="https://github.com/huberp/chromadb-eval/tree/gh-pages" target="_blank">View webapp source</a></li>
-                <li><a href="https://huggingface.co/Xenova/all-mpnet-base-v2" target="_blank">About the embedding model</a></li>
+                <li><a id="embeddingModelLink" href="" target="_blank">About the embedding model</a></li>
             </ul>
         </div>
     </div>
@@ -97,8 +97,14 @@
             toggleGraph, initializeGraph, projectIntoPCA
         } from './pca.js';
         import {
-            loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches
+            loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches, MODEL_ID
         } from './embeddings.js';
+
+        // Populate model references in the About modal from the single config source
+        document.getElementById('embeddingModelName').textContent = MODEL_ID;
+        const modelLink = document.getElementById('embeddingModelLink');
+        modelLink.href = `https://huggingface.co/${MODEL_ID}`;
+        modelLink.title = MODEL_ID;
 
         // State
         let embeddings = [];

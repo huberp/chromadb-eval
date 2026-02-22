@@ -1,4 +1,5 @@
 import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
+import { MODEL_ID } from './config.js';
 
 // Configure transformers.js to use CDN models
 env.allowLocalModels = false;
@@ -7,7 +8,7 @@ env.allowRemoteModels = true;
 const OWNER = 'huberp';
 const REPO = 'chromadb-eval';
 export const EMBEDDINGS_URL = `https://raw.githubusercontent.com/${OWNER}/${REPO}/data-main/embeddings.json`;
-const MODEL_ID = 'Xenova/all-mpnet-base-v2';
+export { MODEL_ID };
 
 // Computes cosine similarity between two equal-length vectors.
 // Returns a value in [-1, 1] where 1 means identical direction.
