@@ -4,7 +4,6 @@
  */
 
 import { EmbeddingFunction } from 'chromadb';
-import { HuggingfaceServerEmbeddingFunction } from '@chroma-core/huggingface-server';
 import { LocalEmbeddings } from './embeddings';
 import { TransformersEmbeddings } from './embeddings-transformers';
 import { EmbeddingConfig, getEmbeddingConfig } from './embedding-config';
@@ -67,22 +66,6 @@ export async function createEmbeddingFunction(config?: EmbeddingConfig): Promise
     return {
       embeddingFunction,
       transformersEmbedder,
-      strategy: embedConfig.strategy,
-      modelName: embedConfig.modelName
-    };
-  } else if (embedConfig.strategy === 'huggingface') {
-    // Validate required configuration
-    if (!embedConfig.huggingfaceUrl) {
-      throw new Error('HUGGINGFACE_EMBEDDING_URL is required when using huggingface strategy');
-    }
-    
-    // Use Hugging Face Text Embeddings Inference server
-    const embeddingFunction = new HuggingfaceServerEmbeddingFunction({
-      url: embedConfig.huggingfaceUrl
-    });
-    
-    return {
-      embeddingFunction,
       strategy: embedConfig.strategy,
       modelName: embedConfig.modelName
     };
