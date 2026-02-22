@@ -1105,7 +1105,7 @@
 
             matches.forEach((match, idx) => {
                 const { entry, similarity } = match;
-                const similarityPercent = (((similarity + 1) / 2) * 100).toFixed(1);
+                const similarityPercent = (similarity * 100).toFixed(1);
 
                 const resultItem = document.createElement('div');
                 resultItem.className = 'result-item';
