@@ -19,11 +19,11 @@ export interface EmbeddingConfig {
 
 /**
  * Default embedding configuration.
- * Defaults to LLM mode using transformers.js with all-mpnet-base-v2.
+ * Defaults to LLM mode using transformers.js with paraphrase-mpnet-base-v2.
  * 
  * Can be overridden via environment variables:
  * - EMBEDDING_STRATEGY: 'llm' (default) or 'local'
- * - EMBEDDING_MODEL_ID: Model ID for LLM embeddings (default: Xenova/all-mpnet-base-v2)
+ * - EMBEDDING_MODEL_ID: Model ID for LLM embeddings (default: Xenova/paraphrase-mpnet-base-v2)
  * - EMBEDDING_MODEL: Model name for reference/logging
  * - EMBEDDING_BATCH_SIZE: Batch size for embedding generation (default: 32)
  */
@@ -35,7 +35,7 @@ export const defaultEmbeddingConfig: EmbeddingConfig = (() => {
     strategy = 'local';
   }
   
-  const modelId = process.env.EMBEDDING_MODEL_ID || 'Xenova/all-mpnet-base-v2';
+  const modelId = process.env.EMBEDDING_MODEL_ID || 'Xenova/paraphrase-mpnet-base-v2';
   const batchSize = process.env.EMBEDDING_BATCH_SIZE ? parseInt(process.env.EMBEDDING_BATCH_SIZE, 10) : 32;
   
   // Determine model name for logging
