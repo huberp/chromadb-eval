@@ -91,34 +91,26 @@
     </div>
 
     <script type="module">
-        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
-
-        // Configure transformers.js to use CDN models
-        env.allowLocalModels = false;
-        env.allowRemoteModels = true;
-
-        // Returns a seeded pseudo-random number generator (LCG algorithm).
-        // Calling the returned function repeatedly produces values in [0, 1).
-        // Using a fixed seed ensures reproducible results across page loads.
-        function seededRandom(seed) {
-            let state = seed;
-            return function() {
-                state = (state * 1664525 + 1013904223) % 4294967296;
-                return state / 4294967296;
-            };
-        }
-        const prng = seededRandom(42); // Fixed seed for reproducibility
+        import {
+            HOVER_RADIUS,
+            getScalingFunctions, drawEmbeddingsGraph, setupGraphLegend,
+            toggleGraph, initializeGraph, projectIntoPCA
+        } from './pca.js';
+        import {
+            loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches
+        } from './embeddings.js';
 
         // State
         let embeddings = [];
         let embedder = null;
         let isReady = false;
 
-        // Configuration
-        const OWNER = 'huberp';
-        const REPO = 'chromadb-eval';
-        const EMBEDDINGS_URL = `https://raw.githubusercontent.com/${OWNER}/${REPO}/data-main/embeddings.json`;
-        const MODEL_ID = 'Xenova/all-mpnet-base-v2';
+        // Graph state
+        let reducedEmbeddings = [];
+        let graphVisible = false;
+        let queryPoint = null; // Stores the projected query embedding point
+        let pcaMean = null; // PCA mean for projecting new points
+        let pcaComponents = null; // PCA components for projecting new points
 
         // UI Elements
         const searchInput = document.getElementById('searchInput');
@@ -132,327 +124,11 @@
         const embeddingsCanvas = document.getElementById('embeddingsCanvas');
         const graphLegend = document.getElementById('graphLegend');
 
-        // Graph state
-        let reducedEmbeddings = [];
-        let graphVisible = false;
-        let queryPoint = null; // Stores the projected query embedding point
-        let pcaMean = null; // PCA mean for projecting new points
-        let pcaComponents = null; // PCA components for projecting new points
-
-        // Graph constants
-        const MAX_PCA_DIMENSIONS = 50; // Limit dimensions for performance
-        const POWER_ITERATION_COUNT = 100; // More iterations for better convergence
-        const POINT_RADIUS = 4; // Radius of points on graph
-        const HOVER_RADIUS = 6; // Radius for hover detection
-
         // Updates the status bar text and visual style.
         // type: 'loading' (blue), 'success' (green), or 'error' (red).
         function updateStatus(message, type = 'loading') {
             status.textContent = message;
             status.className = `status ${type}`;
-        }
-
-        // Returns {scaleX, scaleY} functions that map 2D embedding coordinates
-        // to canvas pixel positions, fitting all points within the padded area.
-        // extraPoints are optionally included so the query point is always in range.
-        function getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints) {
-            const allPoints = extraPoints ? [...reducedEmbeddings, ...extraPoints] : reducedEmbeddings;
-            const xValues = allPoints.map(p => p.coords[0]);
-            const yValues = allPoints.map(p => p.coords[1]);
-            const xMin = Math.min(...xValues);
-            const xMax = Math.max(...xValues);
-            const yMin = Math.min(...yValues);
-            const yMax = Math.max(...yValues);
-
-            const xRange = xMax - xMin;
-            const yRange = yMax - yMin;
-
-            return {
-                scaleX: (x) => xRange === 0 ? width / 2 : padding + ((x - xMin) / xRange) * (width - 2 * padding),
-                scaleY: (y) => yRange === 0 ? height / 2 : height - padding - ((y - yMin) / yRange) * (height - 2 * padding)
-            };
-        }
-
-        // Reduces high-dimensional embedding vectors to targetDimensions (default 2)
-        // using PCA via power iteration on the covariance matrix.
-        // Stores pcaMean and pcaComponents globally so new points can be projected later.
-        // Returns an array of projected coordinate arrays (one per input vector).
-        function performPCA(vectors, targetDimensions = 2) {
-            // Reset PRNG for deterministic results across multiple PCA calls
-            const localPrng = seededRandom(42);
-            
-            const n = vectors.length;
-            const d = vectors[0].length;
-
-            // Center the data
-            const mean = new Array(d).fill(0);
-            for (let i = 0; i < n; i++) {
-                for (let j = 0; j < d; j++) {
-                    mean[j] += vectors[i][j];
-                }
-            }
-            for (let j = 0; j < d; j++) {
-                mean[j] /= n;
-            }
-
-            const centered = vectors.map(v => v.map((val, idx) => val - mean[idx]));
-
-            // Compute covariance matrix (using a subset of dimensions for performance)
-            const maxDims = Math.min(MAX_PCA_DIMENSIONS, d);
-            const cov = Array.from({ length: maxDims }, () => Array(maxDims).fill(0));
-            
-            for (let i = 0; i < maxDims; i++) {
-                for (let j = i; j < maxDims; j++) {
-                    let sum = 0;
-                    for (let k = 0; k < n; k++) {
-                        sum += centered[k][i] * centered[k][j];
-                    }
-                    cov[i][j] = sum / (n - 1);
-                    cov[j][i] = cov[i][j];
-                }
-            }
-
-            // Power iteration for first 2 principal components
-            const components = [];
-            for (let comp = 0; comp < targetDimensions; comp++) {
-                let v = Array(maxDims).fill(0).map(() => localPrng() - 0.5);
-                
-                // Normalize
-                let norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
-                v = v.map(val => val / norm);
-
-                // Deflate previous components
-                for (let prevComp of components) {
-                    const dot = v.reduce((sum, val, idx) => sum + val * prevComp[idx], 0);
-                    v = v.map((val, idx) => val - dot * prevComp[idx]);
-                }
-
-                // Power iteration
-                for (let iter = 0; iter < POWER_ITERATION_COUNT; iter++) {
-                    const Av = Array(maxDims).fill(0);
-                    for (let i = 0; i < maxDims; i++) {
-                        for (let j = 0; j < maxDims; j++) {
-                            Av[i] += cov[i][j] * v[j];
-                        }
-                    }
-                    
-                    // Deflate previous components
-                    for (let prevComp of components) {
-                        const dot = Av.reduce((sum, val, idx) => sum + val * prevComp[idx], 0);
-                        Av.forEach((val, idx) => Av[idx] = val - dot * prevComp[idx]);
-                    }
-                    
-                    norm = Math.sqrt(Av.reduce((sum, val) => sum + val * val, 0));
-                    v = Av.map(val => val / norm);
-                }
-                
-                components.push(v);
-            }
-
-            // Store PCA parameters for projecting new points later
-            pcaMean = mean;
-            pcaComponents = components;
-
-            // Project data onto principal components
-            const projected = centered.map(point => {
-                return components.map(comp => {
-                    let sum = 0;
-                    for (let i = 0; i < maxDims; i++) {
-                        sum += point[i] * comp[i];
-                    }
-                    return sum;
-                });
-            });
-
-            return projected;
-        }
-
-        // Projects a single new vector into the PCA space computed by performPCA.
-        // Requires pcaMean and pcaComponents to be set; returns null otherwise.
-        // Used to place the live query point on the existing graph without re-running PCA.
-        function projectIntoPCA(vector) {
-            if (!pcaMean || !pcaComponents) return null;
-            const maxDims = Math.min(MAX_PCA_DIMENSIONS, vector.length, pcaMean.length);
-            const centered = new Array(maxDims);
-            for (let i = 0; i < maxDims; i++) {
-                centered[i] = vector[i] - pcaMean[i];
-            }
-            return pcaComponents.map(comp => {
-                let sum = 0;
-                for (let i = 0; i < maxDims; i++) {
-                    sum += centered[i] * comp[i];
-                }
-                return sum;
-            });
-        }
-
-        // Maps a document filename to a category color based on its numeric prefix.
-        // Prefixes 1-5 → red (Fruits), 6-10 → cyan (SIMD), 11+ → green (Mathematics).
-        function getColorForDocument(filename) {
-            const prefix = parseInt(filename.split('-')[0]);
-            if (prefix >= 1 && prefix <= 5) {
-                return '#ff6b6b'; // Red for fruits (01-05)
-            } else if (prefix >= 6 && prefix <= 10) {
-                return '#4ecdc4'; // Cyan for SIMD (06-10)
-            } else {
-                return '#95e1d3'; // Green for mathematics (11-20)
-            }
-        }
-
-        // Renders the 2D PCA scatter plot onto embeddingsCanvas.
-        // Draws document points colored by category and, if present, the query point as a gold star.
-        // Also draws PC1/PC2 axis labels. Called on load, search, and window resize.
-        function drawEmbeddingsGraph() {
-            const canvas = embeddingsCanvas;
-            const ctx = canvas.getContext('2d');
-            
-            // Set canvas size
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            
-            const width = canvas.width;
-            const height = canvas.height;
-            const padding = 40;
-
-            // Clear canvas
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, width, height);
-
-            if (reducedEmbeddings.length === 0) return;
-
-            // Include query point in scaling if present
-            const extraPoints = queryPoint ? [queryPoint] : [];
-
-            // Get scaling functions
-            const { scaleX, scaleY } = getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints);
-
-            // Draw axes
-            ctx.strokeStyle = '#e0e0e0';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(padding, padding);
-            ctx.lineTo(padding, height - padding);
-            ctx.lineTo(width - padding, height - padding);
-            ctx.stroke();
-
-            // Draw points
-            reducedEmbeddings.forEach((point, idx) => {
-                const x = scaleX(point.coords[0]);
-                const y = scaleY(point.coords[1]);
-                const color = point.color;
-
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(x, y, POINT_RADIUS, 0, 2 * Math.PI);
-                ctx.fill();
-
-                // Draw border
-                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            });
-
-            // Draw query point as a star shape
-            if (queryPoint) {
-                const qx = scaleX(queryPoint.coords[0]);
-                const qy = scaleY(queryPoint.coords[1]);
-                const outerRadius = 8;
-                const innerRadius = 4;
-                const spikes = 5;
-
-                ctx.fillStyle = '#FFD700';
-                ctx.strokeStyle = '#333';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                for (let i = 0; i < spikes * 2; i++) {
-                    const radius = i % 2 === 0 ? outerRadius : innerRadius;
-                    const angle = (Math.PI / 2 * 3) + (i * Math.PI / spikes);
-                    const sx = qx + Math.cos(angle) * radius;
-                    const sy = qy + Math.sin(angle) * radius;
-                    if (i === 0) ctx.moveTo(sx, sy);
-                    else ctx.lineTo(sx, sy);
-                }
-                ctx.closePath();
-                ctx.fill();
-                ctx.stroke();
-
-                // Draw label
-                ctx.fillStyle = '#333';
-                ctx.font = 'bold 11px sans-serif';
-                ctx.fillText('Query', qx + 12, qy + 4);
-            }
-
-            // Add labels
-            ctx.fillStyle = '#666';
-            ctx.font = '12px sans-serif';
-            ctx.fillText('PC1', width - padding + 5, height - padding + 5);
-            ctx.fillText('PC2', padding - 5, padding - 10);
-        }
-
-        // Populates the graph legend with color-coded category labels
-        // (Fruits, SIMD, Mathematics, Query) by injecting HTML into graphLegend.
-        function setupGraphLegend() {
-            const categories = [
-                { name: 'Fruits', color: '#ff6b6b' },
-                { name: 'SIMD', color: '#4ecdc4' },
-                { name: 'Mathematics', color: '#95e1d3' },
-                { name: 'Query', color: '#FFD700' }
-            ];
-
-            graphLegend.innerHTML = categories.map(cat => `
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: ${cat.color}"></div>
-                    <span>${cat.name}</span>
-                </div>
-            `).join('');
-        }
-
-        // Toggles the embeddings graph panel between shown and hidden states,
-        // updating the button label and redrawing the graph when made visible.
-        function toggleGraph() {
-            graphVisible = !graphVisible;
-            if (graphVisible) {
-                graphSection.classList.add('visible');
-                toggleGraphButton.textContent = 'Hide Graph';
-                if (reducedEmbeddings.length > 0) {
-                    drawEmbeddingsGraph();
-                }
-            } else {
-                graphSection.classList.remove('visible');
-                toggleGraphButton.textContent = 'Show Graph';
-            }
-        }
-
-        // Runs PCA on all loaded embeddings to produce 2D coordinates,
-        // builds the reducedEmbeddings array with color metadata, sets up the legend,
-        // and renders the graph. Called once after embeddings are fully loaded.
-        function initializeGraph() {
-            if (embeddings.length === 0) return;
-
-            updateStatus('Computing PCA for visualization...', 'loading');
-
-            // Perform PCA
-            const vectors = embeddings.map(e => e.embedding);
-            const projected = performPCA(vectors, 2);
-
-            // Store reduced embeddings with metadata
-            reducedEmbeddings = projected.map((coords, idx) => ({
-                coords,
-                color: getColorForDocument(embeddings[idx].sourceFile),
-                entry: embeddings[idx]
-            }));
-
-            setupGraphLegend();
-            
-            // Show graph and toggle button by default
-            graphVisible = true;
-            graphToggleContainer.style.display = '';
-            graphSection.classList.add('visible');
-            toggleGraphButton.textContent = 'Hide Graph';
-            
-            drawEmbeddingsGraph();
-            
-            updateStatus(`✨ Ready! Enter your query and press Search`, 'success');
         }
 
         // Add canvas interaction
@@ -461,7 +137,6 @@
 
             const rect = embeddingsCanvas.getBoundingClientRect();
             const canvas = embeddingsCanvas;
-            const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
             const padding = 40;
@@ -480,7 +155,7 @@
                 const x = scaleX(point.coords[0]);
                 const y = scaleY(point.coords[1]);
                 const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-                
+
                 if (dist < HOVER_RADIUS) {
                     hoveredPoint = point;
                     canvas.style.cursor = 'pointer';
@@ -516,7 +191,7 @@
                 const x = scaleX(point.coords[0]);
                 const y = scaleY(point.coords[1]);
                 const dist = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
-                
+
                 if (dist < HOVER_RADIUS) {
                     // Open chunk URL in new tab
                     window.open(point.entry.chunkRawUrl, '_blank');
@@ -528,102 +203,14 @@
         // Handle window resize
         window.addEventListener('resize', () => {
             if (graphVisible && reducedEmbeddings.length > 0) {
-                drawEmbeddingsGraph();
+                drawEmbeddingsGraph(embeddingsCanvas, reducedEmbeddings, queryPoint);
             }
         });
 
         // Toggle button handler
-        toggleGraphButton.addEventListener('click', toggleGraph);
-
-        // Computes cosine similarity between two equal-length vectors.
-        // Returns a value in [-1, 1] where 1 means identical direction.
-        // Returns 0 if either vector has zero magnitude.
-        function cosineSimilarity(vecA, vecB) {
-            if (vecA.length !== vecB.length) {
-                throw new Error('Vectors must have the same length');
-            }
-            
-            let dotProduct = 0;
-            let normA = 0;
-            let normB = 0;
-            
-            for (let i = 0; i < vecA.length; i++) {
-                dotProduct += vecA[i] * vecB[i];
-                normA += vecA[i] * vecA[i];
-                normB += vecB[i] * vecB[i];
-            }
-            
-            normA = Math.sqrt(normA);
-            normB = Math.sqrt(normB);
-            
-            if (normA === 0 || normB === 0) {
-                return 0;
-            }
-            
-            return dotProduct / (normA * normB);
-        }
-
-        // Fetches the pre-computed embeddings JSON from the data-main branch and
-        // populates the global `embeddings` array. Returns true on success, false on error.
-        async function loadEmbeddings() {
-            try {
-                updateStatus('Loading embeddings database...', 'loading');
-                const response = await fetch(EMBEDDINGS_URL);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch embeddings: ${response.status}`);
-                }
-                embeddings = await response.json();
-                updateStatus(`Loaded ${embeddings.length} document chunks`, 'success');
-                return true;
-            } catch (error) {
-                updateStatus(`Error loading embeddings: ${error.message}`, 'error');
-                console.error('Error loading embeddings:', error);
-                return false;
-            }
-        }
-
-        // Loads the Transformers.js feature-extraction pipeline with the configured model
-        // and assigns it to the global `embedder`. Uses int8 quantization (dtype 'q8')
-        // for faster inference. Returns true on success, false on error.
-        async function initializeModel() {
-            try {
-                updateStatus('Initializing embedding model (this may take a moment)...', 'loading');
-                embedder = await pipeline('feature-extraction', MODEL_ID, { dtype: 'q8' });
-                updateStatus('Model initialized successfully', 'success');
-                return true;
-            } catch (error) {
-                updateStatus(`Error initializing model: ${error.message}`, 'error');
-                console.error('Error initializing model:', error);
-                return false;
-            }
-        }
-
-        // Runs the query string through the embedding model using mean pooling and
-        // L2 normalization. Returns the embedding as a plain number array.
-        async function computeQueryEmbedding(query) {
-            if (!embedder) {
-                throw new Error('Embedder not initialized');
-            }
-
-            const output = await embedder(query, { pooling: 'mean', normalize: true });
-            return Array.from(output.data);
-        }
-
-        // Scores every entry in `embeddings` by cosine similarity to queryEmbedding,
-        // sorts descending, and returns the top k results (default 5).
-        function findTopMatches(queryEmbedding, k = 5) {
-            const similarities = embeddings.map((entry, index) => ({
-                index,
-                similarity: cosineSimilarity(queryEmbedding, entry.embedding),
-                entry
-            }));
-
-            // Sort by similarity (descending)
-            similarities.sort((a, b) => b.similarity - a.similarity);
-
-            // Return top K
-            return similarities.slice(0, k);
-        }
+        toggleGraphButton.addEventListener('click', () => {
+            graphVisible = toggleGraph(graphVisible, graphSection, toggleGraphButton, reducedEmbeddings, embeddingsCanvas, queryPoint);
+        });
 
         // Renders the search result cards into the results section.
         // Each card shows the source file, similarity badge, chunk metadata, a lazily-fetched
@@ -664,10 +251,10 @@
                 const resultContent = document.createElement('div');
                 resultContent.className = 'result-content';
                 resultContent.id = `content-${idx}`;
-                
+
                 // Create a container for the expand button
                 const expandButtonContainer = document.createElement('div');
-                
+
                 // Fetch and display chunk content
                 fetch(entry.chunkRawUrl)
                     .then(res => res.text())
@@ -675,9 +262,9 @@
                         // Store full content for toggling
                         const fullContent = content;
                         const truncatedContent = content.substring(0, 300) + '...';
-                        
+
                         resultContent.textContent = content.length > 300 ? truncatedContent : content;
-                        
+
                         if (content.length > 300) {
                             const expandButton = document.createElement('div');
                             expandButton.className = 'expand-button';
@@ -738,17 +325,17 @@
                 searchButton.disabled = true;
                 updateStatus('Computing query embedding...', 'loading');
 
-                const queryEmbedding = await computeQueryEmbedding(query);
-                
+                const queryEmbedding = await computeQueryEmbedding(embedder, query);
+
                 updateStatus('Finding similar documents...', 'loading');
-                const matches = findTopMatches(queryEmbedding, 5);
+                const matches = findTopMatches(embeddings, queryEmbedding, 5);
 
                 // Project query embedding onto graph
-                const queryCoords = projectIntoPCA(queryEmbedding);
+                const queryCoords = projectIntoPCA(queryEmbedding, pcaMean, pcaComponents);
                 if (queryCoords) {
                     queryPoint = { coords: queryCoords, color: '#FFD700' };
                     if (graphVisible) {
-                        drawEmbeddingsGraph();
+                        drawEmbeddingsGraph(embeddingsCanvas, reducedEmbeddings, queryPoint);
                     }
                 }
 
@@ -803,13 +390,13 @@
         // Entry point: sequentially loads embeddings, initializes the model, enables
         // the search button, and sets up the PCA graph. Aborts early on any failure.
         async function initialize() {
-            const embeddingsLoaded = await loadEmbeddings();
-            if (!embeddingsLoaded) {
+            embeddings = await loadEmbeddings(updateStatus);
+            if (!embeddings) {
                 return;
             }
 
-            const modelInitialized = await initializeModel();
-            if (!modelInitialized) {
+            embedder = await initializeModel(updateStatus);
+            if (!embedder) {
                 return;
             }
 
@@ -817,7 +404,11 @@
             searchButton.disabled = false;
 
             // Initialize the graph visualization
-            initializeGraph();
+            const graphResult = initializeGraph(embeddings, updateStatus, embeddingsCanvas, graphSection, graphLegend, graphToggleContainer, toggleGraphButton);
+            if (graphResult) {
+                ({ reducedEmbeddings, pcaMean, pcaComponents } = graphResult);
+                graphVisible = true;
+            }
         }
 
         // Start initialization
