@@ -22,6 +22,7 @@
     "chromadb-default-embed": "^2.14.0",
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
+    "remove-markdown": "^0.6.3",
     "unified": "^11.0.5"
   },
   "devDependencies": {

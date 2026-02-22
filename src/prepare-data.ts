@@ -16,6 +16,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import removeMd from 'remove-markdown';
 import { AstDocumentChunker, AstChunk } from './chunking/ast-chunker';
 import { TransformersEmbeddings } from './embeddings-transformers';
 
@@ -46,56 +47,6 @@ function docName(filename: string): string {
 /** Build a raw-content URL for a file inside the output tree. */
 function rawUrl(relativePath: string): string {
   return `${RAW_BASE_URL}/${relativePath}`;
-}
-
-/**
- * Strip markdown formatting from chunk text to produce clean prose for embedding.
- *
- * Sentence-transformer models (e.g. all-mpnet-base-v2) are trained on natural
- * language, not markdown.  Formatting tokens such as `#`, `-`, `|`, triple
- * backticks, etc. are noise that dilutes the mean-pooled embedding.
- * Stripping them before computing the embedding vector produces a
- * representation that is closer to the actual semantic content, which
- * improves cosine-similarity scores – especially for short queries like
- * a single word ("apple").
- */
-function stripMarkdownForEmbedding(text: string): string {
-  return text
-    // Convert markdown headings to plain sentences (add period if missing)
-    .replace(/^#{1,6}\s+(.+)$/gm, (_match, heading: string) => {
-      const trimmed = heading.trim();
-      return /[.!?:]$/.test(trimmed) ? trimmed : trimmed + '.';
-    })
-    // Remove image references (before links to avoid partial matches)
-    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
-    // Remove link formatting, keep text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    // Remove bold markers
-    .replace(/\*\*(.+?)\*\*/g, '$1')
-    // Remove italic markers
-    .replace(/\*(.+?)\*/g, '$1')
-    // Remove strikethrough
-    .replace(/~~(.+?)~~/g, '$1')
-    // Remove code block markers, both opening and closing (keep the code content)
-    .replace(/```\w*\n?/g, '')
-    .replace(/```/g, '')
-    // Remove inline code backticks
-    .replace(/`([^`]+)`/g, '$1')
-    // Remove unordered list markers
-    .replace(/^\s*[-*+]\s+/gm, '')
-    // Remove ordered list markers
-    .replace(/^\s*\d+\.\s+/gm, '')
-    // Remove table pipes
-    .replace(/\|/g, ' ')
-    // Remove table separator lines (e.g. ---|---|--- after pipe removal)
-    .replace(/^\s*[-:\s]{3,}$/gm, '')
-    // Remove horizontal rules
-    .replace(/^---+$/gm, '')
-    // Collapse multiple spaces
-    .replace(/ {2,}/g, ' ')
-    // Collapse multiple newlines
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
 }
 
 /**
@@ -189,8 +140,8 @@ async function main(): Promise<void> {
   const embedder = new TransformersEmbeddings({ modelId: MODEL_ID });
   await embedder.initialize();
 
-  const texts = allChunks.map(c => stripMarkdownForEmbedding(c.content));
-  console.log(`Computing embeddings for ${texts.length} chunks (markdown stripped)...`);
+  const texts = allChunks.map(c => removeMd(c.content));
+  console.log(`Computing embeddings for ${texts.length} chunks (markdown stripped via remove-markdown)...`);
   const embeddings = await embedder.embedBatch(texts);
   console.log('Embeddings computed\n');
 
