@@ -4,504 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browser-based Vector Search</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            display: inline-block;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .search-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 15px;
-            font-size: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            transition: border-color 0.3s;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .search-button {
-            padding: 15px 30px;
-            font-size: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-weight: 600;
-        }
-
-        .search-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .search-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .status {
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-
-        .status.loading {
-            background: #e3f2fd;
-            color: #1976d2;
-            border-left: 4px solid #1976d2;
-        }
-
-        .status.error {
-            background: #ffebee;
-            color: #c62828;
-            border-left: 4px solid #c62828;
-        }
-
-        .status.success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-left: 4px solid #2e7d32;
-        }
-
-        .results-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: none;
-        }
-
-        .results-section.visible {
-            display: block;
-        }
-
-        .results-header {
-            font-size: 1.5em;
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .result-item {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .result-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .result-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .similarity-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .result-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .result-meta span {
-            background: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-        }
-
-        .result-content {
-            color: #555;
-            line-height: 1.6;
-            margin-top: 10px;
-            max-height: 150px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .result-content.expanded {
-            max-height: none;
-        }
-
-        .result-content::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            background: linear-gradient(transparent, #f8f9fa);
-            pointer-events: none;
-        }
-
-        .result-content.expanded::after {
-            display: none;
-        }
-
-        .expand-button {
-            color: #667eea;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 5px;
-            display: inline-block;
-            font-size: 0.9em;
-        }
-
-        .expand-button:hover {
-            text-decoration: underline;
-        }
-
-        .result-links {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .result-link {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-
-        .result-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Graph Toggle Container */
-        .graph-toggle-container {
-            text-align: right;
-            margin-bottom: 15px;
-        }
-
-        /* Embeddings Graph Styles */
-        .graph-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-            display: none;
-        }
-
-        .graph-section.visible {
-            display: block;
-        }
-
-        .graph-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .graph-title {
-            font-size: 1.5em;
-            color: #333;
-        }
-
-        .toggle-graph-button {
-            padding: 10px 20px;
-            font-size: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-weight: 600;
-        }
-
-        .toggle-graph-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        #embeddingsCanvas {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: crosshair;
-        }
-
-        .graph-legend {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-            font-size: 0.9em;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .graph-info {
-            margin-top: 15px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        /* About Button */
-        .about-button {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .about-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            animation: fadeIn 0.3s;
-        }
-
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            animation: slideIn 0.3s;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #999;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: #333;
-        }
-
-        .modal-content h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .modal-content h3 {
-            color: #764ba2;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        .modal-content p {
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .modal-content ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .modal-content li {
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }
-
-        .modal-content a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .modal-content a:hover {
-            text-decoration: underline;
-        }
-
-        .modal-content code {
-            background: #f5f5f5;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .search-box {
-                flex-direction: column;
-            }
-
-            .search-button {
-                width: 100%;
-            }
-
-            #embeddingsCanvas {
-                height: 400px;
-            }
-
-            .graph-header {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-
-            .toggle-graph-button {
-                width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -594,7 +97,9 @@
         env.allowLocalModels = false;
         env.allowRemoteModels = true;
 
-        // Seeded PRNG for deterministic random number generation
+        // Returns a seeded pseudo-random number generator (LCG algorithm).
+        // Calling the returned function repeatedly produces values in [0, 1).
+        // Using a fixed seed ensures reproducible results across page loads.
         function seededRandom(seed) {
             let state = seed;
             return function() {
@@ -640,13 +145,16 @@
         const POINT_RADIUS = 4; // Radius of points on graph
         const HOVER_RADIUS = 6; // Radius for hover detection
 
-        // Update status message
+        // Updates the status bar text and visual style.
+        // type: 'loading' (blue), 'success' (green), or 'error' (red).
         function updateStatus(message, type = 'loading') {
             status.textContent = message;
             status.className = `status ${type}`;
         }
 
-        // Get scaling functions for coordinate mapping
+        // Returns {scaleX, scaleY} functions that map 2D embedding coordinates
+        // to canvas pixel positions, fitting all points within the padded area.
+        // extraPoints are optionally included so the query point is always in range.
         function getScalingFunctions(reducedEmbeddings, width, height, padding, extraPoints) {
             const allPoints = extraPoints ? [...reducedEmbeddings, ...extraPoints] : reducedEmbeddings;
             const xValues = allPoints.map(p => p.coords[0]);
@@ -665,7 +173,10 @@
             };
         }
 
-        // Simple PCA implementation for dimensionality reduction
+        // Reduces high-dimensional embedding vectors to targetDimensions (default 2)
+        // using PCA via power iteration on the covariance matrix.
+        // Stores pcaMean and pcaComponents globally so new points can be projected later.
+        // Returns an array of projected coordinate arrays (one per input vector).
         function performPCA(vectors, targetDimensions = 2) {
             // Reset PRNG for deterministic results across multiple PCA calls
             const localPrng = seededRandom(42);
@@ -756,7 +267,9 @@
             return projected;
         }
 
-        // Project a single new vector into the existing PCA space
+        // Projects a single new vector into the PCA space computed by performPCA.
+        // Requires pcaMean and pcaComponents to be set; returns null otherwise.
+        // Used to place the live query point on the existing graph without re-running PCA.
         function projectIntoPCA(vector) {
             if (!pcaMean || !pcaComponents) return null;
             const maxDims = Math.min(MAX_PCA_DIMENSIONS, vector.length, pcaMean.length);
@@ -773,7 +286,8 @@
             });
         }
 
-        // Get color for document type based on filename prefix
+        // Maps a document filename to a category color based on its numeric prefix.
+        // Prefixes 1-5 → red (Fruits), 6-10 → cyan (SIMD), 11+ → green (Mathematics).
         function getColorForDocument(filename) {
             const prefix = parseInt(filename.split('-')[0]);
             if (prefix >= 1 && prefix <= 5) {
@@ -785,7 +299,9 @@
             }
         }
 
-        // Draw embeddings graph
+        // Renders the 2D PCA scatter plot onto embeddingsCanvas.
+        // Draws document points colored by category and, if present, the query point as a gold star.
+        // Also draws PC1/PC2 axis labels. Called on load, search, and window resize.
         function drawEmbeddingsGraph() {
             const canvas = embeddingsCanvas;
             const ctx = canvas.getContext('2d');
@@ -873,7 +389,8 @@
             ctx.fillText('PC2', padding - 5, padding - 10);
         }
 
-        // Setup graph legend
+        // Populates the graph legend with color-coded category labels
+        // (Fruits, SIMD, Mathematics, Query) by injecting HTML into graphLegend.
         function setupGraphLegend() {
             const categories = [
                 { name: 'Fruits', color: '#ff6b6b' },
@@ -890,7 +407,8 @@
             `).join('');
         }
 
-        // Toggle graph visibility
+        // Toggles the embeddings graph panel between shown and hidden states,
+        // updating the button label and redrawing the graph when made visible.
         function toggleGraph() {
             graphVisible = !graphVisible;
             if (graphVisible) {
@@ -905,7 +423,9 @@
             }
         }
 
-        // Initialize graph with embeddings
+        // Runs PCA on all loaded embeddings to produce 2D coordinates,
+        // builds the reducedEmbeddings array with color metadata, sets up the legend,
+        // and renders the graph. Called once after embeddings are fully loaded.
         function initializeGraph() {
             if (embeddings.length === 0) return;
 
@@ -1015,7 +535,9 @@
         // Toggle button handler
         toggleGraphButton.addEventListener('click', toggleGraph);
 
-        // Calculate cosine similarity between two vectors
+        // Computes cosine similarity between two equal-length vectors.
+        // Returns a value in [-1, 1] where 1 means identical direction.
+        // Returns 0 if either vector has zero magnitude.
         function cosineSimilarity(vecA, vecB) {
             if (vecA.length !== vecB.length) {
                 throw new Error('Vectors must have the same length');
@@ -1041,7 +563,8 @@
             return dotProduct / (normA * normB);
         }
 
-        // Load embeddings from data-main branch
+        // Fetches the pre-computed embeddings JSON from the data-main branch and
+        // populates the global `embeddings` array. Returns true on success, false on error.
         async function loadEmbeddings() {
             try {
                 updateStatus('Loading embeddings database...', 'loading');
@@ -1059,7 +582,9 @@
             }
         }
 
-        // Initialize the embedding model
+        // Loads the Transformers.js feature-extraction pipeline with the configured model
+        // and assigns it to the global `embedder`. Uses int8 quantization (dtype 'q8')
+        // for faster inference. Returns true on success, false on error.
         async function initializeModel() {
             try {
                 updateStatus('Initializing embedding model (this may take a moment)...', 'loading');
@@ -1073,7 +598,8 @@
             }
         }
 
-        // Compute embedding for a query
+        // Runs the query string through the embedding model using mean pooling and
+        // L2 normalization. Returns the embedding as a plain number array.
         async function computeQueryEmbedding(query) {
             if (!embedder) {
                 throw new Error('Embedder not initialized');
@@ -1083,7 +609,8 @@
             return Array.from(output.data);
         }
 
-        // Find top K similar documents
+        // Scores every entry in `embeddings` by cosine similarity to queryEmbedding,
+        // sorts descending, and returns the top k results (default 5).
         function findTopMatches(queryEmbedding, k = 5) {
             const similarities = embeddings.map((entry, index) => ({
                 index,
@@ -1098,7 +625,9 @@
             return similarities.slice(0, k);
         }
 
-        // Display results
+        // Renders the search result cards into the results section.
+        // Each card shows the source file, similarity badge, chunk metadata, a lazily-fetched
+        // content preview with an expand/collapse toggle, and links to the raw chunk and document.
         function displayResults(matches, query) {
             resultsContainer.innerHTML = '';
             resultsSection.classList.add('visible');
@@ -1190,7 +719,9 @@
             });
         }
 
-        // Handle search
+        // Orchestrates a full search: validates input, embeds the query, finds top matches,
+        // updates the graph with the query point, and displays the result cards.
+        // Disables the search button while running to prevent duplicate requests.
         async function handleSearch() {
             const query = searchInput.value.trim();
             if (!query) {
@@ -1269,7 +800,8 @@
             }
         });
 
-        // Initialize application
+        // Entry point: sequentially loads embeddings, initializes the model, enables
+        // the search button, and sets up the PCA graph. Aborts early on any failure.
         async function initialize() {
             const embeddingsLoaded = await loadEmbeddings();
             if (!embeddingsLoaded) {
