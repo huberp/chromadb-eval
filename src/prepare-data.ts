@@ -16,6 +16,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import removeMd from 'remove-markdown';
 import { AstDocumentChunker, AstChunk } from './chunking/ast-chunker';
 import { TransformersEmbeddings } from './embeddings-transformers';
 
@@ -139,8 +140,8 @@ async function main(): Promise<void> {
   const embedder = new TransformersEmbeddings({ modelId: MODEL_ID });
   await embedder.initialize();
 
-  const texts = allChunks.map(c => c.content);
-  console.log(`Computing embeddings for ${texts.length} chunks...`);
+  const texts = allChunks.map(c => removeMd(c.content));
+  console.log(`Computing embeddings for ${texts.length} chunks (markdown stripped via remove-markdown)...`);
   const embeddings = await embedder.embedBatch(texts);
   console.log('Embeddings computed\n');
 
