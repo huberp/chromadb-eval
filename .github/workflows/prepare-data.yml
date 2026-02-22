@@ -33,7 +33,7 @@ jobs:
       - name: Get model ID
         id: model-info
         run: |
-          MODEL_ID="${EMBEDDING_MODEL_ID:-Xenova/all-mpnet-base-v2}"
+          MODEL_ID="${EMBEDDING_MODEL_ID:-Xenova/paraphrase-mpnet-base-v2}"
           echo "model_id=$MODEL_ID" >> $GITHUB_OUTPUT
           CACHE_KEY=$(echo "$MODEL_ID" | sed 's/\//-/g')
           echo "cache_key=$CACHE_KEY" >> $GITHUB_OUTPUT

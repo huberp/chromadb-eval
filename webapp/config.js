@@ -10,4 +10,4 @@
  *  1. Update MODEL_ID below.
  *  2. Update the default in src/embedding-config.ts accordingly.
  */
-export const MODEL_ID = 'Xenova/all-mpnet-base-v2';
+export const MODEL_ID = 'Xenova/paraphrase-mpnet-base-v2';
