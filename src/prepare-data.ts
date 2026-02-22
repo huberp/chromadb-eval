@@ -64,7 +64,7 @@ function stripMarkdownForEmbedding(text: string): string {
     // Convert markdown headings to plain sentences (add period if missing)
     .replace(/^#{1,6}\s+(.+)$/gm, (_match, heading: string) => {
       const trimmed = heading.trim();
-      return /[.!?:,]$/.test(trimmed) ? trimmed : trimmed + '.';
+      return /[.!?:]$/.test(trimmed) ? trimmed : trimmed + '.';
     })
     // Remove image references (before links to avoid partial matches)
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
@@ -76,8 +76,9 @@ function stripMarkdownForEmbedding(text: string): string {
     .replace(/\*(.+?)\*/g, '$1')
     // Remove strikethrough
     .replace(/~~(.+?)~~/g, '$1')
-    // Remove code block markers (keep the code content)
+    // Remove code block markers, both opening and closing (keep the code content)
     .replace(/```\w*\n?/g, '')
+    .replace(/```/g, '')
     // Remove inline code backticks
     .replace(/`([^`]+)`/g, '$1')
     // Remove unordered list markers
@@ -86,8 +87,8 @@ function stripMarkdownForEmbedding(text: string): string {
     .replace(/^\s*\d+\.\s+/gm, '')
     // Remove table pipes
     .replace(/\|/g, ' ')
-    // Remove table separator lines (e.g. |---|---|)
-    .replace(/^\s*[-:\s]+$/gm, '')
+    // Remove table separator lines (e.g. ---|---|--- after pipe removal)
+    .replace(/^\s*[-:\s]{3,}$/gm, '')
     // Remove horizontal rules
     .replace(/^---+$/gm, '')
     // Collapse multiple spaces
