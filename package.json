@@ -10,7 +10,8 @@
     "verify-ast": "tsx src/verify-ast-parsing.ts",
     "verify-ast-chunker": "tsx src/verify-ast-chunker.ts",
     "compare-chunkers": "tsx src/chunking/compare-chunkers.ts",
-    "prepare-data": "tsx src/prepare-data.ts"
+    "prepare-data": "tsx src/prepare-data.ts",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "@types/mdast": "^4.0.4",
     "@types/node": "^25.1.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.1.1"
   }
 }

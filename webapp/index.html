@@ -23,6 +23,11 @@
                     placeholder="Enter your query (e.g., 'What are the benefits of apples?')"
                     autocomplete="off"
                 >
+                <select id="retrievalMode" class="retrieval-mode-select" title="Retrieval mode">
+                    <option value="hybrid" selected>Hybrid</option>
+                    <option value="dense">Dense (Semantic)</option>
+                    <option value="bm25">BM25 (Lexical)</option>
+                </select>
                 <button class="search-button" id="searchButton">Search</button>
             </div>
             <div class="status loading" id="status">Loading embeddings database...</div>
@@ -82,6 +87,13 @@
                 <li>No server, no database - everything runs locally</li>
             </ul>
             
+            <h3>🔀 Retrieval Modes</h3>
+            <ul>
+                <li><strong>Hybrid</strong> (default): Fuses dense semantic search and BM25 lexical search via Reciprocal Rank Fusion (RRF) for best overall recall</li>
+                <li><strong>Dense (Semantic)</strong>: Cosine similarity over pre-computed vector embeddings — best for conceptual queries</li>
+                <li><strong>BM25 (Lexical)</strong>: Exact-match keyword search — best for filenames, symbols, error messages, and rare terms</li>
+            </ul>
+            
             <h3>📚 Learn More</h3>
             <ul>
                 <li><a href="https://github.com/huberp/chromadb-eval/tree/gh-pages" target="_blank">View webapp source</a></li>
@@ -99,6 +111,8 @@
         import {
             loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches, MODEL_ID
         } from './embeddings.js';
+        import { Bm25Index } from './bm25.js';
+        import { rrfFuse } from './fusion.js';
 
         // Populate model references in the About modal from the single config source
         document.getElementById('embeddingModelName').textContent = MODEL_ID;
@@ -110,6 +124,7 @@
         let embeddings = [];
         let embedder = null;
         let isReady = false;
+        let bm25Index = new Bm25Index();
 
         // Graph state
         let reducedEmbeddings = [];
@@ -329,19 +344,45 @@
 
             try {
                 searchButton.disabled = true;
-                updateStatus('Computing query embedding...', 'loading');
+                const mode = document.getElementById('retrievalMode').value;
 
-                const queryEmbedding = await computeQueryEmbedding(embedder, query);
+                let matches;
 
-                updateStatus('Finding similar documents...', 'loading');
-                const matches = findTopMatches(embeddings, queryEmbedding, 5);
+                if (mode === 'bm25') {
+                    updateStatus('Running BM25 lexical search...', 'loading');
+                    const bm25Results = bm25Index.search(query, 5);
+                    const entryById = new Map(embeddings.map(e => [e.id, e]));
+                    matches = bm25Results.map(r => ({
+                        entry: entryById.get(r.id),
+                        similarity: r.score,
+                    })).filter(m => m.entry);
+                } else {
+                    updateStatus('Computing query embedding...', 'loading');
+                    const queryEmbedding = await computeQueryEmbedding(embedder, query);
 
-                // Project query embedding onto graph
-                const queryCoords = projectIntoPCA(queryEmbedding, pcaMean, pcaComponents);
-                if (queryCoords) {
-                    queryPoint = { coords: queryCoords, color: '#FFD700' };
-                    if (graphVisible) {
-                        drawEmbeddingsGraph(embeddingsCanvas, reducedEmbeddings, queryPoint);
+                    // Project query embedding onto graph
+                    const queryCoords = projectIntoPCA(queryEmbedding, pcaMean, pcaComponents);
+                    if (queryCoords) {
+                        queryPoint = { coords: queryCoords, color: '#FFD700' };
+                        if (graphVisible) {
+                            drawEmbeddingsGraph(embeddingsCanvas, reducedEmbeddings, queryPoint);
+                        }
+                    }
+
+                    if (mode === 'dense') {
+                        updateStatus('Finding similar documents...', 'loading');
+                        matches = findTopMatches(embeddings, queryEmbedding, 5);
+                    } else {
+                        // hybrid: fuse dense + BM25 via RRF
+                        updateStatus('Running hybrid search (Dense + BM25)...', 'loading');
+                        const denseResults = findTopMatches(embeddings, queryEmbedding, 50);
+                        const bm25Results = bm25Index.search(query, 50);
+                        const fused = rrfFuse([denseResults, bm25Results], 5);
+                        const entryById = new Map(embeddings.map(e => [e.id, e]));
+                        matches = fused.map(r => ({
+                            entry: entryById.get(r.id),
+                            similarity: r.score,
+                        })).filter(m => m.entry);
                     }
                 }
 
@@ -400,6 +441,10 @@
             if (!embeddings) {
                 return;
             }
+
+            // Build BM25 index from plainText fields (once at startup)
+            updateStatus('Building BM25 index...', 'loading');
+            bm25Index.build(embeddings.map(e => ({ id: e.id, text: e.plainText || '' })));
 
             embedder = await initializeModel(updateStatus);
             if (!embedder) {

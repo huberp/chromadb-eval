@@ -86,6 +86,23 @@ body {
     transform: none;
 }
 
+.retrieval-mode-select {
+    padding: 15px 12px;
+    font-size: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    white-space: nowrap;
+}
+
+.retrieval-mode-select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
 .status {
     padding: 12px;
     border-radius: 6px;
@@ -477,6 +494,10 @@ body {
     }
 
     .search-button {
+        width: 100%;
+    }
+
+    .retrieval-mode-select {
         width: 100%;
     }
 

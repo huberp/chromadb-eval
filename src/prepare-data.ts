@@ -174,6 +174,7 @@ async function main(): Promise<void> {
     section: string | undefined;
     headerHierarchy: string[] | undefined;
     chunkType: string | undefined;
+    plainText: string;
     embedding: number[];
   }
 
@@ -227,6 +228,7 @@ async function main(): Promise<void> {
       section: chunk.metadata?.section,
       headerHierarchy: chunk.metadata?.headerHierarchy,
       chunkType: chunk.metadata?.chunkType,
+      plainText: texts[i],
       embedding: embeddings[i],
     });
   }
