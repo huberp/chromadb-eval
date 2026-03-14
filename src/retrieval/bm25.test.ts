@@ -1,11 +1,15 @@
 /**
  * Node-side BM25 algorithm tests.
  *
- * These tests mirror the browser-side webapp/bm25.js using a plain TypeScript
- * implementation so they can be run with vitest without a browser.
+ * These tests mirror the browser-side webapp/bm25.js using the same npm
+ * packages (stemmer, stopword) so they can be run with vitest without a
+ * browser.  The browser-side file imports the same packages from esm.sh CDN;
+ * the logic is identical.
  */
 
 import { describe, it, expect } from 'vitest';
+import { stemmer } from 'stemmer';
+import { eng as STOP_WORDS_LIST } from 'stopword';
 
 // ---------------------------------------------------------------------------
 // Minimal BM25 implementation (mirrors webapp/bm25.js exactly)
@@ -14,69 +18,12 @@ import { describe, it, expect } from 'vitest';
 const BM25_K1 = 1.5;
 const BM25_B = 0.75;
 
-/**
- * Common English stop words that carry little discriminative information.
- * Filtering these prevents high-frequency function words (e.g. "of", "the")
- * from dominating BM25 scores and returning irrelevant documents.
- *
- * IMPORTANT: This list must be kept in sync with the identical constant in
- * webapp/bm25.js, which is the authoritative source.
- */
-const STOP_WORDS = new Set([
-    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
-    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
-    'should', 'may', 'might', 'that', 'this', 'it', 'its', 'as', 'so',
-    'not', 'no', 'we', 'you', 'he', 'she', 'they', 'i', 'my', 'our',
-    'if', 'then', 'than', 'about', 'up', 'out', 'also', 'into', 'can',
-    'all', 'more', 'over', 'such', 'their', 'what', 'which', 'who', 'how',
-]);
+/** English stop words as a Set for O(1) lookup. */
+const STOP_WORDS = new Set(STOP_WORDS_LIST);
 
-/**
- * Minimal English suffix stemmer (Porter-inspired).
- * IMPORTANT: Must be kept in sync with the identical function in webapp/bm25.js.
- */
-function stem(word: string): string {
-    const len = word.length;
-    if (len <= 3) return word;
-
-    if (len > 7 && word.endsWith('ational')) return word.slice(0, -7) + 'ate';
-    if (len > 7 && word.endsWith('ness'))    return word.slice(0, -4);
-    if (len > 7 && word.endsWith('ment'))    return word.slice(0, -4);
-    if (len > 6 && word.endsWith('tion'))    return word.slice(0, -3);
-    if (len > 6 && word.endsWith('sion'))    return word.slice(0, -3);
-    if (len > 6 && word.endsWith('ize'))     return word.slice(0, -3);
-    if (len > 6 && word.endsWith('ise'))     return word.slice(0, -3);
-
-    if (len > 5 && word.endsWith('ing')) {
-        const s = word.slice(0, -3);
-        if (s.length > 1 && s[s.length - 1] === s[s.length - 2] && !/[aeiou]/.test(s[s.length - 1])) {
-            return s.slice(0, -1);
-        }
-        return s;
-    }
-
-    if (len > 4 && word.endsWith('ed')) {
-        const s = word.slice(0, -2);
-        if (s.length > 1 && s[s.length - 1] === s[s.length - 2] && !/[aeiou]/.test(s[s.length - 1])) {
-            return s.slice(0, -1);
-        }
-        return s;
-    }
-
-    if (len > 5 && word.endsWith('er')) return word.slice(0, -2);
-    if (len > 5 && word.endsWith('ly')) return word.slice(0, -2);
-
-    if (len > 4 && word.endsWith('ies')) return word.slice(0, -3) + 'i';
-    if (len > 4 && word.endsWith('es'))  return word.slice(0, -2);
-    if (len > 3 && word.endsWith('s') && !word.endsWith('ss')) return word.slice(0, -1);
-    if (len > 4 && word.endsWith('e'))   return word.slice(0, -1);
-
-    return word;
-}
-
+/** Tokenize: lowercase → split → stop-word filter → Porter stem. */
 function tokenize(text: string): string[] {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stem);
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stemmer);
 }
 
 interface Doc {
@@ -274,60 +221,36 @@ describe('Bm25Index', () => {
     it('stemmer maps inflected forms to the same token', () => {
         // vitamin, vitamins, vitamines must all produce the same stem so they
         // match each other in both the index and the query.
-        expect(stem('vitamin')).toBe('vitamin');
-        expect(stem('vitamins')).toBe('vitamin');
-        expect(stem('vitamines')).toBe('vitamin');
+        expect(stemmer('vitamin')).toBe('vitamin');
+        expect(stemmer('vitamins')).toBe('vitamin');
+        expect(stemmer('vitamines')).toBe('vitamin');
         // advantage / advantages share a stem
-        expect(stem('advantage')).toBe('advantag');
-        expect(stem('advantages')).toBe('advantag');
-        // -ing with double-letter collapse
-        expect(stem('running')).toBe('run');
+        expect(stemmer('advantage')).toBe('advantag');
+        expect(stemmer('advantages')).toBe('advantag');
+        // Porter stemmer handles common verb inflections
+        expect(stemmer('running')).toBe('run');
+        expect(stemmer('computed')).toBe('comput');
+        expect(stemmer('computing')).toBe('comput');
     });
 
-    it('stemmer strips all supported suffix patterns', () => {
-        // -ational → -ate
-        expect(stem('relational')).toBe('relate');
-        // -ness
-        expect(stem('happiness')).toBe('happi');
-        // -ment
-        expect(stem('treatment')).toBe('treat');
-        // -tion
-        expect(stem('nutrition')).toBe('nutrit');
-        // -sion
-        expect(stem('expansion')).toBe('expans');
-        // -ize
-        expect(stem('optimize')).toBe('optim');
-        // -ise
-        expect(stem('advertise')).toBe('advert');
-        // -ing (no double consonant)
-        expect(stem('computing')).toBe('comput');
-        // -ing (double consonant collapse)
-        expect(stem('running')).toBe('run');
-        expect(stem('sitting')).toBe('sit');
-        // -ed (no double consonant)
-        expect(stem('computed')).toBe('comput');
-        // -ed (double consonant collapse)
-        expect(stem('stemmed')).toBe('stem');
-        // -er
-        expect(stem('greater')).toBe('great');
-        // -ly
-        expect(stem('quickly')).toBe('quick');
-        // -ies → -i
-        expect(stem('parties')).toBe('parti');
-        // -es
-        expect(stem('oranges')).toBe('orang');
-        // -s (not -ss)
-        expect(stem('fruits')).toBe('fruit');
-        // -ss is not stripped
-        expect(stem('grass')).toBe('grass');
-        // -e
-        expect(stem('compute')).toBe('comput');
+    it('stemmer (Porter algorithm) produces expected stems for key vocabulary', () => {
+        // Verify the Porter stemmer outputs used in this codebase.
+        // These are the actual outputs of the `stemmer` npm package.
+        expect(stemmer('nutrition')).toBe('nutrit');
+        expect(stemmer('oranges')).toBe('orang');
+        expect(stemmer('fruits')).toBe('fruit');
+        expect(stemmer('happiness')).toBe('happi');
+        expect(stemmer('expansion')).toBe('expans');
+        expect(stemmer('optimize')).toBe('optim');
+        expect(stemmer('sitting')).toBe('sit');
+        // Porter does not strip -ment when stem would be too short
+        expect(stemmer('treatment')).toBe('treatment');
     });
 
-    it('stemmer handles exact technical terms without destroying them', () => {
-        // Short tokens and identifiers should not be mangled by the stemmer.
-        expect(stem('c')).toBe('c');             // length ≤ 3 — untouched
-        expect(stem('ts')).toBe('ts');            // length ≤ 3 — untouched
-        expect(stem('bm25')).toBe('bm25');        // no matching suffix
+    it('stemmer leaves short tokens and identifiers unchanged', () => {
+        // Short tokens should not be mangled by the Porter stemmer.
+        expect(stemmer('c')).toBe('c');
+        expect(stemmer('ts')).toBe('ts');
+        expect(stemmer('bm25')).toBe('bm25');
     });
 });
