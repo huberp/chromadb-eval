@@ -86,9 +86,12 @@ export async function computeQueryEmbedding(embedder, query) {
 
 // Scores every entry in embeddings by cosine similarity to queryEmbedding,
 // sorts descending, and returns the top k results (default 5).
+// Each result includes an `id` field (from entry.id) so that results can be
+// used directly with rrfFuse() for hybrid retrieval.
 export function findTopMatches(embeddings, queryEmbedding, k = 5) {
     const similarities = embeddings.map((entry, index) => ({
         index,
+        id: entry.id,
         similarity: cosineSimilarity(queryEmbedding, entry.embedding),
         entry
     }));

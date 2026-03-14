@@ -94,4 +94,26 @@ describe('rrfFuse', () => {
         expect(results[0].score).toBeCloseTo(2 / 61, 6);
         expect(results[1].score).toBeCloseTo(2 / 62, 6);
     });
+
+    it('requires items to have an id field for correct fusion (hybrid regression)', () => {
+        // Regression: findTopMatches previously returned { index, similarity, entry }
+        // without an `id` field. Passing such items to rrfFuse caused all dense results
+        // to collapse under the `undefined` key, so only BM25 results survived —
+        // each showing ~1.6% (= 1/61) regardless of semantic relevance.
+        //
+        // This test verifies that when both lists use proper `id` values, a document
+        // appearing at rank 0 in list1 and rank 1 in list2 outranks one only in list2.
+        const denseList = [{ id: 'fruit-doc' }, { id: 'other-doc' }];
+        const bm25List  = [{ id: 'math-doc' }, { id: 'fruit-doc' }];
+
+        const results = rrfFuse([denseList, bm25List], 3);
+        const ids = results.map(r => r.id);
+
+        // fruit-doc appears in both lists → highest combined RRF score
+        expect(ids[0]).toBe('fruit-doc');
+        // math-doc only in bm25 at rank 0, other-doc only in dense at rank 1
+        // math-doc: 1/(61) ≈ 0.01639; other-doc: 1/(62) ≈ 0.01613 → math-doc second
+        expect(ids[1]).toBe('math-doc');
+        expect(ids[2]).toBe('other-doc');
+    });
 });
