@@ -379,9 +379,12 @@
                         const bm25Results = bm25Index.search(query, 50);
                         const fused = rrfFuse([denseResults, bm25Results], 5);
                         const entryById = new Map(embeddings.map(e => [e.id, e]));
+                        // Build a map of cosine similarity by id so the display shows
+                        // a meaningful percentage instead of the raw RRF rank score.
+                        const denseSimilarityById = new Map(denseResults.map(r => [r.id, r.similarity]));
                         matches = fused.map(r => ({
                             entry: entryById.get(r.id),
-                            similarity: r.score,
+                            similarity: denseSimilarityById.get(r.id) ?? r.score,
                         })).filter(m => m.entry);
                     }
                 }
