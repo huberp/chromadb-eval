@@ -2,17 +2,16 @@
 
 This document outlines practical, high-ROI upgrades to move this project from a solid baseline RAG demo toward more production-style ("state of the art") retrieval-augmented generation.
 
-## 1. Hybrid retrieval (dense + lexical)
+## 1. ✅ Hybrid retrieval (dense + lexical) — **implemented**
 **Problem:** Pure dense-vector similarity can miss exact-match needs (filenames, symbols, IDs, error messages, rare terms).
 
-**Improve by:**
-- Add a keyword/BM25-style index in addition to dense embeddings.
-- Fuse dense and lexical candidates using a simple strategy like **Reciprocal Rank Fusion (RRF)** or a weighted score.
-
-**Suggested implementation approach:**
-- Keep Chroma (dense) for semantic retrieval.
-- Add a lightweight lexical layer (e.g., BM25) over the same chunk texts.
-- Retrieve top *k1* from each, then fuse → top *k*.
+**Implemented:**
+- BM25 keyword index built in the browser from `plainText` fields in `embeddings.json`.
+- Dense and lexical candidates fused using **Reciprocal Rank Fusion (RRF, k=60)**.
+- Tokenizer pipeline: lowercase → split on non-word chars → stop-word filter (via `stopword`) → Porter stemmer (via `stemmer`).
+- BM25 parameters: k1=1.5, b=0.75.
+- Retrieval mode selectable in the webapp: **Hybrid** (default), **Dense**, or **BM25**.
+- Node-side unit tests for BM25 scoring and RRF fusion in `src/retrieval/`.
 
 ## 2. Reranking (cross-encoder)
 **Problem:** The initial top-k from vector search often contains near-misses.
@@ -96,7 +95,8 @@ Improve by (optional, more advanced):
 
 ## Suggested roadmap
 1. **Short term (days–weeks)**
-   - Add hybrid retrieval (BM25 + dense) + metadata filters.
+   - ✅ ~~Add hybrid retrieval (BM25 + dense)~~ — done
+   - Add metadata filters.
    - Add citations in output.
 
 2. **Medium term (weeks–1–2 months)**

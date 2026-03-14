@@ -8,6 +8,7 @@ Try the interactive web demo: **[Vector Search Webapp](https://huberp.github.io/
 
 The webapp provides a browser-based semantic search experience powered entirely by JavaScript:
 - **Zero-install**: Runs completely in your browser using transformers.js
+- **Hybrid retrieval**: Combines dense semantic search and BM25 lexical search via Reciprocal Rank Fusion (RRF)
 - **Real-time search**: Find the top 5 most similar document chunks to your query
 - **LLM embeddings**: Uses the same `Xenova/all-mpnet-base-v2` model as the backend
 - **Similarity scores**: Shows percentage match for each result
@@ -163,7 +164,7 @@ EMBEDDING_STRATEGY=huggingface npm start
 You can customize both chunking and embedding behavior via environment variables:
 
 **Chunking:**
-- `CHUNKING_MODE`: Set to `legacy` (default) or `ast`
+- `CHUNKING_MODE`: Set to `legacy` or `ast` (default)
 - `CHUNK_SIZE`: Target chunk size in characters (default: 1000)
 - `CHUNK_OVERLAP`: Overlap size between chunks in characters (default: 150)
 
@@ -291,7 +292,7 @@ Runs automatically when webapp files change.
 
 - `src/chunking/`: Document chunking module with configurable size and overlap
   - `legacy-chunker.ts`: Legacy string-based markdown chunker
-  - `ast-chunker.ts`: AST-based markdown chunker (experimental)
+  - `ast-chunker.ts`: AST-based markdown chunker
   - `markdown-ast.ts`: AST parsing utilities
   - `index.ts`: Public API re-exports
 - `src/config.ts`: Configuration module for chunking behavior
