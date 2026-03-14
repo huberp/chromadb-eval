@@ -35,6 +35,15 @@ body {
     opacity: 0.9;
 }
 
+.build-info {
+    display: block;
+    font-size: 0.75em;
+    opacity: 0.6;
+    margin-top: 4px;
+    font-family: monospace;
+    letter-spacing: 0.03em;
+}
+
 .search-section {
     background: white;
     border-radius: 12px;

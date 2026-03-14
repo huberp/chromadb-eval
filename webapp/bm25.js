@@ -11,9 +11,24 @@
 const BM25_K1 = 1.5;
 const BM25_B = 0.75;
 
-/** Tokenize a string into lowercase word tokens. */
+/**
+ * Common English stop words that carry little discriminative information.
+ * Filtering these prevents high-frequency function words (e.g. "of", "the")
+ * from dominating BM25 scores and returning irrelevant documents.
+ */
+const STOP_WORDS = new Set([
+    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
+    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+    'should', 'may', 'might', 'that', 'this', 'it', 'its', 'as', 'so',
+    'not', 'no', 'we', 'you', 'he', 'she', 'they', 'i', 'my', 'our',
+    'if', 'then', 'than', 'about', 'up', 'out', 'also', 'into', 'can',
+    'all', 'more', 'over', 'such', 'their', 'what', 'which', 'who', 'how',
+]);
+
+/** Tokenize a string into lowercase word tokens, excluding stop words. */
 function tokenize(text) {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0);
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t));
 }
 
 export class Bm25Index {

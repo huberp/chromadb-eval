@@ -12,6 +12,7 @@
             <h1>🔍 Browser-based Vector Search</h1>
             <button class="about-button" id="aboutButton" title="About this app" aria-label="About this application">i</button>
             <p>Semantic search powered by browser-based embeddings</p>
+            <span class="build-info" id="buildInfo" title=""></span>
         </div>
 
         <div class="search-section">
@@ -99,6 +100,11 @@
                 <li><a href="https://github.com/huberp/chromadb-eval/tree/gh-pages" target="_blank">View webapp source</a></li>
                 <li><a id="embeddingModelLink" href="" target="_blank">About the embedding model</a></li>
             </ul>
+
+            <h3>🏷️ Build Info</h3>
+            <ul>
+                <li><strong>Commit:</strong> <code id="buildInfoModal"></code></li>
+            </ul>
         </div>
     </div>
 
@@ -109,16 +115,28 @@
             toggleGraph, initializeGraph, projectIntoPCA
         } from './pca.js';
         import {
-            loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches, MODEL_ID
+            loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches,
+            cosineSimilarity, MODEL_ID
         } from './embeddings.js';
         import { Bm25Index } from './bm25.js';
         import { rrfFuse } from './fusion.js';
+        import { BUILD_SHA, BUILD_DATE } from './version.js';
 
         // Populate model references in the About modal from the single config source
         document.getElementById('embeddingModelName').textContent = MODEL_ID;
         const modelLink = document.getElementById('embeddingModelLink');
         modelLink.href = `https://huggingface.co/${MODEL_ID}`;
         modelLink.title = MODEL_ID;
+
+        // Show build identifier so users can verify which version is deployed
+        const buildLabel = BUILD_SHA === 'dev' ? 'dev' : BUILD_SHA.slice(0, 7);
+        const buildTitle = BUILD_DATE ? `Deployed: ${BUILD_DATE}` : 'Local development build';
+        document.getElementById('buildInfo').textContent = `build: ${buildLabel}`;
+        document.getElementById('buildInfo').title = buildTitle;
+        const buildInfoModal = document.getElementById('buildInfoModal');
+        if (buildInfoModal) {
+            buildInfoModal.textContent = BUILD_SHA === 'dev' ? 'dev (local)' : `${buildLabel} — ${BUILD_DATE}`;
+        }
 
         // State
         let embeddings = [];
@@ -351,10 +369,11 @@
                 if (mode === 'bm25') {
                     updateStatus('Running BM25 lexical search...', 'loading');
                     const bm25Results = bm25Index.search(query, 5);
+                    const maxScore = bm25Results.length > 0 ? bm25Results[0].score : 1;
                     const entryById = new Map(embeddings.map(e => [e.id, e]));
                     matches = bm25Results.map(r => ({
                         entry: entryById.get(r.id),
-                        similarity: r.score,
+                        similarity: maxScore > 0 ? r.score / maxScore : 0,
                     })).filter(m => m.entry);
                 } else {
                     updateStatus('Computing query embedding...', 'loading');
@@ -379,13 +398,16 @@
                         const bm25Results = bm25Index.search(query, 50);
                         const fused = rrfFuse([denseResults, bm25Results], 5);
                         const entryById = new Map(embeddings.map(e => [e.id, e]));
-                        // Build a map of cosine similarity by id so the display shows
-                        // a meaningful percentage instead of the raw RRF rank score.
+                        // Use cosine similarity for display: look up pre-computed value from the
+                        // dense pass, or compute it on the fly for items that only ranked via BM25.
                         const denseSimilarityById = new Map(denseResults.map(r => [r.id, r.similarity]));
-                        matches = fused.map(r => ({
-                            entry: entryById.get(r.id),
-                            similarity: denseSimilarityById.get(r.id) ?? r.score,
-                        })).filter(m => m.entry);
+                        matches = fused.map(r => {
+                            const entry = entryById.get(r.id);
+                            if (!entry) return null;
+                            const similarity = denseSimilarityById.get(r.id) ??
+                                cosineSimilarity(queryEmbedding, entry.embedding);
+                            return { entry, similarity };
+                        }).filter(m => m !== null);
                     }
                 }
 

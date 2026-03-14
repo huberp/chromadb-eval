@@ -14,8 +14,26 @@ import { describe, it, expect } from 'vitest';
 const BM25_K1 = 1.5;
 const BM25_B = 0.75;
 
+/**
+ * Common English stop words that carry little discriminative information.
+ * Filtering these prevents high-frequency function words (e.g. "of", "the")
+ * from dominating BM25 scores and returning irrelevant documents.
+ *
+ * IMPORTANT: This list must be kept in sync with the identical constant in
+ * webapp/bm25.js, which is the authoritative source.
+ */
+const STOP_WORDS = new Set([
+    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
+    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+    'should', 'may', 'might', 'that', 'this', 'it', 'its', 'as', 'so',
+    'not', 'no', 'we', 'you', 'he', 'she', 'they', 'i', 'my', 'our',
+    'if', 'then', 'than', 'about', 'up', 'out', 'also', 'into', 'can',
+    'all', 'more', 'over', 'such', 'their', 'what', 'which', 'who', 'how',
+]);
+
 function tokenize(text: string): string[] {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0);
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t));
 }
 
 interface Doc {
@@ -169,5 +187,41 @@ describe('Bm25Index', () => {
         const r1 = index.search('model loss', 3).map(r => r.id);
         const r2 = index.search('model loss', 3).map(r => r.id);
         expect(r1).toEqual(r2);
+    });
+
+    it('filters stop words so high-frequency function words do not dominate results', () => {
+        const index = new Bm25Index();
+        // "maths-doc" has many occurrences of "of" (a stop word)
+        // "fruit-doc" has the content-word "vitamin"
+        index.build([
+            { id: 'maths-doc', text: 'the sum of the product of the terms of the series of numbers' },
+            { id: 'fruit-doc', text: 'oranges are rich in vitamin c and vitamin benefits' },
+        ]);
+
+        // "advantage of vitamines" — "of" is a stop word and should be ignored.
+        // "advantage" and "vitamines" do not appear in any doc → BM25 returns empty.
+        const results = index.search('advantage of vitamines', 5);
+        expect(results.length).toBe(0);
+    });
+
+    it('returns empty array when query contains only stop words', () => {
+        const index = new Bm25Index();
+        index.build([{ id: 'doc-a', text: 'apples and oranges are healthy fruits' }]);
+
+        // All words in this query are stop words
+        expect(index.search('and of the', 5)).toEqual([]);
+    });
+
+    it('finds vitamin-related docs for content query after stop word removal', () => {
+        const index = new Bm25Index();
+        index.build([
+            { id: 'vitamin-doc', text: 'oranges contain vitamin c benefits health nutrition' },
+            { id: 'maths-doc', text: 'the sum of squares of integers algebra calculus' },
+        ]);
+
+        // "vitamin" is a content word → should match the fruit doc, not the maths doc
+        const results = index.search('vitamin benefits', 5);
+        expect(results.length).toBeGreaterThan(0);
+        expect(results[0].id).toBe('vitamin-doc');
     });
 });
