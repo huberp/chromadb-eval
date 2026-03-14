@@ -6,10 +6,23 @@ This is a browser-based semantic search application that demonstrates vector sea
 
 - **Browser-only vector database**: No server required, all processing happens in the browser
 - **LLM-based embeddings**: Uses `@huggingface/transformers` with the same model as the backend (`Xenova/all-mpnet-base-v2`)
-- **Real-time semantic search**: Find the top 5 most similar document chunks to your query
+- **Hybrid retrieval**: Combines dense semantic search and BM25 lexical search via Reciprocal Rank Fusion (RRF)
+- **Real-time search**: Find the top 5 most similar document chunks to your query using the selected retrieval mode
 - **Similarity scores**: Shows percentage match for each result
 - **Content preview**: View chunk content with expand/collapse functionality
 - **Links to source**: Direct links to view full chunks and documents on GitHub
+
+## Retrieval Modes
+
+The search supports three modes selectable from the dropdown next to the search box:
+
+| Mode | Algorithm | Best for |
+|---|---|---|
+| **Hybrid** (default) | Dense + BM25 fused via RRF | General queries |
+| **Dense (Semantic)** | Cosine similarity over embeddings | Conceptual queries |
+| **BM25 (Lexical)** | In-browser BM25 keyword index | Filenames, symbols, error messages |
+
+The BM25 index is built once at page load from `plainText` fields in `embeddings.json` and logged to the browser console.
 
 ## How It Works
 
@@ -22,8 +35,10 @@ This is a browser-based semantic search application that demonstrates vector sea
    - Model: `Xenova/all-mpnet-base-v2` (768-dimensional vectors)
 
 3. **Query Processing**: When you enter a search query:
-   - Computes embedding for your query using transformers.js
-   - Calculates cosine similarity with all stored embeddings
+   - Selects the retrieval mode from the dropdown (Hybrid / Dense / BM25)
+   - **Dense / Hybrid**: Computes embedding for your query using transformers.js, calculates cosine similarity
+   - **BM25 / Hybrid**: Scores documents using the pre-built BM25 keyword index
+   - **Hybrid**: Fuses dense and BM25 rankings via Reciprocal Rank Fusion (RRF, k=60)
    - Returns top 5 most similar chunks with similarity scores
 
 4. **Results Display**: Shows matching chunks with:
@@ -44,15 +59,17 @@ This is a browser-based semantic search application that demonstrates vector sea
 ```
 GitHub Repository (main branch)
     ↓ (on push to main)
-prepare-data.ts generates embeddings
+prepare-data.ts generates embeddings + plainText fields
     ↓
-data-main branch (contains embeddings.json)
+data-main branch (contains embeddings.json with embedding vectors and plainText)
     ↓ (deployed to)
-gh-pages branch (contains index.html)
+gh-pages branch (contains index.html, bm25.js, fusion.js)
     ↓ (fetches data from)
 data-main branch at runtime
     ↓
-Browser displays results
+Browser builds BM25 index from plainText, loads dense embeddings
+    ↓
+Browser runs Hybrid / Dense / BM25 search and displays results
 ```
 
 ## Local Development

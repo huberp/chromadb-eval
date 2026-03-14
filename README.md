@@ -174,6 +174,23 @@ You can customize both chunking and embedding behavior via environment variables
 - `HUGGINGFACE_EMBEDDING_URL`: URL of the HuggingFace embedding server (default: http://localhost:8001/embed)
 - `EMBEDDING_MODEL`: Model name for reference/logging
 
+**Retrieval (Webapp):**
+
+The webapp supports three retrieval modes selectable from a dropdown next to the search box:
+
+| Mode | Algorithm | Best for |
+|---|---|---|
+| **Hybrid** (default) | Dense + BM25 fused via Reciprocal Rank Fusion (RRF) | General queries — combines semantic and lexical recall |
+| **Dense (Semantic)** | Cosine similarity over pre-computed embeddings | Conceptual / paraphrase queries |
+| **BM25 (Lexical)** | In-browser BM25 index built from plain text | Filenames, symbols, error messages, rare exact-match terms |
+
+Retrieval parameters (all hardcoded defaults):
+- Dense candidates before fusion: 50
+- BM25 candidates before fusion: 50
+- RRF k constant: 60
+- Final top-k results: 5
+- BM25 k1: 1.5 / b: 0.75
+
 Example with custom settings:
 ```bash
 CHUNKING_MODE=ast CHUNK_SIZE=1500 CHUNK_OVERLAP=200 EMBEDDING_STRATEGY=llm EMBEDDING_MODEL_ID=Xenova/all-MiniLM-L6-v2 npm start
