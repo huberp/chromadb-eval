@@ -56,20 +56,42 @@ The BM25 index is built once at page load from `plainText` fields in `embeddings
 
 ## Data Flow
 
-```
-GitHub Repository (main branch)
-    ↓ (on push to main)
-prepare-data.ts generates embeddings + plainText fields
-    ↓
-data-main branch (contains embeddings.json with embedding vectors and plainText)
-    ↓ (deployed to)
-gh-pages branch (contains index.html, bm25.js, fusion.js)
-    ↓ (fetches data from)
-data-main branch at runtime
-    ↓
-Browser builds BM25 index from plainText, loads dense embeddings
-    ↓
-Browser runs Hybrid / Dense / BM25 search and displays results
+```mermaid
+flowchart TD
+    subgraph main["main branch"]
+        docs["documents/*.md\n(Markdown sources)"]
+        prepare["prepare-data.ts\n(AstDocumentChunker +\nTransformersEmbeddings)"]
+        docs --> prepare
+    end
+
+    subgraph datamain["data-main branch"]
+        embJson["embeddings.json\n(vectors · plainText · metadata)"]
+        chunks["chunks/*.md"]
+        prepare --> embJson
+        prepare --> chunks
+    end
+
+    subgraph ghpages["gh-pages branch"]
+        webapp["index.html · bm25.js\nfusion.js · embeddings.js"]
+    end
+
+    subgraph browser["🌐 Browser"]
+        loader["Load embeddings.json\n(fetch at runtime)"]
+        bm25["BM25 Index\n(built from plainText)"]
+        dense["Dense Vectors\n(cosine similarity)"]
+        rrf["Reciprocal Rank Fusion"]
+        results["🔍 Top-5 Results"]
+        embJson -->|"fetch"| loader
+        loader --> bm25
+        loader --> dense
+        bm25 -->|"BM25-only"| results
+        dense -->|"Dense-only"| results
+        bm25 --> rrf
+        dense --> rrf
+        rrf -->|"Hybrid"| results
+    end
+
+    webapp -->|"served to"| browser
 ```
 
 ## Local Development

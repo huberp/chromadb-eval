@@ -288,6 +288,44 @@ Runs automatically when webapp files change.
 
 **Note:** All workflows now use LLM embeddings by default and leverage model caching for improved performance. The "Cache Prepared ChromaDB" workflow handles all database preparation and caching needs.
 
+## Pipeline Overview
+
+The diagram below illustrates the full pipeline from source documents through preprocessing steps and intermediate artifacts to the final webapp.
+
+```mermaid
+flowchart TD
+    subgraph sources["📂 Sources"]
+        docs["documents/*.md\n(20 Markdown files:\nFruits · SIMD · Mathematics)"]
+    end
+
+    subgraph preprocessing["⚙️ Preprocessing — prepare-data.ts / GitHub Actions"]
+        chunker["AstDocumentChunker\n(remark / mdast AST parsing)"]
+        embedder["TransformersEmbeddings\n(Xenova/all-mpnet-base-v2)"]
+        docs --> chunker
+        chunker -->|"one file per chunk"| chunkfiles["chunks/*.md"]
+        chunker -->|"full copies"| docfiles["documents/"]
+        chunkfiles --> embedder
+        embedder --> embJson["embeddings.json\n(vector · plainText · metadata per chunk)"]
+    end
+
+    subgraph datamain["🗄️ Intermediate Artifacts — data-main branch"]
+        embJson --> stored_emb["embeddings.json"]
+        chunkfiles --> stored_chunks["chunks/"]
+        docfiles --> stored_docs["documents/"]
+    end
+
+    subgraph webapp["🌐 Webapp — gh-pages / Browser"]
+        stored_emb -->|"fetch at runtime"| loader["Load embeddings.json"]
+        loader --> bm25["BM25 Index\n(built from plainText fields)"]
+        loader --> dense["Dense Embedding Vectors\n(768-dim cosine similarity)"]
+        bm25 -->|"BM25-only"| results["🔍 Top-5 Results\n(score · chunk preview · source link)"]
+        dense -->|"Dense-only"| results
+        bm25 --> rrf["Reciprocal Rank Fusion\n(RRF, k=60)"]
+        dense --> rrf
+        rrf -->|"Hybrid"| results
+    end
+```
+
 ## Architecture
 
 - `src/chunking/`: Document chunking module with configurable size and overlap
