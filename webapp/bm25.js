@@ -4,16 +4,32 @@
  * Standard BM25 scoring with k1=1.5 and b=0.75.
  * The index is built once at startup from plainText fields in embeddings.json.
  *
- * Tokenizer: lowercase, split on non-word characters, drop empty tokens.
- * This matches the simple approach used in chromadb-manager.ts getMostCommonTerms().
+ * Tokenizer pipeline: lowercase → split on non-word characters → stop-word
+ * filter → Porter stemmer.
+ *
+ * Stop words and stemming are provided by two well-maintained npm packages
+ * loaded from the esm.sh CDN:
+ *   • stopword  (fergiemcdowall/stopword) — English stop word list (`eng`)
+ *   • stemmer   (words/stemmer)           — Porter Stemmer algorithm
+ *
+ * Using the same stemmer at both index-build time and query time ensures that
+ * morphological variants ("vitamin", "vitamins", "vitamines") all collapse to
+ * the same token, matching the approach used by Elasticsearch/Lucene
+ * (EnglishAnalyzer), BM25s, and Whoosh.
  */
+
+import { eng as STOP_WORDS_LIST } from 'https://esm.sh/stopword@3.1.5';
+import { stemmer } from 'https://esm.sh/stemmer@2.0.1';
 
 const BM25_K1 = 1.5;
 const BM25_B = 0.75;
 
-/** Tokenize a string into lowercase word tokens. */
+/** English stop words as a Set for O(1) lookup. */
+const STOP_WORDS = new Set(STOP_WORDS_LIST);
+
+/** Tokenize: lowercase → split → stop-word filter → Porter stem. */
 function tokenize(text) {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0);
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stemmer);
 }
 
 export class Bm25Index {

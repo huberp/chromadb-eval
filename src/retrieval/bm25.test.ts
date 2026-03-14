@@ -1,11 +1,15 @@
 /**
  * Node-side BM25 algorithm tests.
  *
- * These tests mirror the browser-side webapp/bm25.js using a plain TypeScript
- * implementation so they can be run with vitest without a browser.
+ * These tests mirror the browser-side webapp/bm25.js using the same npm
+ * packages (stemmer, stopword) so they can be run with vitest without a
+ * browser.  The browser-side file imports the same packages from esm.sh CDN;
+ * the logic is identical.
  */
 
 import { describe, it, expect } from 'vitest';
+import { stemmer } from 'stemmer';
+import { eng as STOP_WORDS_LIST } from 'stopword';
 
 // ---------------------------------------------------------------------------
 // Minimal BM25 implementation (mirrors webapp/bm25.js exactly)
@@ -14,8 +18,12 @@ import { describe, it, expect } from 'vitest';
 const BM25_K1 = 1.5;
 const BM25_B = 0.75;
 
+/** English stop words as a Set for O(1) lookup. */
+const STOP_WORDS = new Set(STOP_WORDS_LIST);
+
+/** Tokenize: lowercase → split → stop-word filter → Porter stem. */
 function tokenize(text: string): string[] {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0);
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stemmer);
 }
 
 interface Doc {
@@ -169,5 +177,80 @@ describe('Bm25Index', () => {
         const r1 = index.search('model loss', 3).map(r => r.id);
         const r2 = index.search('model loss', 3).map(r => r.id);
         expect(r1).toEqual(r2);
+    });
+
+    it('stemmer matches "vitamines" to docs containing "vitamin" or "vitamins"', () => {
+        const index = new Bm25Index();
+        index.build([
+            { id: 'maths-doc', text: 'the sum of the product of the terms of the series of numbers' },
+            { id: 'fruit-doc', text: 'oranges are rich in vitamin c and vitamin benefits' },
+        ]);
+
+        // "advantage of vitamines":
+        //   "of" is a stop word (removed).
+        //   "advantage" stems to "advantag" (no doc has it — no contribution).
+        //   "vitamines" stems to "vitamin" — matches "vitamin" in fruit-doc.
+        // So the maths doc does NOT appear; the fruit doc DOES.
+        const results = index.search('advantage of vitamines', 5);
+        expect(results.length).toBeGreaterThan(0);
+        expect(results[0].id).toBe('fruit-doc');
+        expect(results.every(r => r.id !== 'maths-doc')).toBe(true);
+    });
+
+    it('returns empty array when query contains only stop words', () => {
+        const index = new Bm25Index();
+        index.build([{ id: 'doc-a', text: 'apples and oranges are healthy fruits' }]);
+
+        // All words in this query are stop words
+        expect(index.search('and of the', 5)).toEqual([]);
+    });
+
+    it('finds vitamin-related docs for content query after stop word removal', () => {
+        const index = new Bm25Index();
+        index.build([
+            { id: 'vitamin-doc', text: 'oranges contain vitamin c benefits health nutrition' },
+            { id: 'maths-doc', text: 'the sum of squares of integers algebra calculus' },
+        ]);
+
+        // "vitamin" is a content word → should match the fruit doc, not the maths doc
+        const results = index.search('vitamin benefits', 5);
+        expect(results.length).toBeGreaterThan(0);
+        expect(results[0].id).toBe('vitamin-doc');
+    });
+
+    it('stemmer maps inflected forms to the same token', () => {
+        // vitamin, vitamins, vitamines must all produce the same stem so they
+        // match each other in both the index and the query.
+        expect(stemmer('vitamin')).toBe('vitamin');
+        expect(stemmer('vitamins')).toBe('vitamin');
+        expect(stemmer('vitamines')).toBe('vitamin');
+        // advantage / advantages share a stem
+        expect(stemmer('advantage')).toBe('advantag');
+        expect(stemmer('advantages')).toBe('advantag');
+        // Porter stemmer handles common verb inflections
+        expect(stemmer('running')).toBe('run');
+        expect(stemmer('computed')).toBe('comput');
+        expect(stemmer('computing')).toBe('comput');
+    });
+
+    it('stemmer (Porter algorithm) produces expected stems for key vocabulary', () => {
+        // Verify the Porter stemmer outputs used in this codebase.
+        // These are the actual outputs of the `stemmer` npm package.
+        expect(stemmer('nutrition')).toBe('nutrit');
+        expect(stemmer('oranges')).toBe('orang');
+        expect(stemmer('fruits')).toBe('fruit');
+        expect(stemmer('happiness')).toBe('happi');
+        expect(stemmer('expansion')).toBe('expans');
+        expect(stemmer('optimize')).toBe('optim');
+        expect(stemmer('sitting')).toBe('sit');
+        // Porter does not strip -ment when stem would be too short
+        expect(stemmer('treatment')).toBe('treatment');
+    });
+
+    it('stemmer leaves short tokens and identifiers unchanged', () => {
+        // Short tokens should not be mangled by the Porter stemmer.
+        expect(stemmer('c')).toBe('c');
+        expect(stemmer('ts')).toBe('ts');
+        expect(stemmer('bm25')).toBe('bm25');
     });
 });
