@@ -32,8 +32,51 @@ const STOP_WORDS = new Set([
     'all', 'more', 'over', 'such', 'their', 'what', 'which', 'who', 'how',
 ]);
 
+/**
+ * Minimal English suffix stemmer (Porter-inspired).
+ * IMPORTANT: Must be kept in sync with the identical function in webapp/bm25.js.
+ */
+function stem(word: string): string {
+    const len = word.length;
+    if (len <= 3) return word;
+
+    if (len > 7 && word.endsWith('ational')) return word.slice(0, -7) + 'ate';
+    if (len > 7 && word.endsWith('ness'))    return word.slice(0, -4);
+    if (len > 7 && word.endsWith('ment'))    return word.slice(0, -4);
+    if (len > 6 && word.endsWith('tion'))    return word.slice(0, -3);
+    if (len > 6 && word.endsWith('sion'))    return word.slice(0, -3);
+    if (len > 6 && word.endsWith('ize'))     return word.slice(0, -3);
+    if (len > 6 && word.endsWith('ise'))     return word.slice(0, -3);
+
+    if (len > 5 && word.endsWith('ing')) {
+        const s = word.slice(0, -3);
+        if (s.length > 1 && s[s.length - 1] === s[s.length - 2] && !/[aeiou]/.test(s[s.length - 1])) {
+            return s.slice(0, -1);
+        }
+        return s;
+    }
+
+    if (len > 4 && word.endsWith('ed')) {
+        const s = word.slice(0, -2);
+        if (s.length > 1 && s[s.length - 1] === s[s.length - 2] && !/[aeiou]/.test(s[s.length - 1])) {
+            return s.slice(0, -1);
+        }
+        return s;
+    }
+
+    if (len > 5 && word.endsWith('er')) return word.slice(0, -2);
+    if (len > 5 && word.endsWith('ly')) return word.slice(0, -2);
+
+    if (len > 4 && word.endsWith('ies')) return word.slice(0, -3) + 'i';
+    if (len > 4 && word.endsWith('es'))  return word.slice(0, -2);
+    if (len > 3 && word.endsWith('s') && !word.endsWith('ss')) return word.slice(0, -1);
+    if (len > 4 && word.endsWith('e'))   return word.slice(0, -1);
+
+    return word;
+}
+
 function tokenize(text: string): string[] {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t));
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stem);
 }
 
 interface Doc {
@@ -189,19 +232,22 @@ describe('Bm25Index', () => {
         expect(r1).toEqual(r2);
     });
 
-    it('filters stop words so high-frequency function words do not dominate results', () => {
+    it('stemmer matches "vitamines" to docs containing "vitamin" or "vitamins"', () => {
         const index = new Bm25Index();
-        // "maths-doc" has many occurrences of "of" (a stop word)
-        // "fruit-doc" has the content-word "vitamin"
         index.build([
             { id: 'maths-doc', text: 'the sum of the product of the terms of the series of numbers' },
             { id: 'fruit-doc', text: 'oranges are rich in vitamin c and vitamin benefits' },
         ]);
 
-        // "advantage of vitamines" — "of" is a stop word and should be ignored.
-        // "advantage" and "vitamines" do not appear in any doc → BM25 returns empty.
+        // "advantage of vitamines":
+        //   "of" is a stop word (removed).
+        //   "advantage" stems to "advantag" (no doc has it — no contribution).
+        //   "vitamines" stems to "vitamin" — matches "vitamin" in fruit-doc.
+        // So the maths doc does NOT appear; the fruit doc DOES.
         const results = index.search('advantage of vitamines', 5);
-        expect(results.length).toBe(0);
+        expect(results.length).toBeGreaterThan(0);
+        expect(results[0].id).toBe('fruit-doc');
+        expect(results.every(r => r.id !== 'maths-doc')).toBe(true);
     });
 
     it('returns empty array when query contains only stop words', () => {
@@ -223,5 +269,65 @@ describe('Bm25Index', () => {
         const results = index.search('vitamin benefits', 5);
         expect(results.length).toBeGreaterThan(0);
         expect(results[0].id).toBe('vitamin-doc');
+    });
+
+    it('stemmer maps inflected forms to the same token', () => {
+        // vitamin, vitamins, vitamines must all produce the same stem so they
+        // match each other in both the index and the query.
+        expect(stem('vitamin')).toBe('vitamin');
+        expect(stem('vitamins')).toBe('vitamin');
+        expect(stem('vitamines')).toBe('vitamin');
+        // advantage / advantages share a stem
+        expect(stem('advantage')).toBe('advantag');
+        expect(stem('advantages')).toBe('advantag');
+        // -ing with double-letter collapse
+        expect(stem('running')).toBe('run');
+    });
+
+    it('stemmer strips all supported suffix patterns', () => {
+        // -ational → -ate
+        expect(stem('relational')).toBe('relate');
+        // -ness
+        expect(stem('happiness')).toBe('happi');
+        // -ment
+        expect(stem('treatment')).toBe('treat');
+        // -tion
+        expect(stem('nutrition')).toBe('nutrit');
+        // -sion
+        expect(stem('expansion')).toBe('expans');
+        // -ize
+        expect(stem('optimize')).toBe('optim');
+        // -ise
+        expect(stem('advertise')).toBe('advert');
+        // -ing (no double consonant)
+        expect(stem('computing')).toBe('comput');
+        // -ing (double consonant collapse)
+        expect(stem('running')).toBe('run');
+        expect(stem('sitting')).toBe('sit');
+        // -ed (no double consonant)
+        expect(stem('computed')).toBe('comput');
+        // -ed (double consonant collapse)
+        expect(stem('stemmed')).toBe('stem');
+        // -er
+        expect(stem('greater')).toBe('great');
+        // -ly
+        expect(stem('quickly')).toBe('quick');
+        // -ies → -i
+        expect(stem('parties')).toBe('parti');
+        // -es
+        expect(stem('oranges')).toBe('orang');
+        // -s (not -ss)
+        expect(stem('fruits')).toBe('fruit');
+        // -ss is not stripped
+        expect(stem('grass')).toBe('grass');
+        // -e
+        expect(stem('compute')).toBe('comput');
+    });
+
+    it('stemmer handles exact technical terms without destroying them', () => {
+        // Short tokens and identifiers should not be mangled by the stemmer.
+        expect(stem('c')).toBe('c');             // length ≤ 3 — untouched
+        expect(stem('ts')).toBe('ts');            // length ≤ 3 — untouched
+        expect(stem('bm25')).toBe('bm25');        // no matching suffix
     });
 });

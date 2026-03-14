@@ -4,8 +4,15 @@
  * Standard BM25 scoring with k1=1.5 and b=0.75.
  * The index is built once at startup from plainText fields in embeddings.json.
  *
- * Tokenizer: lowercase, split on non-word characters, drop empty tokens.
- * This matches the simple approach used in chromadb-manager.ts getMostCommonTerms().
+ * Tokenizer pipeline: lowercase → split on non-word characters → stop-word
+ * filter → suffix stemmer.  The stemmer ensures that inflected forms such as
+ * "vitamins", "vitamines", "vitamin" all collapse to the same index token so
+ * that lexical recall is not lost to minor morphological variation.
+ *
+ * State-of-the-art BM25 pipelines (Elasticsearch/Lucene, BM25s, Whoosh) apply
+ * the same two-step approach: stop-word removal + Porter/Snowball stemmer.
+ * The dense model already handles semantic similarity for spelling variants;
+ * the stemmer closes the gap for BM25 lexical recall.
  */
 
 const BM25_K1 = 1.5;
@@ -26,9 +33,78 @@ const STOP_WORDS = new Set([
     'all', 'more', 'over', 'such', 'their', 'what', 'which', 'who', 'how',
 ]);
 
-/** Tokenize a string into lowercase word tokens, excluding stop words. */
+/**
+ * Minimal English suffix stemmer (Porter-inspired).
+ *
+ * State-of-the-art RAG/BM25 systems (Elasticsearch, BM25s, Lucene) apply a
+ * stemmer so that inflected forms ("vitamins", "vitamines") map to the same
+ * index token as the base form ("vitamin"), improving lexical recall without
+ * requiring the dense model for every morphological variant.
+ *
+ * This strips the most common English suffixes in priority order.  It is
+ * intentionally simple — full Porter correctness is not required; the goal is
+ * recall improvement on the document corpus.
+ *
+ * Key examples:
+ *   "vitamins"  → "vitamin"   (strip -s)
+ *   "vitamines" → "vitamin"   (strip -es)
+ *   "advantages"→ "advantag"  (strip -es)
+ *   "advantage" → "advantag"  (strip -e)
+ *   "running"   → "run"       (strip -ing + double-letter collapse)
+ *   "computed"  → "comput"    (strip -ed)
+ *
+ * @param {string} word - A single lowercase token (length > 0).
+ * @returns {string} Stemmed token.
+ */
+function stem(word) {
+    const len = word.length;
+    if (len <= 3) return word;
+
+    // Longer suffixes first to avoid under-stripping.
+    if (len > 7 && word.endsWith('ational')) return word.slice(0, -7) + 'ate';
+    if (len > 7 && word.endsWith('ness'))    return word.slice(0, -4);
+    if (len > 7 && word.endsWith('ment'))    return word.slice(0, -4);
+    if (len > 6 && word.endsWith('tion'))    return word.slice(0, -3);
+    if (len > 6 && word.endsWith('sion'))    return word.slice(0, -3);
+    if (len > 6 && word.endsWith('ize'))     return word.slice(0, -3);
+    if (len > 6 && word.endsWith('ise'))     return word.slice(0, -3);
+
+    // -ing: collapse double consonant ("running" → "run", "computing" → "comput")
+    if (len > 5 && word.endsWith('ing')) {
+        const s = word.slice(0, -3);
+        if (s.length > 1 && s[s.length - 1] === s[s.length - 2] && !/[aeiou]/.test(s[s.length - 1])) {
+            return s.slice(0, -1);
+        }
+        return s;
+    }
+
+    // -ed: same double-consonant collapse
+    if (len > 4 && word.endsWith('ed')) {
+        const s = word.slice(0, -2);
+        if (s.length > 1 && s[s.length - 1] === s[s.length - 2] && !/[aeiou]/.test(s[s.length - 1])) {
+            return s.slice(0, -1);
+        }
+        return s;
+    }
+
+    if (len > 5 && word.endsWith('er')) return word.slice(0, -2);
+    if (len > 5 && word.endsWith('ly')) return word.slice(0, -2);
+
+    // -ies → -i ("parties" → "parti")
+    if (len > 4 && word.endsWith('ies')) return word.slice(0, -3) + 'i';
+    // -es ("vitamines" → "vitamin", "advantages" → "advantag")
+    if (len > 4 && word.endsWith('es'))  return word.slice(0, -2);
+    // -s but not -ss ("vitamins" → "vitamin")
+    if (len > 3 && word.endsWith('s') && !word.endsWith('ss')) return word.slice(0, -1);
+    // -e ("advantage" → "advantag")
+    if (len > 4 && word.endsWith('e'))   return word.slice(0, -1);
+
+    return word;
+}
+
+/** Tokenize a string: lowercase → split → stop-word filter → stem. */
 function tokenize(text) {
-    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t));
+    return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stem);
 }
 
 export class Bm25Index {
