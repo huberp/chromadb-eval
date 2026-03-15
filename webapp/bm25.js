@@ -77,8 +77,9 @@ export class Bm25Index {
         this._loaded = false;
         this._n = 0;
         this._loadedAvgdl = 0;
-        this._docLengths = null;  // Record<string, number>
-        this._index = null;       // Record<string, { df, postings: [{id, tf}] }>
+        this._docIds = null;      // string[] mapping int ID → original string doc ID
+        this._docLengths = null;  // number[] indexed by int ID
+        this._index = null;       // Record<string, { df, postings: [{id: number, tf}] }>
     }
 
     /**
@@ -119,12 +120,13 @@ export class Bm25Index {
      * After this call, search() uses the precomputed data without re-tokenising
      * any documents.
      *
-     * @param {{ n: number, avgdl: number, docLengths: object, index: object }} data
+     * @param {{ n: number, avgdl: number, docs: string[], docLengths: number[], index: object }} data
      */
     load(data) {
         this._loaded = true;
         this._n = data.n;
         this._loadedAvgdl = data.avgdl;
+        this._docIds = data.docs;
         this._docLengths = data.docLengths;
         this._index = data.index;
         console.log(`[BM25] Loaded precomputed index: ${Object.keys(data.index).length} terms, ${data.n} docs, avgdl=${data.avgdl.toFixed(1)}`);
@@ -157,6 +159,7 @@ export class Bm25Index {
 
     /**
      * Search using the precomputed inverted index (set via load()).
+     * Postings use integer doc IDs; results are mapped back to string IDs.
      * @private
      */
     _searchLoaded(queryTerms, k) {
@@ -172,7 +175,7 @@ export class Bm25Index {
             const idf = Math.log((N - df + 0.5) / (df + 0.5) + 1);
 
             for (const posting of postings) {
-                const { id, tf } = posting;
+                const { id, tf } = posting;  // id is an integer index
                 const dl = this._docLengths[id] || 0;
                 // BM25 TF component
                 const tfNorm = (tf * (BM25_K1 + 1)) /
@@ -182,7 +185,8 @@ export class Bm25Index {
         }
 
         return Array.from(scores.entries())
-            .map(([id, score]) => ({ id, score }))
+            .map(([numId, score]) => ({ id: this._docIds[numId] ?? '', score }))
+            .filter(r => r.id !== '')
             .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
             .slice(0, k);
     }

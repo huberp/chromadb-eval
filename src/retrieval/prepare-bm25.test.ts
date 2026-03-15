@@ -78,15 +78,16 @@ describe('buildBm25IndexData', () => {
         expect(data.avgdl).toBeCloseTo((lenA + lenB) / 2, 5);
     });
 
-    it('records docLengths keyed by document ID', () => {
+    it('records docLengths indexed by integer document ID', () => {
         const data = buildBm25IndexData([
             { id: 'doc-a', plainText: 'apple orange' },
             { id: 'doc-b', plainText: 'vector database embeddings' },
         ]);
-        expect(typeof data.docLengths['doc-a']).toBe('number');
-        expect(typeof data.docLengths['doc-b']).toBe('number');
-        expect(data.docLengths['doc-a']).toBe(tokenize('apple orange').length);
-        expect(data.docLengths['doc-b']).toBe(tokenize('vector database embeddings').length);
+        // docs[0] = 'doc-a', docs[1] = 'doc-b'
+        expect(typeof data.docLengths[0]).toBe('number');
+        expect(typeof data.docLengths[1]).toBe('number');
+        expect(data.docLengths[0]).toBe(tokenize('apple orange').length);
+        expect(data.docLengths[1]).toBe(tokenize('vector database embeddings').length);
     });
 
     it('builds the inverted index with correct df', () => {
@@ -113,20 +114,25 @@ describe('buildBm25IndexData', () => {
         ]);
         const appleStem = stemmer('apple');
         const postings = data.index[appleStem]?.postings ?? [];
-        const postingA = postings.find(p => p.id === 'doc-a');
-        const postingB = postings.find(p => p.id === 'doc-b');
+        // data.docs[0] = 'doc-a', data.docs[1] = 'doc-b'
+        const postingA = postings.find(p => data.docs[p.id] === 'doc-a');
+        const postingB = postings.find(p => data.docs[p.id] === 'doc-b');
         expect(postingA?.tf).toBe(3);
         expect(postingB?.tf).toBe(1);
     });
 
-    it('uses document IDs (not file paths) as keys throughout', () => {
+    it('maps doc string IDs to integer IDs via the docs table', () => {
         const data = buildBm25IndexData([
             { id: '01-apples.0', plainText: 'apples are tasty fruits' },
         ]);
-        expect(Object.keys(data.docLengths)).toContain('01-apples.0');
+        // docs table should map int 0 → '01-apples.0'
+        expect(data.docs[0]).toBe('01-apples.0');
+        // docLengths should be indexed by int ID
+        expect(typeof data.docLengths[0]).toBe('number');
+        // postings should use integer ID (0)
         const fruitStem = stemmer('fruits');
         const postings = data.index[fruitStem]?.postings ?? [];
-        expect(postings[0]?.id).toBe('01-apples.0');
+        expect(postings[0]?.id).toBe(0);
     });
 
     it('handles empty plainText without throwing', () => {
@@ -135,7 +141,7 @@ describe('buildBm25IndexData', () => {
             { id: 'doc-b', plainText: 'apple' },
         ]);
         expect(data.n).toBe(2);
-        expect(data.docLengths['doc-a']).toBe(0);
+        expect(data.docLengths[0]).toBe(0);  // doc-a has integer ID 0
     });
 
     it('handles an empty entries array', () => {
@@ -165,16 +171,19 @@ describe('buildBm25IndexData', () => {
         const { df, postings } = entry;
         const idf = Math.log((N - df + 0.5) / (df + 0.5) + 1);
 
-        // Compute BM25 scores for each posting
-        const scores: Record<string, number> = {};
+        // Compute BM25 scores for each posting using numeric IDs
+        const scores: Record<number, number> = {};
         for (const posting of postings) {
-            const dl = data.docLengths[posting.id];
+            const dl = data.docLengths[posting.id];  // posting.id is now a number
             const tfNorm = (posting.tf * (BM25_K1 + 1)) /
                 (posting.tf + BM25_K1 * (1 - BM25_B + BM25_B * dl / data.avgdl));
             scores[posting.id] = idf * tfNorm;
         }
 
+        // Find integer IDs for doc-a and doc-b
+        const idA = data.docs.indexOf('doc-a');
+        const idB = data.docs.indexOf('doc-b');
         // "orange" appears once in both docs; doc-b is shorter so its score is higher
-        expect(scores['doc-b']).toBeGreaterThan(scores['doc-a']);
+        expect(scores[idB]).toBeGreaterThan(scores[idA]);
     });
 });
