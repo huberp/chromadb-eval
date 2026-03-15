@@ -61,7 +61,7 @@ export function tokenize(text: string): string[] {
 // ---------------------------------------------------------------------------
 
 interface Posting {
-    id: string;
+    id: number;
     tf: number;
 }
 
@@ -74,7 +74,10 @@ interface TermEntry {
 export interface Bm25IndexData {
     n: number;
     avgdl: number;
-    docLengths: Record<string, number>;
+    /** Maps integer document ID (array index) to the original string document ID. */
+    docs: string[];
+    /** Document lengths (token counts) indexed by integer document ID. */
+    docLengths: number[];
     index: Record<string, TermEntry>;
 }
 
@@ -90,13 +93,16 @@ export interface Bm25IndexData {
 export function buildBm25IndexData(
     entries: Array<{ id: string; plainText: string }>,
 ): Bm25IndexData {
-    const docLengths: Record<string, number> = {};
+    const docs: string[] = [];
+    const docLengths: number[] = [];
     const invertedIndex: Record<string, TermEntry> = {};
     let totalTokens = 0;
 
-    for (const entry of entries) {
+    for (let numId = 0; numId < entries.length; numId++) {
+        const entry = entries[numId];
+        docs.push(entry.id);
         const tokens = tokenize(entry.plainText || '');
-        docLengths[entry.id] = tokens.length;
+        docLengths.push(tokens.length);
         totalTokens += tokens.length;
 
         // Count term frequencies within this document
@@ -105,20 +111,20 @@ export function buildBm25IndexData(
             tfMap.set(token, (tfMap.get(token) || 0) + 1);
         }
 
-        // Update inverted index
+        // Update inverted index using integer doc ID
         for (const [term, tf] of tfMap) {
             if (!invertedIndex[term]) {
                 invertedIndex[term] = { df: 0, postings: [] };
             }
             invertedIndex[term].df += 1;
-            invertedIndex[term].postings.push({ id: entry.id, tf });
+            invertedIndex[term].postings.push({ id: numId, tf });
         }
     }
 
     const n = entries.length;
     const avgdl = n > 0 ? totalTokens / n : 0;
 
-    return { n, avgdl, docLengths, index: invertedIndex };
+    return { n, avgdl, docs, docLengths, index: invertedIndex };
 }
 
 // ---------------------------------------------------------------------------
