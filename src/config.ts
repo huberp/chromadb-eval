@@ -6,12 +6,14 @@
  */
 
 export interface ChunkingConfig {
-  /** Chunking mode: 'legacy' for string-based, 'ast' for AST-based */
-  mode: 'legacy' | 'ast';
+  /** Chunking mode: 'legacy' for string-based, 'ast' for AST-based, 'ast-sentence' for hierarchical sentence-level */
+  mode: 'legacy' | 'ast' | 'ast-sentence';
   /** Target chunk size in characters */
   chunkSize: number;
   /** Overlap size between chunks in characters */
   chunkOverlap: number;
+  /** Minimum paragraph length to trigger sentence sub-chunking (ast-sentence mode only) */
+  minParagraphLength: number;
 }
 
 /**
@@ -28,14 +30,17 @@ function parsePositiveInt(value: string | undefined, defaultValue: number): numb
  * Defaults to AST mode for better structure-aware chunking.
  * 
  * Can be overridden via environment variables:
- * - CHUNKING_MODE: 'legacy' or 'ast'
+ * - CHUNKING_MODE: 'legacy', 'ast', or 'ast-sentence'
  * - CHUNK_SIZE: positive integer (default: 1000)
  * - CHUNK_OVERLAP: positive integer (default: 150, must be less than CHUNK_SIZE)
+ * - CHUNK_MIN_PARAGRAPH_LENGTH: positive integer (default: 300, ast-sentence mode only)
  */
 export const defaultChunkingConfig: ChunkingConfig = (() => {
-  const mode = (process.env.CHUNKING_MODE === 'legacy' ? 'legacy' : 'ast') as 'legacy' | 'ast';
+  const rawMode = process.env.CHUNKING_MODE;
+  const mode = (rawMode === 'legacy' ? 'legacy' : rawMode === 'ast-sentence' ? 'ast-sentence' : 'ast') as ChunkingConfig['mode'];
   const chunkSize = parsePositiveInt(process.env.CHUNK_SIZE, 1000);
   let chunkOverlap = parsePositiveInt(process.env.CHUNK_OVERLAP, 150);
+  const minParagraphLength = parsePositiveInt(process.env.CHUNK_MIN_PARAGRAPH_LENGTH, 300);
   
   // Ensure chunkOverlap is less than chunkSize
   if (chunkOverlap >= chunkSize) {
@@ -43,7 +48,7 @@ export const defaultChunkingConfig: ChunkingConfig = (() => {
     chunkOverlap = Math.min(150, Math.floor(chunkSize / 2));
   }
   
-  return { mode, chunkSize, chunkOverlap };
+  return { mode, chunkSize, chunkOverlap, minParagraphLength };
 })();
 
 /**

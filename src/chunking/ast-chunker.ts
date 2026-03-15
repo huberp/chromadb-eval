@@ -11,6 +11,7 @@ import * as path from 'path';
 import type { Content, Paragraph, Code, List, Table, Blockquote, PhrasingContent } from 'mdast';
 import { parseMarkdownToAst, extractAstSections, AstSection } from './markdown-ast';
 import { ChunkMetadata } from './legacy-chunker';
+import { splitIntoSentences } from './sentence-splitter';
 
 /**
  * Extended chunk metadata that includes AST node type information.
@@ -18,6 +19,12 @@ import { ChunkMetadata } from './legacy-chunker';
 export interface AstChunkMetadata extends ChunkMetadata {
   /** List of mdast node types contributing to this chunk */
   astNodeTypes?: string[];
+  /** Reference to the Level 1 block chunk (set for sentence-level chunks) */
+  parentChunkId?: string;
+  /** Index of this sentence within its parent chunk */
+  sentenceIndex?: number;
+  /** Chunking level: 1 = block-level, 2 = sentence-level */
+  chunkLevel?: 1 | 2;
 }
 
 /**
@@ -39,6 +46,13 @@ export interface AstChunkerOptions {
   chunkSize?: number;
   /** Overlap size between chunks in characters (default: 150) */
   chunkOverlap?: number;
+  /** Optional sentence-level sub-chunking configuration */
+  sentenceChunking?: {
+    /** Enable sentence-level sub-chunking */
+    enabled: boolean;
+    /** Only sub-chunk paragraph blocks longer than this (default: 300 chars) */
+    minParagraphLength?: number;
+  };
 }
 
 /**
@@ -52,10 +66,12 @@ export interface AstChunkerOptions {
 export class AstDocumentChunker {
   private chunkSize: number;
   private chunkOverlap: number;
+  private sentenceChunking: AstChunkerOptions['sentenceChunking'];
 
   constructor(options: AstChunkerOptions = {}) {
     this.chunkSize = options.chunkSize ?? 1000;
     this.chunkOverlap = options.chunkOverlap ?? 150;
+    this.sentenceChunking = options.sentenceChunking;
   }
 
   /**
@@ -138,7 +154,7 @@ export class AstDocumentChunker {
         finalContent = headingPrefix + '\n\n' + finalContent;
       }
       
-      chunks.push({
+      const blockChunk: AstChunk = {
         id: `${sourceFile}-chunk-${chunkIndex}`,
         content: finalContent.trim(),
         sourceFile: sourceFile,
@@ -150,15 +166,57 @@ export class AstDocumentChunker {
           section: section.headings[section.headings.length - 1],
           chunkType: chunkType,
           astNodeTypes: astNodeTypes,
-          language: language
+          language: language,
+          chunkLevel: 1
         }
-      });
+      };
+
+      chunks.push(...this.maybeSubChunk(blockChunk));
       
       previousChunkContent = content;
       chunkIndex++;
     }
     
     return chunks;
+  }
+
+  /**
+   * Optionally split a block-level chunk into sentence-level sub-chunks.
+   *
+   * When sentence chunking is not enabled, or when the chunk content is
+   * shorter than `minParagraphLength`, the original chunk is returned
+   * unchanged (wrapped in an array).  Otherwise each sentence becomes its
+   * own Level-2 chunk that references the parent via `parentChunkId`.
+   */
+  private maybeSubChunk(chunk: AstChunk): AstChunk[] {
+    if (!this.sentenceChunking?.enabled) {
+      return [chunk];
+    }
+
+    const minLen = this.sentenceChunking.minParagraphLength ?? 300;
+    if (chunk.content.length < minLen) {
+      return [chunk];
+    }
+
+    const sentences = splitIntoSentences(chunk.content);
+    if (sentences.length <= 1) {
+      return [chunk];
+    }
+
+    return sentences.map((sentence, i): AstChunk => ({
+      ...chunk,
+      id: `${chunk.id}-s${i}`,
+      content: sentence,
+      chunkIndex: chunk.chunkIndex * 1000 + i,
+      metadata: {
+        // chunk.metadata is always populated by chunkSection(); use non-null assertion
+        // to preserve required ChunkMetadata fields without redundant fallbacks
+        ...chunk.metadata!,
+        chunkLevel: 2 as const,
+        parentChunkId: chunk.id,
+        sentenceIndex: i,
+      },
+    }));
   }
 
   /**
