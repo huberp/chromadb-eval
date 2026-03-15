@@ -1,0 +1,1 @@
+Pineapples contain bromelain, an enzyme that aids digestion.

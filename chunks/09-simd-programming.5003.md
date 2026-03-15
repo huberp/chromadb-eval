@@ -1,0 +1,1 @@
+Examples include _mm256_add_ps for AVX floating-point addition.

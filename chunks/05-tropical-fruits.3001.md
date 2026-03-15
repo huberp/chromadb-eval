@@ -1,0 +1,1 @@
+Mangoes, known as the "king of fruits," are rich in vitamins A and C.

@@ -1,0 +1,1 @@
+If y = f(x), the derivative dy/dx or f'(x) represents the instantaneous rate of change.

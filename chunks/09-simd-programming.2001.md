@@ -1,0 +1,1 @@
+Modern compilers can automatically vectorize loops, converting scalar operations to SIMD operations.

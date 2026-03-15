@@ -1,0 +1,1 @@
+Angle sum formulas allow computing trig functions of combined angles.

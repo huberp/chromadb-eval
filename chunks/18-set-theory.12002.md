@@ -1,0 +1,1 @@
+A function is a special relation where each input has exactly one output.

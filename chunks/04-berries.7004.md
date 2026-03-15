@@ -1,0 +1,1 @@
+Blackberries contain high levels of vitamin K and manganese.

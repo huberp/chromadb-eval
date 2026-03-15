@@ -1,0 +1,1 @@
+Regular apple consumption has been linked to reduced risk of heart disease, diabetes, and certain cancers.

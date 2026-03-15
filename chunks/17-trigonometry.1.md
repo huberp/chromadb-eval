@@ -1,0 +1,1 @@
+Trigonometry studies relationships between angles and sides of triangles, and extends to model periodic phenomena.

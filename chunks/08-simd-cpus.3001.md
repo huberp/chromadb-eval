@@ -1,0 +1,1 @@
+Intel introduced MMX in 1996, followed by SSE in 1999.

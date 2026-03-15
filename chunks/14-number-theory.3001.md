@@ -1,0 +1,1 @@
+Prime numbers are natural numbers greater than 1 that have no positive divisors other than 1 and themselves.

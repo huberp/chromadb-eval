@@ -1,0 +1,1 @@
+Sets can be finite or infinite.

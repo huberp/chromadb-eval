@@ -1,0 +1,1 @@
+Quadratic equations contain variables raised to the second power.

@@ -1,0 +1,1 @@
+The standard deviation σ measures how spread out values are from the mean.

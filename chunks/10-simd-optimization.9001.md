@@ -1,0 +1,1 @@
+SIMD works best with branchless code.

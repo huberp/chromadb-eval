@@ -1,0 +1,1 @@
+Conditional operations can often be replaced with masked operations or blend instructions.

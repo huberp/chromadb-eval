@@ -1,0 +1,1 @@
+This simple principle has powerful applications.

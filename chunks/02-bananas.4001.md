@@ -1,0 +1,1 @@
+Bananas are an excellent source of potassium, providing about 422 mg per medium banana.

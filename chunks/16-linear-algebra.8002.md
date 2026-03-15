@@ -1,0 +1,1 @@
+Matrices can represent linear transformations, systems of equations, or data.

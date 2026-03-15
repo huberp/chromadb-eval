@@ -1,0 +1,1 @@
+Strawberries contain more vitamin C than oranges by weight.

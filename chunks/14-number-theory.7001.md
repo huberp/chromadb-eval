@@ -1,0 +1,1 @@
+An integer a is divisible by integer b if there exists an integer k such that a = kb.

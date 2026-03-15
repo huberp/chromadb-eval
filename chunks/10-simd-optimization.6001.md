@@ -1,0 +1,1 @@
+Structure of Arrays (SoA) layout is generally better for SIMD than Array of Structures (AoS).

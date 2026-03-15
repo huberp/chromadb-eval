@@ -1,0 +1,1 @@
+Tropical fruits thrive in warm climates near the equator.

@@ -1,0 +1,1 @@
+For an event A, P(A) ranges from 0 (impossible) to 1 (certain).

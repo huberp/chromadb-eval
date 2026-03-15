@@ -1,0 +1,1 @@
+The empty set ∅ contains no elements.

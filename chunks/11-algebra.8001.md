@@ -1,0 +1,1 @@
+The fundamental operations in algebra include addition, subtraction, multiplication, and division.

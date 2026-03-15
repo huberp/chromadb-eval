@@ -1,0 +1,1 @@
+The dot product of vectors a and b is a·b = |a||b|cos(θ), where θ is the angle between them.

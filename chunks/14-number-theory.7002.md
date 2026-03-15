@@ -1,0 +1,1 @@
+The Greatest Common Divisor (GCD) of two numbers is the largest positive integer that divides both.

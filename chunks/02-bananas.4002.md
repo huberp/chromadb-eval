@@ -1,0 +1,1 @@
+They also contain vitamin B6, vitamin C, and magnesium.

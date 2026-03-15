@@ -1,0 +1,1 @@
+Direct assembly programming offers maximum control but sacrifices portability and maintainability.

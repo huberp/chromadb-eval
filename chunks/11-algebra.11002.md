@@ -1,0 +1,1 @@
+The general form is ax + b = c.

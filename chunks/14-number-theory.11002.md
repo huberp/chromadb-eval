@@ -1,0 +1,1 @@
+We write a ≡ b (mod m) if a and b have the same remainder when divided by m.

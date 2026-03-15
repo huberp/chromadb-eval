@@ -1,0 +1,1 @@
+The definite integral ∫[a,b] f(x)dx represents the area under the curve f(x) from x = a to x = b.

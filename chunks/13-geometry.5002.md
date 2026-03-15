@@ -1,0 +1,1 @@
+Triangles are classified by sides (equilateral, isosceles, scalene) or angles (acute, right, obtuse).

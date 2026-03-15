@@ -1,0 +1,1 @@
+Linear equations are equations where variables appear only to the first power.

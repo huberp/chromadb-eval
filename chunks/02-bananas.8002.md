@@ -1,0 +1,1 @@
+Green bananas are starchy and less sweet, while fully ripe bananas with brown spots are very sweet and soft.

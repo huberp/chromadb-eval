@@ -1,0 +1,1 @@
+Modern CPUs have evolved to include increasingly sophisticated SIMD capabilities.

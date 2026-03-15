@@ -1,0 +1,1 @@
+- **AltiVec**: Used in PowerPC processors

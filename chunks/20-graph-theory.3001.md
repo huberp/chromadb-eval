@@ -1,0 +1,1 @@
+Undirected graphs have edges with no direction.

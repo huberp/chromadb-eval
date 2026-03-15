@@ -1,0 +1,1 @@
+Difference (A - B) contains elements in A but not in B.

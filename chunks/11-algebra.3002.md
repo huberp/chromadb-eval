@@ -1,0 +1,1 @@
+Constants are fixed values that don't change.

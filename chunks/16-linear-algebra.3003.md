@@ -1,0 +1,1 @@
+Vector operations include addition, scalar multiplication, dot product, and cross product.

@@ -1,0 +1,1 @@
+Probability theory provides the mathematical foundation for statistics.

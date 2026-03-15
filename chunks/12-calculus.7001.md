@@ -1,0 +1,1 @@
+The derivative measures the rate of change of a function.

@@ -1,0 +1,1 @@
+Berries are loaded with antioxidants, particularly anthocyanins, which give them their vibrant colors.

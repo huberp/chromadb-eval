@@ -1,0 +1,1 @@
+The number of permutations of n distinct objects is n!

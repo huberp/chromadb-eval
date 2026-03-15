@@ -1,0 +1,1 @@
+Geometrically, it's the slope of the tangent line to the function's graph.

@@ -1,0 +1,1 @@
+A vector in SIMD context refers to a collection of data elements that can be processed together.

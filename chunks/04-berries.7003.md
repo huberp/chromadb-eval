@@ -1,0 +1,1 @@
+Raspberries are high in fiber and have a low glycemic index.

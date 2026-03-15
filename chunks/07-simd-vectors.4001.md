@@ -1,0 +1,1 @@
+SIMD architectures use special vector registers to hold multiple data elements.

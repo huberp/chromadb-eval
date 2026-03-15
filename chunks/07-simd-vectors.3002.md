@@ -1,0 +1,1 @@
+For instance, a 256-bit AVX register can hold:

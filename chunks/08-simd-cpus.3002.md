@@ -1,0 +1,1 @@
+SSE evolved through several versions (SSE2, SSE3, SSSE3, SSE4).

@@ -1,0 +1,1 @@
+As bananas ripen, their starch converts to sugar, making them sweeter.

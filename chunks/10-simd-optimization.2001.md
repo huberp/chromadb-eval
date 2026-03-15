@@ -1,0 +1,1 @@
+SIMD operations perform best with aligned memory.

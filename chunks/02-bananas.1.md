@@ -1,0 +1,1 @@
+Bananas are tropical fruits that grow in clusters.

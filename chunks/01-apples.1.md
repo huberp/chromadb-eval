@@ -1,0 +1,1 @@
+Apples are one of the most popular fruits worldwide.

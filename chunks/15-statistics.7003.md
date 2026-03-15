@@ -1,0 +1,1 @@
+The sum of probabilities of all possible outcomes equals 1.

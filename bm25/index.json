@@ -1,0 +1,11650 @@
+{
+  "n": 320,
+  "avgdl": 6.025,
+  "docs": [
+    "01-apples.md-chunk-0-s0",
+    "01-apples.md-chunk-0-s1",
+    "01-apples.md-chunk-0-s2",
+    "01-apples.md-chunk-0-s3",
+    "01-apples.md-chunk-4-s0",
+    "01-apples.md-chunk-4-s1",
+    "01-apples.md-chunk-4-s2",
+    "01-apples.md-chunk-4-s3",
+    "01-apples.md-chunk-8-s0",
+    "01-apples.md-chunk-8-s1",
+    "01-apples.md-chunk-9-s0",
+    "01-apples.md-chunk-9-s1",
+    "01-apples.md-chunk-9-s2",
+    "01-apples.md-chunk-9-s3",
+    "01-apples.md-chunk-9-s4",
+    "01-apples.md-chunk-9-s5",
+    "01-apples.md-chunk-9-s6",
+    "01-apples.md-chunk-17-s0",
+    "01-apples.md-chunk-17-s1",
+    "01-apples.md-chunk-17-s2",
+    "01-apples.md-chunk-17-s3",
+    "02-bananas.md-chunk-0-s0",
+    "02-bananas.md-chunk-0-s1",
+    "02-bananas.md-chunk-0-s2",
+    "02-bananas.md-chunk-0-s3",
+    "02-bananas.md-chunk-4-s0",
+    "02-bananas.md-chunk-4-s1",
+    "02-bananas.md-chunk-4-s2",
+    "02-bananas.md-chunk-4-s3",
+    "02-bananas.md-chunk-8-s0",
+    "02-bananas.md-chunk-8-s1",
+    "02-bananas.md-chunk-8-s2",
+    "03-oranges.md-chunk-0-s0",
+    "03-oranges.md-chunk-0-s1",
+    "03-oranges.md-chunk-0-s2",
+    "03-oranges.md-chunk-0-s3",
+    "03-oranges.md-chunk-4-s0",
+    "03-oranges.md-chunk-4-s1",
+    "03-oranges.md-chunk-4-s2",
+    "03-oranges.md-chunk-4-s3",
+    "03-oranges.md-chunk-4-s4",
+    "03-oranges.md-chunk-9-s0",
+    "03-oranges.md-chunk-9-s1",
+    "03-oranges.md-chunk-9-s2",
+    "04-berries.md-chunk-0-s0",
+    "04-berries.md-chunk-0-s1",
+    "04-berries.md-chunk-0-s2",
+    "04-berries.md-chunk-0-s3",
+    "04-berries.md-chunk-4-s0",
+    "04-berries.md-chunk-4-s1",
+    "04-berries.md-chunk-4-s2",
+    "04-berries.md-chunk-7-s0",
+    "04-berries.md-chunk-7-s1",
+    "04-berries.md-chunk-7-s2",
+    "04-berries.md-chunk-7-s3",
+    "04-berries.md-chunk-7-s4",
+    "05-tropical-fruits.md-chunk-0-s0",
+    "05-tropical-fruits.md-chunk-0-s1",
+    "05-tropical-fruits.md-chunk-0-s2",
+    "05-tropical-fruits.md-chunk-3-s0",
+    "05-tropical-fruits.md-chunk-3-s1",
+    "05-tropical-fruits.md-chunk-3-s2",
+    "05-tropical-fruits.md-chunk-3-s3",
+    "05-tropical-fruits.md-chunk-3-s4",
+    "05-tropical-fruits.md-chunk-3-s5",
+    "05-tropical-fruits.md-chunk-9-s0",
+    "05-tropical-fruits.md-chunk-9-s1",
+    "06-simd-intro.md-chunk-0-s0",
+    "06-simd-intro.md-chunk-0-s1",
+    "06-simd-intro.md-chunk-0-s2",
+    "06-simd-intro.md-chunk-3-s0",
+    "06-simd-intro.md-chunk-3-s1",
+    "06-simd-intro.md-chunk-3-s2",
+    "06-simd-intro.md-chunk-3-s3",
+    "06-simd-intro.md-chunk-7-s0",
+    "06-simd-intro.md-chunk-7-s1",
+    "06-simd-intro.md-chunk-8-s0",
+    "06-simd-intro.md-chunk-8-s1",
+    "06-simd-intro.md-chunk-8-s2",
+    "06-simd-intro.md-chunk-8-s3",
+    "06-simd-intro.md-chunk-8-s4",
+    "06-simd-intro.md-chunk-8-s5",
+    "06-simd-intro.md-chunk-8-s6",
+    "06-simd-intro.md-chunk-16-s0",
+    "06-simd-intro.md-chunk-16-s1",
+    "06-simd-intro.md-chunk-16-s2",
+    "06-simd-intro.md-chunk-19-s0",
+    "06-simd-intro.md-chunk-19-s1",
+    "06-simd-intro.md-chunk-20-s0",
+    "06-simd-intro.md-chunk-20-s1",
+    "06-simd-intro.md-chunk-20-s2",
+    "06-simd-intro.md-chunk-20-s3",
+    "06-simd-intro.md-chunk-20-s4",
+    "06-simd-intro.md-chunk-20-s5",
+    "06-simd-intro.md-chunk-20-s6",
+    "06-simd-intro.md-chunk-20-s7",
+    "06-simd-intro.md-chunk-21-s0",
+    "06-simd-intro.md-chunk-21-s1",
+    "06-simd-intro.md-chunk-21-s2",
+    "06-simd-intro.md-chunk-21-s3",
+    "06-simd-intro.md-chunk-21-s4",
+    "06-simd-intro.md-chunk-21-s5",
+    "06-simd-intro.md-chunk-21-s6",
+    "06-simd-intro.md-chunk-21-s7",
+    "07-simd-vectors.md-chunk-0-s0",
+    "07-simd-vectors.md-chunk-0-s1",
+    "07-simd-vectors.md-chunk-0-s2",
+    "07-simd-vectors.md-chunk-3-s0",
+    "07-simd-vectors.md-chunk-3-s1",
+    "07-simd-vectors.md-chunk-3-s2",
+    "07-simd-vectors.md-chunk-4-s0",
+    "07-simd-vectors.md-chunk-4-s1",
+    "07-simd-vectors.md-chunk-4-s2",
+    "07-simd-vectors.md-chunk-4-s3",
+    "07-simd-vectors.md-chunk-4-s4",
+    "07-simd-vectors.md-chunk-4-s5",
+    "07-simd-vectors.md-chunk-4-s6",
+    "07-simd-vectors.md-chunk-4-s7",
+    "07-simd-vectors.md-chunk-14-s0",
+    "07-simd-vectors.md-chunk-14-s1",
+    "08-simd-cpus.md-chunk-0-s0",
+    "08-simd-cpus.md-chunk-0-s1",
+    "08-simd-cpus.md-chunk-0-s2",
+    "08-simd-cpus.md-chunk-3-s0",
+    "08-simd-cpus.md-chunk-3-s1",
+    "08-simd-cpus.md-chunk-3-s2",
+    "08-simd-cpus.md-chunk-3-s3",
+    "08-simd-cpus.md-chunk-7-s0",
+    "08-simd-cpus.md-chunk-7-s1",
+    "08-simd-cpus.md-chunk-7-s2",
+    "08-simd-cpus.md-chunk-10-s0",
+    "08-simd-cpus.md-chunk-10-s1",
+    "09-simd-programming.md-chunk-0-s0",
+    "09-simd-programming.md-chunk-0-s1",
+    "09-simd-programming.md-chunk-2-s0",
+    "09-simd-programming.md-chunk-2-s1",
+    "09-simd-programming.md-chunk-2-s2",
+    "09-simd-programming.md-chunk-5-s0",
+    "09-simd-programming.md-chunk-5-s1",
+    "09-simd-programming.md-chunk-5-s2",
+    "09-simd-programming.md-chunk-5-s3",
+    "09-simd-programming.md-chunk-9-s0",
+    "09-simd-programming.md-chunk-9-s1",
+    "09-simd-programming.md-chunk-9-s2",
+    "10-simd-optimization.md-chunk-0-s0",
+    "10-simd-optimization.md-chunk-0-s1",
+    "10-simd-optimization.md-chunk-2-s0",
+    "10-simd-optimization.md-chunk-2-s1",
+    "10-simd-optimization.md-chunk-2-s2",
+    "10-simd-optimization.md-chunk-2-s3",
+    "10-simd-optimization.md-chunk-6-s0",
+    "10-simd-optimization.md-chunk-6-s1",
+    "10-simd-optimization.md-chunk-6-s2",
+    "10-simd-optimization.md-chunk-9-s0",
+    "10-simd-optimization.md-chunk-9-s1",
+    "10-simd-optimization.md-chunk-9-s2",
+    "11-algebra.md-chunk-0-s0",
+    "11-algebra.md-chunk-0-s1",
+    "11-algebra.md-chunk-0-s2",
+    "11-algebra.md-chunk-3-s0",
+    "11-algebra.md-chunk-3-s1",
+    "11-algebra.md-chunk-3-s2",
+    "11-algebra.md-chunk-3-s3",
+    "11-algebra.md-chunk-3-s4",
+    "11-algebra.md-chunk-8-s0",
+    "11-algebra.md-chunk-8-s1",
+    "11-algebra.md-chunk-8-s2",
+    "11-algebra.md-chunk-11-s0",
+    "11-algebra.md-chunk-11-s1",
+    "11-algebra.md-chunk-11-s2",
+    "11-algebra.md-chunk-11-s3",
+    "11-algebra.md-chunk-15-s0",
+    "11-algebra.md-chunk-15-s1",
+    "11-algebra.md-chunk-15-s2",
+    "11-algebra.md-chunk-15-s3",
+    "12-calculus.md-chunk-0-s0",
+    "12-calculus.md-chunk-0-s1",
+    "12-calculus.md-chunk-0-s2",
+    "12-calculus.md-chunk-3-s0",
+    "12-calculus.md-chunk-3-s1",
+    "12-calculus.md-chunk-3-s2",
+    "12-calculus.md-chunk-3-s3",
+    "12-calculus.md-chunk-7-s0",
+    "12-calculus.md-chunk-7-s1",
+    "12-calculus.md-chunk-7-s2",
+    "12-calculus.md-chunk-7-s3",
+    "12-calculus.md-chunk-11-s0",
+    "12-calculus.md-chunk-11-s1",
+    "12-calculus.md-chunk-11-s2",
+    "12-calculus.md-chunk-11-s3",
+    "13-geometry.md-chunk-0-s0",
+    "13-geometry.md-chunk-0-s1",
+    "13-geometry.md-chunk-2-s0",
+    "13-geometry.md-chunk-2-s1",
+    "13-geometry.md-chunk-2-s2",
+    "13-geometry.md-chunk-5-s0",
+    "13-geometry.md-chunk-5-s1",
+    "13-geometry.md-chunk-5-s2",
+    "13-geometry.md-chunk-5-s3",
+    "13-geometry.md-chunk-9-s0",
+    "13-geometry.md-chunk-9-s1",
+    "13-geometry.md-chunk-9-s2",
+    "14-number-theory.md-chunk-0-s0",
+    "14-number-theory.md-chunk-0-s1",
+    "14-number-theory.md-chunk-0-s2",
+    "14-number-theory.md-chunk-3-s0",
+    "14-number-theory.md-chunk-3-s1",
+    "14-number-theory.md-chunk-3-s2",
+    "14-number-theory.md-chunk-3-s3",
+    "14-number-theory.md-chunk-7-s0",
+    "14-number-theory.md-chunk-7-s1",
+    "14-number-theory.md-chunk-7-s2",
+    "14-number-theory.md-chunk-7-s3",
+    "14-number-theory.md-chunk-11-s0",
+    "14-number-theory.md-chunk-11-s1",
+    "14-number-theory.md-chunk-11-s2",
+    "14-number-theory.md-chunk-11-s3",
+    "15-statistics.md-chunk-0-s0",
+    "15-statistics.md-chunk-0-s1",
+    "15-statistics.md-chunk-0-s2",
+    "15-statistics.md-chunk-3-s0",
+    "15-statistics.md-chunk-3-s1",
+    "15-statistics.md-chunk-3-s2",
+    "15-statistics.md-chunk-3-s3",
+    "15-statistics.md-chunk-7-s0",
+    "15-statistics.md-chunk-7-s1",
+    "15-statistics.md-chunk-7-s2",
+    "15-statistics.md-chunk-7-s3",
+    "15-statistics.md-chunk-11-s0",
+    "15-statistics.md-chunk-11-s1",
+    "15-statistics.md-chunk-11-s2",
+    "15-statistics.md-chunk-11-s3",
+    "16-linear-algebra.md-chunk-0-s0",
+    "16-linear-algebra.md-chunk-0-s1",
+    "16-linear-algebra.md-chunk-0-s2",
+    "16-linear-algebra.md-chunk-3-s0",
+    "16-linear-algebra.md-chunk-3-s1",
+    "16-linear-algebra.md-chunk-3-s2",
+    "16-linear-algebra.md-chunk-3-s3",
+    "16-linear-algebra.md-chunk-3-s4",
+    "16-linear-algebra.md-chunk-8-s0",
+    "16-linear-algebra.md-chunk-8-s1",
+    "16-linear-algebra.md-chunk-8-s2",
+    "16-linear-algebra.md-chunk-8-s3",
+    "16-linear-algebra.md-chunk-8-s4",
+    "16-linear-algebra.md-chunk-13-s0",
+    "16-linear-algebra.md-chunk-13-s1",
+    "16-linear-algebra.md-chunk-13-s2",
+    "16-linear-algebra.md-chunk-16-s0",
+    "16-linear-algebra.md-chunk-16-s1",
+    "16-linear-algebra.md-chunk-16-s2",
+    "16-linear-algebra.md-chunk-19-s0",
+    "16-linear-algebra.md-chunk-19-s1",
+    "17-trigonometry.md-chunk-0-s0",
+    "17-trigonometry.md-chunk-0-s1",
+    "17-trigonometry.md-chunk-2-s0",
+    "17-trigonometry.md-chunk-2-s1",
+    "17-trigonometry.md-chunk-3-s0",
+    "17-trigonometry.md-chunk-3-s1",
+    "17-trigonometry.md-chunk-3-s2",
+    "17-trigonometry.md-chunk-3-s3",
+    "17-trigonometry.md-chunk-3-s4",
+    "17-trigonometry.md-chunk-9-s0",
+    "17-trigonometry.md-chunk-9-s1",
+    "17-trigonometry.md-chunk-9-s2",
+    "17-trigonometry.md-chunk-12-s0",
+    "17-trigonometry.md-chunk-12-s1",
+    "17-trigonometry.md-chunk-12-s2",
+    "18-set-theory.md-chunk-0-s0",
+    "18-set-theory.md-chunk-0-s1",
+    "18-set-theory.md-chunk-0-s2",
+    "18-set-theory.md-chunk-3-s0",
+    "18-set-theory.md-chunk-3-s1",
+    "18-set-theory.md-chunk-3-s2",
+    "18-set-theory.md-chunk-3-s3",
+    "18-set-theory.md-chunk-7-s0",
+    "18-set-theory.md-chunk-7-s1",
+    "18-set-theory.md-chunk-7-s2",
+    "18-set-theory.md-chunk-7-s3",
+    "18-set-theory.md-chunk-7-s4",
+    "18-set-theory.md-chunk-12-s0",
+    "18-set-theory.md-chunk-12-s1",
+    "18-set-theory.md-chunk-12-s2",
+    "18-set-theory.md-chunk-12-s3",
+    "19-combinatorics.md-chunk-0-s0",
+    "19-combinatorics.md-chunk-0-s1",
+    "19-combinatorics.md-chunk-0-s2",
+    "19-combinatorics.md-chunk-3-s0",
+    "19-combinatorics.md-chunk-3-s1",
+    "19-combinatorics.md-chunk-3-s2",
+    "19-combinatorics.md-chunk-3-s3",
+    "19-combinatorics.md-chunk-3-s4",
+    "19-combinatorics.md-chunk-3-s5",
+    "19-combinatorics.md-chunk-9-s0",
+    "19-combinatorics.md-chunk-9-s1",
+    "19-combinatorics.md-chunk-9-s2",
+    "19-combinatorics.md-chunk-9-s3",
+    "19-combinatorics.md-chunk-9-s4",
+    "19-combinatorics.md-chunk-14-s0",
+    "19-combinatorics.md-chunk-14-s1",
+    "19-combinatorics.md-chunk-14-s2",
+    "20-graph-theory.md-chunk-0-s0",
+    "20-graph-theory.md-chunk-0-s1",
+    "20-graph-theory.md-chunk-0-s2",
+    "20-graph-theory.md-chunk-3-s0",
+    "20-graph-theory.md-chunk-3-s1",
+    "20-graph-theory.md-chunk-3-s2",
+    "20-graph-theory.md-chunk-3-s3",
+    "20-graph-theory.md-chunk-3-s4",
+    "20-graph-theory.md-chunk-8-s0",
+    "20-graph-theory.md-chunk-8-s1",
+    "20-graph-theory.md-chunk-8-s2",
+    "20-graph-theory.md-chunk-8-s3",
+    "20-graph-theory.md-chunk-8-s4",
+    "20-graph-theory.md-chunk-13-s0",
+    "20-graph-theory.md-chunk-13-s1",
+    "20-graph-theory.md-chunk-13-s2",
+    "20-graph-theory.md-chunk-16-s0",
+    "20-graph-theory.md-chunk-16-s1",
+    "20-graph-theory.md-chunk-16-s2"
+  ],
+  "docLengths": [
+    3,
+    5,
+    7,
+    5,
+    2,
+    8,
+    8,
+    10,
+    2,
+    4,
+    2,
+    4,
+    4,
+    4,
+    4,
+    3,
+    3,
+    2,
+    11,
+    9,
+    10,
+    4,
+    5,
+    6,
+    5,
+    2,
+    10,
+    6,
+    10,
+    2,
+    7,
+    12,
+    3,
+    6,
+    6,
+    12,
+    2,
+    4,
+    4,
+    6,
+    5,
+    3,
+    6,
+    15,
+    5,
+    6,
+    7,
+    10,
+    2,
+    8,
+    7,
+    1,
+    7,
+    6,
+    6,
+    7,
+    4,
+    7,
+    9,
+    3,
+    7,
+    6,
+    4,
+    6,
+    6,
+    2,
+    9,
+    6,
+    17,
+    12,
+    2,
+    10,
+    10,
+    15,
+    3,
+    7,
+    3,
+    7,
+    11,
+    10,
+    7,
+    7,
+    4,
+    2,
+    15,
+    8,
+    2,
+    3,
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    2,
+    1,
+    2,
+    3,
+    3,
+    3,
+    3,
+    2,
+    1,
+    10,
+    3,
+    5,
+    9,
+    2,
+    10,
+    6,
+    2,
+    10,
+    6,
+    4,
+    4,
+    4,
+    4,
+    4,
+    2,
+    20,
+    3,
+    8,
+    7,
+    2,
+    7,
+    8,
+    13,
+    2,
+    11,
+    9,
+    2,
+    18,
+    3,
+    10,
+    2,
+    10,
+    14,
+    1,
+    8,
+    6,
+    7,
+    1,
+    9,
+    6,
+    3,
+    10,
+    2,
+    6,
+    6,
+    12,
+    2,
+    10,
+    9,
+    2,
+    5,
+    8,
+    3,
+    11,
+    10,
+    2,
+    6,
+    6,
+    5,
+    5,
+    1,
+    8,
+    20,
+    2,
+    7,
+    5,
+    9,
+    2,
+    7,
+    6,
+    13,
+    3,
+    5,
+    14,
+    1,
+    4,
+    8,
+    15,
+    1,
+    5,
+    12,
+    8,
+    1,
+    4,
+    14,
+    8,
+    4,
+    10,
+    2,
+    9,
+    15,
+    2,
+    4,
+    10,
+    7,
+    2,
+    6,
+    6,
+    4,
+    11,
+    6,
+    2,
+    11,
+    9,
+    13,
+    1,
+    8,
+    10,
+    5,
+    2,
+    4,
+    9,
+    5,
+    2,
+    6,
+    6,
+    2,
+    12,
+    7,
+    6,
+    1,
+    4,
+    7,
+    6,
+    1,
+    7,
+    4,
+    9,
+    4,
+    13,
+    11,
+    1,
+    4,
+    7,
+    10,
+    8,
+    1,
+    7,
+    7,
+    8,
+    7,
+    3,
+    14,
+    7,
+    2,
+    11,
+    13,
+    1,
+    19,
+    4,
+    10,
+    3,
+    8,
+    3,
+    8,
+    3,
+    3,
+    5,
+    2,
+    7,
+    10,
+    1,
+    9,
+    9,
+    5,
+    6,
+    7,
+    2,
+    3,
+    5,
+    10,
+    1,
+    5,
+    5,
+    6,
+    4,
+    2,
+    4,
+    7,
+    3,
+    3,
+    5,
+    5,
+    1,
+    5,
+    6,
+    2,
+    2,
+    6,
+    1,
+    6,
+    13,
+    1,
+    2,
+    2,
+    13,
+    4,
+    4,
+    11,
+    7,
+    2,
+    5,
+    5,
+    5,
+    5,
+    2,
+    5,
+    5,
+    5,
+    6,
+    2,
+    16,
+    6,
+    1,
+    13,
+    9
+  ],
+  "index": {
+    "0": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 173,
+          "tf": 1
+        },
+        {
+          "id": 226,
+          "tf": 1
+        }
+      ]
+    },
+    "1": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 206,
+          "tf": 2
+        },
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 226,
+          "tf": 1
+        },
+        {
+          "id": 227,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        },
+        {
+          "id": 292,
+          "tf": 1
+        }
+      ]
+    },
+    "2": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        },
+        {
+          "id": 292,
+          "tf": 1
+        }
+      ]
+    },
+    "3": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        },
+        {
+          "id": 292,
+          "tf": 1
+        }
+      ]
+    },
+    "4": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 114,
+          "tf": 1
+        },
+        {
+          "id": 129,
+          "tf": 1
+        },
+        {
+          "id": 292,
+          "tf": 1
+        }
+      ]
+    },
+    "5": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        },
+        {
+          "id": 291,
+          "tf": 1
+        },
+        {
+          "id": 292,
+          "tf": 1
+        }
+      ]
+    },
+    "7": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        }
+      ]
+    },
+    "8": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 113,
+          "tf": 1
+        },
+        {
+          "id": 115,
+          "tf": 1
+        },
+        {
+          "id": 117,
+          "tf": 1
+        }
+      ]
+    },
+    "11": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        }
+      ]
+    },
+    "13": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        }
+      ]
+    },
+    "16": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 116,
+          "tf": 2
+        },
+        {
+          "id": 149,
+          "tf": 1
+        }
+      ]
+    },
+    "32": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 115,
+          "tf": 1
+        },
+        {
+          "id": 117,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        }
+      ]
+    },
+    "95": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        }
+      ]
+    },
+    "100": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "120": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 292,
+          "tf": 1
+        }
+      ]
+    },
+    "180": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 198,
+          "tf": 1
+        }
+      ]
+    },
+    "256": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 109,
+          "tf": 1
+        },
+        {
+          "id": 112,
+          "tf": 1
+        }
+      ]
+    },
+    "422": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 26,
+          "tf": 1
+        }
+      ]
+    },
+    "512": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 80,
+          "tf": 2
+        },
+        {
+          "id": 126,
+          "tf": 1
+        },
+        {
+          "id": 129,
+          "tf": 1
+        }
+      ]
+    },
+    "1736": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "1996": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 124,
+          "tf": 1
+        }
+      ]
+    },
+    "1999": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 124,
+          "tf": 1
+        }
+      ]
+    },
+    "2011": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "2013": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "2015": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "appl": {
+      "df": 10,
+      "postings": [
+        {
+          "id": 0,
+          "tf": 1
+        },
+        {
+          "id": 1,
+          "tf": 1
+        },
+        {
+          "id": 3,
+          "tf": 1
+        },
+        {
+          "id": 5,
+          "tf": 1
+        },
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 9,
+          "tf": 1
+        },
+        {
+          "id": 11,
+          "tf": 1
+        },
+        {
+          "id": 18,
+          "tf": 1
+        },
+        {
+          "id": 19,
+          "tf": 1
+        },
+        {
+          "id": 20,
+          "tf": 1
+        }
+      ]
+    },
+    "comprehens": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 0,
+          "tf": 1
+        }
+      ]
+    },
+    "guid": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 0,
+          "tf": 1
+        }
+      ]
+    },
+    "on": {
+      "df": 11,
+      "postings": [
+        {
+          "id": 1,
+          "tf": 1
+        },
+        {
+          "id": 24,
+          "tf": 1
+        },
+        {
+          "id": 46,
+          "tf": 1
+        },
+        {
+          "id": 71,
+          "tf": 2
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 148,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 204,
+          "tf": 1
+        },
+        {
+          "id": 282,
+          "tf": 1
+        },
+        {
+          "id": 299,
+          "tf": 2
+        },
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "popular": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 1,
+          "tf": 1
+        },
+        {
+          "id": 8,
+          "tf": 1
+        },
+        {
+          "id": 10,
+          "tf": 1
+        },
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 59,
+          "tf": 1
+        }
+      ]
+    },
+    "fruit": {
+      "df": 16,
+      "postings": [
+        {
+          "id": 1,
+          "tf": 1
+        },
+        {
+          "id": 21,
+          "tf": 1
+        },
+        {
+          "id": 22,
+          "tf": 1
+        },
+        {
+          "id": 24,
+          "tf": 1
+        },
+        {
+          "id": 32,
+          "tf": 1
+        },
+        {
+          "id": 33,
+          "tf": 1
+        },
+        {
+          "id": 35,
+          "tf": 2
+        },
+        {
+          "id": 45,
+          "tf": 1
+        },
+        {
+          "id": 56,
+          "tf": 1
+        },
+        {
+          "id": 57,
+          "tf": 1
+        },
+        {
+          "id": 58,
+          "tf": 1
+        },
+        {
+          "id": 59,
+          "tf": 1
+        },
+        {
+          "id": 60,
+          "tf": 1
+        },
+        {
+          "id": 63,
+          "tf": 1
+        },
+        {
+          "id": 64,
+          "tf": 1
+        },
+        {
+          "id": 66,
+          "tf": 1
+        }
+      ]
+    },
+    "worldwid": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 1,
+          "tf": 1
+        },
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "belong": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        },
+        {
+          "id": 33,
+          "tf": 1
+        }
+      ]
+    },
+    "rosacea": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        }
+      ]
+    },
+    "famili": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        },
+        {
+          "id": 33,
+          "tf": 1
+        },
+        {
+          "id": 189,
+          "tf": 1
+        }
+      ]
+    },
+    "scientif": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        },
+        {
+          "id": 19,
+          "tf": 1
+        },
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 94,
+          "tf": 1
+        },
+        {
+          "id": 101,
+          "tf": 1
+        }
+      ]
+    },
+    "known": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        },
+        {
+          "id": 9,
+          "tf": 1
+        },
+        {
+          "id": 11,
+          "tf": 1
+        },
+        {
+          "id": 34,
+          "tf": 1
+        },
+        {
+          "id": 60,
+          "tf": 1
+        }
+      ]
+    },
+    "malu": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        }
+      ]
+    },
+    "domestica": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 2,
+          "tf": 1
+        }
+      ]
+    },
+    "thousand": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 3,
+          "tf": 1
+        }
+      ]
+    },
+    "varieti": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 3,
+          "tf": 1
+        },
+        {
+          "id": 8,
+          "tf": 1
+        },
+        {
+          "id": 9,
+          "tf": 1
+        },
+        {
+          "id": 10,
+          "tf": 1
+        },
+        {
+          "id": 11,
+          "tf": 1
+        },
+        {
+          "id": 51,
+          "tf": 1
+        }
+      ]
+    },
+    "uniqu": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 3,
+          "tf": 1
+        },
+        {
+          "id": 58,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 247,
+          "tf": 1
+        }
+      ]
+    },
+    "characterist": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 3,
+          "tf": 1
+        }
+      ]
+    },
+    "nutrit": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 4,
+          "tf": 1
+        },
+        {
+          "id": 25,
+          "tf": 1
+        }
+      ]
+    },
+    "benefit": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 4,
+          "tf": 1
+        },
+        {
+          "id": 17,
+          "tf": 1
+        },
+        {
+          "id": 83,
+          "tf": 1
+        }
+      ]
+    },
+    "rich": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        },
+        {
+          "id": 52,
+          "tf": 1
+        },
+        {
+          "id": 60,
+          "tf": 1
+        }
+      ]
+    },
+    "dietari": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        }
+      ]
+    },
+    "fiber": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        },
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 54,
+          "tf": 1
+        }
+      ]
+    },
+    "particularli": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        },
+        {
+          "id": 49,
+          "tf": 1
+        }
+      ]
+    },
+    "pectin": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        }
+      ]
+    },
+    "aid": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        },
+        {
+          "id": 61,
+          "tf": 1
+        }
+      ]
+    },
+    "digest": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 5,
+          "tf": 1
+        },
+        {
+          "id": 61,
+          "tf": 1
+        },
+        {
+          "id": 62,
+          "tf": 1
+        }
+      ]
+    },
+    "contain": {
+      "df": 12,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 27,
+          "tf": 1
+        },
+        {
+          "id": 53,
+          "tf": 1
+        },
+        {
+          "id": 55,
+          "tf": 1
+        },
+        {
+          "id": 61,
+          "tf": 1
+        },
+        {
+          "id": 172,
+          "tf": 1
+        },
+        {
+          "id": 273,
+          "tf": 1
+        },
+        {
+          "id": 277,
+          "tf": 1
+        },
+        {
+          "id": 278,
+          "tf": 1
+        },
+        {
+          "id": 279,
+          "tf": 1
+        },
+        {
+          "id": 299,
+          "tf": 3
+        }
+      ]
+    },
+    "vitamin": {
+      "df": 8,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 27,
+          "tf": 2
+        },
+        {
+          "id": 41,
+          "tf": 1
+        },
+        {
+          "id": 42,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 53,
+          "tf": 1
+        },
+        {
+          "id": 55,
+          "tf": 1
+        },
+        {
+          "id": 60,
+          "tf": 1
+        }
+      ]
+    },
+    "c": {
+      "df": 13,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 27,
+          "tf": 1
+        },
+        {
+          "id": 41,
+          "tf": 1
+        },
+        {
+          "id": 42,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 53,
+          "tf": 1
+        },
+        {
+          "id": 60,
+          "tf": 1
+        },
+        {
+          "id": 138,
+          "tf": 2
+        },
+        {
+          "id": 166,
+          "tf": 3
+        },
+        {
+          "id": 169,
+          "tf": 1
+        },
+        {
+          "id": 173,
+          "tf": 1
+        },
+        {
+          "id": 200,
+          "tf": 2
+        },
+        {
+          "id": 295,
+          "tf": 1
+        }
+      ]
+    },
+    "essenti": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 158,
+          "tf": 1
+        }
+      ]
+    },
+    "antioxid": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 44,
+          "tf": 1
+        },
+        {
+          "id": 48,
+          "tf": 1
+        },
+        {
+          "id": 49,
+          "tf": 1
+        }
+      ]
+    },
+    "support": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 20,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 129,
+          "tf": 1
+        }
+      ]
+    },
+    "immun": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "system": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 6,
+          "tf": 1
+        },
+        {
+          "id": 242,
+          "tf": 1
+        },
+        {
+          "id": 245,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        },
+        {
+          "id": 247,
+          "tf": 1
+        }
+      ]
+    },
+    "medium": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 26,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "size": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "calori": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        }
+      ]
+    },
+    "provid": {
+      "df": 10,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        },
+        {
+          "id": 26,
+          "tf": 1
+        },
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        },
+        {
+          "id": 139,
+          "tf": 1
+        },
+        {
+          "id": 219,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        },
+        {
+          "id": 269,
+          "tf": 1
+        }
+      ]
+    },
+    "gram": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 7,
+          "tf": 1
+        }
+      ]
+    },
+    "includ": {
+      "df": 18,
+      "postings": [
+        {
+          "id": 9,
+          "tf": 1
+        },
+        {
+          "id": 11,
+          "tf": 1
+        },
+        {
+          "id": 35,
+          "tf": 1
+        },
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 121,
+          "tf": 1
+        },
+        {
+          "id": 140,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 221,
+          "tf": 1
+        },
+        {
+          "id": 222,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 243,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        },
+        {
+          "id": 274,
+          "tf": 1
+        }
+      ]
+    },
+    "red": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 12,
+          "tf": 1
+        },
+        {
+          "id": 39,
+          "tf": 1
+        }
+      ]
+    },
+    "delici": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 12,
+          "tf": 1
+        }
+      ]
+    },
+    "sweet": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 12,
+          "tf": 1
+        },
+        {
+          "id": 14,
+          "tf": 1
+        },
+        {
+          "id": 15,
+          "tf": 1
+        },
+        {
+          "id": 31,
+          "tf": 2
+        },
+        {
+          "id": 37,
+          "tf": 1
+        }
+      ]
+    },
+    "crisp": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 12,
+          "tf": 1
+        },
+        {
+          "id": 16,
+          "tf": 1
+        }
+      ]
+    },
+    "granni": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 13,
+          "tf": 1
+        }
+      ]
+    },
+    "smith": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 13,
+          "tf": 1
+        }
+      ]
+    },
+    "tart": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 13,
+          "tf": 1
+        },
+        {
+          "id": 63,
+          "tf": 1
+        }
+      ]
+    },
+    "green": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 13,
+          "tf": 1
+        },
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "gala": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 14,
+          "tf": 1
+        }
+      ]
+    },
+    "hint": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 14,
+          "tf": 1
+        }
+      ]
+    },
+    "vanilla": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 14,
+          "tf": 1
+        }
+      ]
+    },
+    "fuji": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 15,
+          "tf": 1
+        }
+      ]
+    },
+    "juici": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 15,
+          "tf": 1
+        }
+      ]
+    },
+    "honeycrisp": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 16,
+          "tf": 1
+        }
+      ]
+    },
+    "explos": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 16,
+          "tf": 1
+        }
+      ]
+    },
+    "health": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 17,
+          "tf": 1
+        },
+        {
+          "id": 20,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "regular": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        },
+        {
+          "id": 66,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "consumpt": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        },
+        {
+          "id": 20,
+          "tf": 1
+        }
+      ]
+    },
+    "link": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        },
+        {
+          "id": 52,
+          "tf": 1
+        },
+        {
+          "id": 303,
+          "tf": 1
+        }
+      ]
+    },
+    "reduc": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        },
+        {
+          "id": 50,
+          "tf": 1
+        },
+        {
+          "id": 85,
+          "tf": 1
+        }
+      ]
+    },
+    "risk": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        }
+      ]
+    },
+    "heart": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        }
+      ]
+    },
+    "diseas": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        }
+      ]
+    },
+    "diabet": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        }
+      ]
+    },
+    "certain": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        },
+        {
+          "id": 226,
+          "tf": 1
+        }
+      ]
+    },
+    "cancer": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 18,
+          "tf": 1
+        }
+      ]
+    },
+    "old": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        }
+      ]
+    },
+    "sai": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        }
+      ]
+    },
+    "dai": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        }
+      ]
+    },
+    "keep": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        }
+      ]
+    },
+    "doctor": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        }
+      ]
+    },
+    "awai": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        }
+      ]
+    },
+    "back": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 19,
+          "tf": 1
+        }
+      ]
+    },
+    "studi": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 20,
+          "tf": 1
+        },
+        {
+          "id": 176,
+          "tf": 1
+        },
+        {
+          "id": 190,
+          "tf": 1
+        },
+        {
+          "id": 202,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "show": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 20,
+          "tf": 1
+        }
+      ]
+    },
+    "improv": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 20,
+          "tf": 1
+        },
+        {
+          "id": 52,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "cardiovascular": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 20,
+          "tf": 1
+        }
+      ]
+    },
+    "weight": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 20,
+          "tf": 1
+        },
+        {
+          "id": 53,
+          "tf": 1
+        },
+        {
+          "id": 307,
+          "tf": 1
+        }
+      ]
+    },
+    "manag": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 20,
+          "tf": 1
+        }
+      ]
+    },
+    "banana": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 21,
+          "tf": 1
+        },
+        {
+          "id": 22,
+          "tf": 1
+        },
+        {
+          "id": 24,
+          "tf": 1
+        },
+        {
+          "id": 26,
+          "tf": 2
+        },
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 30,
+          "tf": 1
+        },
+        {
+          "id": 31,
+          "tf": 2
+        }
+      ]
+    },
+    "perfect": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 21,
+          "tf": 1
+        }
+      ]
+    },
+    "portabl": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 21,
+          "tf": 1
+        },
+        {
+          "id": 139,
+          "tf": 1
+        },
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "tropic": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 22,
+          "tf": 1
+        },
+        {
+          "id": 56,
+          "tf": 1
+        },
+        {
+          "id": 57,
+          "tf": 1
+        },
+        {
+          "id": 59,
+          "tf": 1
+        }
+      ]
+    },
+    "grow": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 22,
+          "tf": 1
+        },
+        {
+          "id": 65,
+          "tf": 1
+        }
+      ]
+    },
+    "cluster": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 22,
+          "tf": 1
+        }
+      ]
+    },
+    "botan": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 23,
+          "tf": 1
+        }
+      ]
+    },
+    "classifi": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 23,
+          "tf": 1
+        },
+        {
+          "id": 197,
+          "tf": 1
+        }
+      ]
+    },
+    "berri": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 23,
+          "tf": 1
+        },
+        {
+          "id": 39,
+          "tf": 1
+        },
+        {
+          "id": 44,
+          "tf": 1
+        },
+        {
+          "id": 45,
+          "tf": 1
+        },
+        {
+          "id": 46,
+          "tf": 1
+        },
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 49,
+          "tf": 1
+        }
+      ]
+    },
+    "plant": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 23,
+          "tf": 1
+        }
+      ]
+    },
+    "musa": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 23,
+          "tf": 1
+        }
+      ]
+    },
+    "genu": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 23,
+          "tf": 1
+        }
+      ]
+    },
+    "consum": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 24,
+          "tf": 1
+        }
+      ]
+    },
+    "global": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 24,
+          "tf": 1
+        }
+      ]
+    },
+    "profil": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 25,
+          "tf": 1
+        }
+      ]
+    },
+    "excel": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 26,
+          "tf": 1
+        }
+      ]
+    },
+    "sourc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 26,
+          "tf": 1
+        }
+      ]
+    },
+    "potassium": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 26,
+          "tf": 1
+        }
+      ]
+    },
+    "mg": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 26,
+          "tf": 1
+        }
+      ]
+    },
+    "per": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 26,
+          "tf": 1
+        }
+      ]
+    },
+    "b6": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 27,
+          "tf": 1
+        }
+      ]
+    },
+    "magnesium": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 27,
+          "tf": 1
+        }
+      ]
+    },
+    "natur": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 44,
+          "tf": 1
+        },
+        {
+          "id": 206,
+          "tf": 1
+        },
+        {
+          "id": 230,
+          "tf": 1
+        },
+        {
+          "id": 274,
+          "tf": 1
+        }
+      ]
+    },
+    "sugar": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 30,
+          "tf": 1
+        }
+      ]
+    },
+    "quick": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        }
+      ]
+    },
+    "energi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        }
+      ]
+    },
+    "make": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 30,
+          "tf": 1
+        }
+      ]
+    },
+    "among": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        },
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "athlet": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 28,
+          "tf": 1
+        }
+      ]
+    },
+    "ripe": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 29,
+          "tf": 1
+        },
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "flavor": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 29,
+          "tf": 1
+        },
+        {
+          "id": 39,
+          "tf": 1
+        },
+        {
+          "id": 56,
+          "tf": 1
+        },
+        {
+          "id": 58,
+          "tf": 1
+        },
+        {
+          "id": 63,
+          "tf": 1
+        }
+      ]
+    },
+    "ripen": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 30,
+          "tf": 1
+        }
+      ]
+    },
+    "starch": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 30,
+          "tf": 1
+        }
+      ]
+    },
+    "convert": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 30,
+          "tf": 1
+        },
+        {
+          "id": 135,
+          "tf": 1
+        }
+      ]
+    },
+    "sweeter": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 30,
+          "tf": 1
+        }
+      ]
+    },
+    "starchi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "less": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "fulli": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "brown": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "spot": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "soft": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 31,
+          "tf": 1
+        }
+      ]
+    },
+    "orang": {
+      "df": 12,
+      "postings": [
+        {
+          "id": 32,
+          "tf": 1
+        },
+        {
+          "id": 33,
+          "tf": 1
+        },
+        {
+          "id": 34,
+          "tf": 1
+        },
+        {
+          "id": 35,
+          "tf": 1
+        },
+        {
+          "id": 36,
+          "tf": 1
+        },
+        {
+          "id": 37,
+          "tf": 1
+        },
+        {
+          "id": 38,
+          "tf": 1
+        },
+        {
+          "id": 39,
+          "tf": 1
+        },
+        {
+          "id": 40,
+          "tf": 1
+        },
+        {
+          "id": 42,
+          "tf": 1
+        },
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 53,
+          "tf": 1
+        }
+      ]
+    },
+    "citru": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 32,
+          "tf": 1
+        },
+        {
+          "id": 33,
+          "tf": 1
+        },
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "rutacea": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 33,
+          "tf": 1
+        }
+      ]
+    },
+    "bright": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 34,
+          "tf": 1
+        }
+      ]
+    },
+    "color": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 34,
+          "tf": 1
+        },
+        {
+          "id": 49,
+          "tf": 1
+        }
+      ]
+    },
+    "refresh": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 34,
+          "tf": 1
+        }
+      ]
+    },
+    "tast": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 34,
+          "tf": 1
+        },
+        {
+          "id": 64,
+          "tf": 1
+        }
+      ]
+    },
+    "lemon": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "lime": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "grapefruit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "cultiv": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "crop": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 35,
+          "tf": 1
+        }
+      ]
+    },
+    "type": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 36,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 304,
+          "tf": 1
+        }
+      ]
+    },
+    "navel": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 37,
+          "tf": 1
+        }
+      ]
+    },
+    "seedless": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 37,
+          "tf": 1
+        }
+      ]
+    },
+    "valencia": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 38,
+          "tf": 1
+        }
+      ]
+    },
+    "ideal": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 38,
+          "tf": 1
+        }
+      ]
+    },
+    "juic": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 38,
+          "tf": 1
+        }
+      ]
+    },
+    "blood": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 39,
+          "tf": 1
+        }
+      ]
+    },
+    "flesh": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 39,
+          "tf": 1
+        }
+      ]
+    },
+    "mandarin": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 40,
+          "tf": 1
+        }
+      ]
+    },
+    "small": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 40,
+          "tf": 1
+        },
+        {
+          "id": 45,
+          "tf": 1
+        }
+      ]
+    },
+    "easi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 40,
+          "tf": 1
+        }
+      ]
+    },
+    "peel": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 40,
+          "tf": 1
+        }
+      ]
+    },
+    "powerhous": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 41,
+          "tf": 1
+        }
+      ]
+    },
+    "famou": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 42,
+          "tf": 1
+        },
+        {
+          "id": 314,
+          "tf": 1
+        }
+      ]
+    },
+    "high": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 42,
+          "tf": 1
+        },
+        {
+          "id": 54,
+          "tf": 1
+        },
+        {
+          "id": 55,
+          "tf": 1
+        },
+        {
+          "id": 66,
+          "tf": 1
+        },
+        {
+          "id": 103,
+          "tf": 1
+        }
+      ]
+    },
+    "content": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 42,
+          "tf": 1
+        }
+      ]
+    },
+    "singl": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 46,
+          "tf": 1
+        },
+        {
+          "id": 67,
+          "tf": 1
+        },
+        {
+          "id": 68,
+          "tf": 2
+        },
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 113,
+          "tf": 1
+        }
+      ]
+    },
+    "daili": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "recommend": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "intak": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "function": {
+      "df": 17,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        },
+        {
+          "id": 52,
+          "tf": 1
+        },
+        {
+          "id": 138,
+          "tf": 1
+        },
+        {
+          "id": 180,
+          "tf": 1
+        },
+        {
+          "id": 183,
+          "tf": 1
+        },
+        {
+          "id": 185,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 255,
+          "tf": 1
+        },
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 257,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 1
+        },
+        {
+          "id": 280,
+          "tf": 1
+        },
+        {
+          "id": 282,
+          "tf": 1
+        },
+        {
+          "id": 283,
+          "tf": 1
+        }
+      ]
+    },
+    "skin": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 43,
+          "tf": 1
+        }
+      ]
+    },
+    "s": {
+      "df": 12,
+      "postings": [
+        {
+          "id": 44,
+          "tf": 1
+        },
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 81,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        },
+        {
+          "id": 143,
+          "tf": 1
+        },
+        {
+          "id": 185,
+          "tf": 2
+        },
+        {
+          "id": 193,
+          "tf": 1
+        },
+        {
+          "id": 204,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 313,
+          "tf": 1
+        },
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "gem": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 44,
+          "tf": 1
+        }
+      ]
+    },
+    "pulpi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 45,
+          "tf": 1
+        }
+      ]
+    },
+    "often": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 45,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 155,
+          "tf": 1
+        }
+      ]
+    },
+    "edibl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 45,
+          "tf": 1
+        }
+      ]
+    },
+    "true": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 46,
+          "tf": 1
+        },
+        {
+          "id": 47,
+          "tf": 1
+        }
+      ]
+    },
+    "develop": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 46,
+          "tf": 1
+        },
+        {
+          "id": 122,
+          "tf": 1
+        }
+      ]
+    },
+    "flower": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 46,
+          "tf": 1
+        }
+      ]
+    },
+    "ovari": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 46,
+          "tf": 1
+        }
+      ]
+    },
+    "categori": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        }
+      ]
+    },
+    "strawberri": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 53,
+          "tf": 1
+        }
+      ]
+    },
+    "technic": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        }
+      ]
+    },
+    "not": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 244,
+          "tf": 1
+        },
+        {
+          "id": 278,
+          "tf": 1
+        },
+        {
+          "id": 279,
+          "tf": 1
+        }
+      ]
+    },
+    "blueberri": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 52,
+          "tf": 1
+        }
+      ]
+    },
+    "raspberri": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 54,
+          "tf": 1
+        }
+      ]
+    },
+    "blackberri": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 47,
+          "tf": 1
+        },
+        {
+          "id": 55,
+          "tf": 1
+        }
+      ]
+    },
+    "power": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 48,
+          "tf": 1
+        },
+        {
+          "id": 168,
+          "tf": 1
+        },
+        {
+          "id": 172,
+          "tf": 1
+        },
+        {
+          "id": 300,
+          "tf": 1
+        }
+      ]
+    },
+    "load": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 49,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 148,
+          "tf": 1
+        }
+      ]
+    },
+    "anthocyanin": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 49,
+          "tf": 1
+        },
+        {
+          "id": 52,
+          "tf": 1
+        }
+      ]
+    },
+    "give": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 49,
+          "tf": 1
+        }
+      ]
+    },
+    "vibrant": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 49,
+          "tf": 1
+        }
+      ]
+    },
+    "compound": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 50,
+          "tf": 1
+        }
+      ]
+    },
+    "help": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 50,
+          "tf": 1
+        },
+        {
+          "id": 122,
+          "tf": 1
+        }
+      ]
+    },
+    "protect": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 50,
+          "tf": 1
+        }
+      ]
+    },
+    "cell": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 50,
+          "tf": 1
+        }
+      ]
+    },
+    "damag": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 50,
+          "tf": 1
+        }
+      ]
+    },
+    "inflamm": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 50,
+          "tf": 1
+        }
+      ]
+    },
+    "brain": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 52,
+          "tf": 1
+        }
+      ]
+    },
+    "low": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 54,
+          "tf": 1
+        }
+      ]
+    },
+    "glycem": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 54,
+          "tf": 1
+        }
+      ]
+    },
+    "index": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 54,
+          "tf": 1
+        }
+      ]
+    },
+    "level": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 55,
+          "tf": 1
+        }
+      ]
+    },
+    "k": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 55,
+          "tf": 1
+        },
+        {
+          "id": 210,
+          "tf": 1
+        },
+        {
+          "id": 295,
+          "tf": 2
+        },
+        {
+          "id": 296,
+          "tf": 1
+        },
+        {
+          "id": 297,
+          "tf": 1
+        },
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "manganes": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 55,
+          "tf": 1
+        }
+      ]
+    },
+    "exot": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 56,
+          "tf": 1
+        }
+      ]
+    },
+    "thrive": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 57,
+          "tf": 1
+        },
+        {
+          "id": 66,
+          "tf": 1
+        }
+      ]
+    },
+    "warm": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 57,
+          "tf": 1
+        }
+      ]
+    },
+    "climat": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 57,
+          "tf": 1
+        },
+        {
+          "id": 58,
+          "tf": 1
+        }
+      ]
+    },
+    "near": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 57,
+          "tf": 1
+        }
+      ]
+    },
+    "equat": {
+      "df": 12,
+      "postings": [
+        {
+          "id": 57,
+          "tf": 1
+        },
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 163,
+          "tf": 1
+        },
+        {
+          "id": 167,
+          "tf": 1
+        },
+        {
+          "id": 168,
+          "tf": 2
+        },
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 171,
+          "tf": 1
+        },
+        {
+          "id": 172,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 242,
+          "tf": 1
+        },
+        {
+          "id": 245,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "offer": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 58,
+          "tf": 1
+        },
+        {
+          "id": 63,
+          "tf": 1
+        },
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "textur": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 58,
+          "tf": 1
+        }
+      ]
+    },
+    "rare": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 58,
+          "tf": 1
+        }
+      ]
+    },
+    "found": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 58,
+          "tf": 1
+        },
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 316,
+          "tf": 1
+        }
+      ]
+    },
+    "temper": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 58,
+          "tf": 1
+        }
+      ]
+    },
+    "mango": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 60,
+          "tf": 1
+        }
+      ]
+    },
+    "king": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 60,
+          "tf": 1
+        }
+      ]
+    },
+    "pineappl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 61,
+          "tf": 1
+        }
+      ]
+    },
+    "bromelain": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 61,
+          "tf": 1
+        }
+      ]
+    },
+    "enzym": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 61,
+          "tf": 1
+        },
+        {
+          "id": 62,
+          "tf": 1
+        }
+      ]
+    },
+    "papaya": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 62,
+          "tf": 1
+        }
+      ]
+    },
+    "papain": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 62,
+          "tf": 1
+        }
+      ]
+    },
+    "passion": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 63,
+          "tf": 1
+        }
+      ]
+    },
+    "aromat": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 63,
+          "tf": 1
+        }
+      ]
+    },
+    "dragon": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 64,
+          "tf": 1
+        }
+      ]
+    },
+    "mild": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 64,
+          "tf": 1
+        }
+      ]
+    },
+    "strike": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 64,
+          "tf": 1
+        }
+      ]
+    },
+    "appear": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 64,
+          "tf": 1
+        },
+        {
+          "id": 168,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        }
+      ]
+    },
+    "condit": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 65,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        },
+        {
+          "id": 155,
+          "tf": 1
+        }
+      ]
+    },
+    "requir": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 66,
+          "tf": 1
+        },
+        {
+          "id": 133,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        },
+        {
+          "id": 145,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        }
+      ]
+    },
+    "consist": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 66,
+          "tf": 1
+        },
+        {
+          "id": 303,
+          "tf": 1
+        }
+      ]
+    },
+    "warmth": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 66,
+          "tf": 1
+        }
+      ]
+    },
+    "humid": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 66,
+          "tf": 1
+        }
+      ]
+    },
+    "rainfal": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 66,
+          "tf": 1
+        }
+      ]
+    },
+    "introduct": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 67,
+          "tf": 1
+        }
+      ]
+    },
+    "simd": {
+      "df": 34,
+      "postings": [
+        {
+          "id": 67,
+          "tf": 1
+        },
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 70,
+          "tf": 1
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 74,
+          "tf": 1
+        },
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 76,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        },
+        {
+          "id": 78,
+          "tf": 2
+        },
+        {
+          "id": 81,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 87,
+          "tf": 1
+        },
+        {
+          "id": 89,
+          "tf": 1
+        },
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 104,
+          "tf": 1
+        },
+        {
+          "id": 105,
+          "tf": 1
+        },
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 120,
+          "tf": 1
+        },
+        {
+          "id": 121,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        },
+        {
+          "id": 132,
+          "tf": 1
+        },
+        {
+          "id": 133,
+          "tf": 1
+        },
+        {
+          "id": 135,
+          "tf": 1
+        },
+        {
+          "id": 138,
+          "tf": 1
+        },
+        {
+          "id": 144,
+          "tf": 1
+        },
+        {
+          "id": 145,
+          "tf": 1
+        },
+        {
+          "id": 147,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        },
+        {
+          "id": 151,
+          "tf": 1
+        },
+        {
+          "id": 154,
+          "tf": 1
+        }
+      ]
+    },
+    "instruct": {
+      "df": 15,
+      "postings": [
+        {
+          "id": 67,
+          "tf": 1
+        },
+        {
+          "id": 68,
+          "tf": 2
+        },
+        {
+          "id": 71,
+          "tf": 1
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 74,
+          "tf": 1
+        },
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 76,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        },
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 85,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 138,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        },
+        {
+          "id": 155,
+          "tf": 1
+        }
+      ]
+    },
+    "multipl": {
+      "df": 10,
+      "postings": [
+        {
+          "id": 67,
+          "tf": 1
+        },
+        {
+          "id": 68,
+          "tf": 2
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 85,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 243,
+          "tf": 1
+        },
+        {
+          "id": 244,
+          "tf": 1
+        }
+      ]
+    },
+    "data": {
+      "df": 17,
+      "postings": [
+        {
+          "id": 67,
+          "tf": 1
+        },
+        {
+          "id": 68,
+          "tf": 2
+        },
+        {
+          "id": 71,
+          "tf": 1
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 85,
+          "tf": 1
+        },
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        },
+        {
+          "id": 150,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        },
+        {
+          "id": 218,
+          "tf": 1
+        },
+        {
+          "id": 237,
+          "tf": 1
+        },
+        {
+          "id": 242,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "stand": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        }
+      ]
+    },
+    "parallel": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 72,
+          "tf": 1
+        }
+      ]
+    },
+    "comput": {
+      "df": 9,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 69,
+          "tf": 2
+        },
+        {
+          "id": 212,
+          "tf": 1
+        },
+        {
+          "id": 216,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 1
+        },
+        {
+          "id": 286,
+          "tf": 1
+        },
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "architectur": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 81,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 129,
+          "tf": 1
+        }
+      ]
+    },
+    "enabl": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        }
+      ]
+    },
+    "process": {
+      "df": 9,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 71,
+          "tf": 1
+        },
+        {
+          "id": 85,
+          "tf": 1
+        },
+        {
+          "id": 90,
+          "tf": 1
+        },
+        {
+          "id": 91,
+          "tf": 1
+        },
+        {
+          "id": 97,
+          "tf": 1
+        },
+        {
+          "id": 98,
+          "tf": 1
+        },
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 187,
+          "tf": 1
+        }
+      ]
+    },
+    "element": {
+      "df": 14,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 71,
+          "tf": 1
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 85,
+          "tf": 1
+        },
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        },
+        {
+          "id": 270,
+          "tf": 1
+        },
+        {
+          "id": 273,
+          "tf": 1
+        },
+        {
+          "id": 276,
+          "tf": 1
+        },
+        {
+          "id": 277,
+          "tf": 1
+        },
+        {
+          "id": 278,
+          "tf": 1
+        },
+        {
+          "id": 279,
+          "tf": 1
+        }
+      ]
+    },
+    "simultan": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 68,
+          "tf": 1
+        },
+        {
+          "id": 73,
+          "tf": 1
+        }
+      ]
+    },
+    "techniqu": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 132,
+          "tf": 1
+        },
+        {
+          "id": 133,
+          "tf": 1
+        }
+      ]
+    },
+    "fundament": {
+      "df": 9,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 179,
+          "tf": 1
+        },
+        {
+          "id": 201,
+          "tf": 1
+        },
+        {
+          "id": 204,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 229,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 283,
+          "tf": 1
+        }
+      ]
+    },
+    "modern": {
+      "df": 8,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        },
+        {
+          "id": 120,
+          "tf": 1
+        },
+        {
+          "id": 121,
+          "tf": 1
+        },
+        {
+          "id": 135,
+          "tf": 1
+        },
+        {
+          "id": 268,
+          "tf": 1
+        },
+        {
+          "id": 269,
+          "tf": 1
+        }
+      ]
+    },
+    "perform": {
+      "df": 8,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 83,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 103,
+          "tf": 2
+        },
+        {
+          "id": 143,
+          "tf": 1
+        },
+        {
+          "id": 144,
+          "tf": 1
+        },
+        {
+          "id": 145,
+          "tf": 1
+        },
+        {
+          "id": 147,
+          "tf": 1
+        }
+      ]
+    },
+    "especi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        }
+      ]
+    },
+    "multimedia": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        }
+      ]
+    },
+    "machin": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 93,
+          "tf": 1
+        },
+        {
+          "id": 100,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "learn": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 93,
+          "tf": 1
+        },
+        {
+          "id": 100,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "applic": {
+      "df": 12,
+      "postings": [
+        {
+          "id": 69,
+          "tf": 1
+        },
+        {
+          "id": 86,
+          "tf": 1
+        },
+        {
+          "id": 88,
+          "tf": 1
+        },
+        {
+          "id": 96,
+          "tf": 1
+        },
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 201,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 251,
+          "tf": 1
+        },
+        {
+          "id": 286,
+          "tf": 1
+        },
+        {
+          "id": 300,
+          "tf": 1
+        },
+        {
+          "id": 317,
+          "tf": 1
+        }
+      ]
+    },
+    "work": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 70,
+          "tf": 1
+        },
+        {
+          "id": 154,
+          "tf": 1
+        }
+      ]
+    },
+    "tradit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 71,
+          "tf": 1
+        }
+      ]
+    },
+    "scalar": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 71,
+          "tf": 1
+        },
+        {
+          "id": 135,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 1
+        }
+      ]
+    },
+    "oper": {
+      "df": 18,
+      "postings": [
+        {
+          "id": 71,
+          "tf": 1
+        },
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 104,
+          "tf": 1
+        },
+        {
+          "id": 105,
+          "tf": 1
+        },
+        {
+          "id": 118,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 3
+        },
+        {
+          "id": 135,
+          "tf": 2
+        },
+        {
+          "id": 147,
+          "tf": 1
+        },
+        {
+          "id": 155,
+          "tf": 2
+        },
+        {
+          "id": 162,
+          "tf": 1
+        },
+        {
+          "id": 164,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 166,
+          "tf": 1
+        },
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 243,
+          "tf": 1
+        },
+        {
+          "id": 275,
+          "tf": 1
+        }
+      ]
+    },
+    "time": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 71,
+          "tf": 1
+        }
+      ]
+    },
+    "howev": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "allow": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 72,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 1
+        }
+      ]
+    },
+    "exampl": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 140,
+          "tf": 1
+        },
+        {
+          "id": 291,
+          "tf": 1
+        }
+      ]
+    },
+    "instead": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        }
+      ]
+    },
+    "ad": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        }
+      ]
+    },
+    "four": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 2
+        }
+      ]
+    },
+    "pair": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 2
+        },
+        {
+          "id": 281,
+          "tf": 1
+        },
+        {
+          "id": 308,
+          "tf": 1
+        }
+      ]
+    },
+    "number": {
+      "df": 15,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 202,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 205,
+          "tf": 1
+        },
+        {
+          "id": 206,
+          "tf": 2
+        },
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 231,
+          "tf": 2
+        },
+        {
+          "id": 236,
+          "tf": 1
+        },
+        {
+          "id": 241,
+          "tf": 1
+        },
+        {
+          "id": 274,
+          "tf": 3
+        },
+        {
+          "id": 289,
+          "tf": 1
+        },
+        {
+          "id": 295,
+          "tf": 1
+        },
+        {
+          "id": 310,
+          "tf": 1
+        }
+      ]
+    },
+    "sequenti": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        }
+      ]
+    },
+    "add": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "us": {
+      "df": 16,
+      "postings": [
+        {
+          "id": 73,
+          "tf": 1
+        },
+        {
+          "id": 82,
+          "tf": 1
+        },
+        {
+          "id": 87,
+          "tf": 1
+        },
+        {
+          "id": 89,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        },
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        },
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        },
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "set": {
+      "df": 16,
+      "postings": [
+        {
+          "id": 74,
+          "tf": 1
+        },
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 76,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        },
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        },
+        {
+          "id": 268,
+          "tf": 1
+        },
+        {
+          "id": 269,
+          "tf": 1
+        },
+        {
+          "id": 270,
+          "tf": 1
+        },
+        {
+          "id": 272,
+          "tf": 1
+        },
+        {
+          "id": 273,
+          "tf": 1
+        },
+        {
+          "id": 274,
+          "tf": 1
+        },
+        {
+          "id": 276,
+          "tf": 1
+        },
+        {
+          "id": 277,
+          "tf": 1
+        },
+        {
+          "id": 281,
+          "tf": 1
+        }
+      ]
+    },
+    "processor": {
+      "df": 8,
+      "postings": [
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        },
+        {
+          "id": 82,
+          "tf": 1
+        },
+        {
+          "id": 123,
+          "tf": 1
+        },
+        {
+          "id": 127,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 130,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "variou": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 75,
+          "tf": 1
+        },
+        {
+          "id": 77,
+          "tf": 1
+        }
+      ]
+    },
+    "sse": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 124,
+          "tf": 1
+        },
+        {
+          "id": 125,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        }
+      ]
+    },
+    "stream": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 78,
+          "tf": 1
+        }
+      ]
+    },
+    "extens": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 87,
+          "tf": 1
+        },
+        {
+          "id": 89,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "intel": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 123,
+          "tf": 1
+        },
+        {
+          "id": 124,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        }
+      ]
+    },
+    "first": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 78,
+          "tf": 1
+        },
+        {
+          "id": 168,
+          "tf": 1
+        },
+        {
+          "id": 207,
+          "tf": 1
+        }
+      ]
+    },
+    "mainstream": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 78,
+          "tf": 1
+        }
+      ]
+    },
+    "avx": {
+      "df": 9,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 80,
+          "tf": 1
+        },
+        {
+          "id": 109,
+          "tf": 1
+        },
+        {
+          "id": 112,
+          "tf": 1
+        },
+        {
+          "id": 126,
+          "tf": 2
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 129,
+          "tf": 1
+        },
+        {
+          "id": 140,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 1
+        }
+      ]
+    },
+    "advanc": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 158,
+          "tf": 1
+        }
+      ]
+    },
+    "vector": {
+      "df": 19,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 104,
+          "tf": 1
+        },
+        {
+          "id": 105,
+          "tf": 1
+        },
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 107,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 110,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 134,
+          "tf": 1
+        },
+        {
+          "id": 135,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        },
+        {
+          "id": 232,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 235,
+          "tf": 1
+        },
+        {
+          "id": 236,
+          "tf": 1
+        },
+        {
+          "id": 237,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 239,
+          "tf": 1
+        },
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "extend": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 80,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        }
+      ]
+    },
+    "wider": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        }
+      ]
+    },
+    "bit": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 80,
+          "tf": 1
+        },
+        {
+          "id": 109,
+          "tf": 1
+        },
+        {
+          "id": 112,
+          "tf": 1
+        },
+        {
+          "id": 115,
+          "tf": 1
+        },
+        {
+          "id": 116,
+          "tf": 1
+        },
+        {
+          "id": 117,
+          "tf": 1
+        }
+      ]
+    },
+    "regist": {
+      "df": 8,
+      "postings": [
+        {
+          "id": 79,
+          "tf": 1
+        },
+        {
+          "id": 80,
+          "tf": 1
+        },
+        {
+          "id": 107,
+          "tf": 1
+        },
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 109,
+          "tf": 1
+        },
+        {
+          "id": 110,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 112,
+          "tf": 1
+        }
+      ]
+    },
+    "further": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 80,
+          "tf": 1
+        }
+      ]
+    },
+    "arm": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 81,
+          "tf": 2
+        },
+        {
+          "id": 130,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 3
+        }
+      ]
+    },
+    "neon": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 81,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "technolog": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 81,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "altivec": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 82,
+          "tf": 1
+        }
+      ]
+    },
+    "powerpc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 82,
+          "tf": 1
+        }
+      ]
+    },
+    "signific": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "achiev": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "2x": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "8x": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "speedup": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 84,
+          "tf": 1
+        }
+      ]
+    },
+    "depend": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 84,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "gain": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 85,
+          "tf": 1
+        }
+      ]
+    },
+    "overhead": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 85,
+          "tf": 1
+        }
+      ]
+    },
+    "common": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 86,
+          "tf": 1
+        },
+        {
+          "id": 88,
+          "tf": 1
+        },
+        {
+          "id": 96,
+          "tf": 1
+        },
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 274,
+          "tf": 1
+        }
+      ]
+    },
+    "imag": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 90,
+          "tf": 1
+        },
+        {
+          "id": 97,
+          "tf": 1
+        }
+      ]
+    },
+    "video": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 90,
+          "tf": 1
+        },
+        {
+          "id": 97,
+          "tf": 1
+        }
+      ]
+    },
+    "audio": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 91,
+          "tf": 1
+        },
+        {
+          "id": 98,
+          "tf": 1
+        }
+      ]
+    },
+    "signal": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 91,
+          "tf": 1
+        },
+        {
+          "id": 98,
+          "tf": 1
+        }
+      ]
+    },
+    "3d": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 92,
+          "tf": 1
+        },
+        {
+          "id": 99,
+          "tf": 1
+        }
+      ]
+    },
+    "graphic": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 92,
+          "tf": 1
+        },
+        {
+          "id": 99,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "render": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 92,
+          "tf": 1
+        },
+        {
+          "id": 99,
+          "tf": 1
+        }
+      ]
+    },
+    "infer": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 93,
+          "tf": 1
+        },
+        {
+          "id": 100,
+          "tf": 1
+        }
+      ]
+    },
+    "simul": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 94,
+          "tf": 1
+        },
+        {
+          "id": 101,
+          "tf": 1
+        }
+      ]
+    },
+    "cryptographi": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 95,
+          "tf": 1
+        },
+        {
+          "id": 102,
+          "tf": 1
+        },
+        {
+          "id": 216,
+          "tf": 1
+        }
+      ]
+    },
+    "understand": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 122,
+          "tf": 1
+        },
+        {
+          "id": 133,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        }
+      ]
+    },
+    "crucial": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 216,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        }
+      ]
+    },
+    "write": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 122,
+          "tf": 1
+        },
+        {
+          "id": 215,
+          "tf": 1
+        }
+      ]
+    },
+    "code": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 122,
+          "tf": 1
+        },
+        {
+          "id": 145,
+          "tf": 1
+        },
+        {
+          "id": 154,
+          "tf": 1
+        }
+      ]
+    },
+    "critic": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 103,
+          "tf": 1
+        },
+        {
+          "id": 143,
+          "tf": 1
+        }
+      ]
+    },
+    "core": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 105,
+          "tf": 1
+        }
+      ]
+    },
+    "program": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 105,
+          "tf": 1
+        },
+        {
+          "id": 132,
+          "tf": 1
+        },
+        {
+          "id": 133,
+          "tf": 1
+        },
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "context": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 106,
+          "tf": 1
+        }
+      ]
+    },
+    "refer": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 106,
+          "tf": 1
+        }
+      ]
+    },
+    "collect": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 218,
+          "tf": 1
+        },
+        {
+          "id": 270,
+          "tf": 1
+        }
+      ]
+    },
+    "togeth": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 106,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        }
+      ]
+    },
+    "special": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 282,
+          "tf": 1
+        }
+      ]
+    },
+    "hold": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 108,
+          "tf": 1
+        },
+        {
+          "id": 109,
+          "tf": 1
+        },
+        {
+          "id": 111,
+          "tf": 1
+        },
+        {
+          "id": 112,
+          "tf": 1
+        }
+      ]
+    },
+    "instanc": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 109,
+          "tf": 1
+        },
+        {
+          "id": 112,
+          "tf": 1
+        }
+      ]
+    },
+    "precis": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 113,
+          "tf": 1
+        },
+        {
+          "id": 114,
+          "tf": 1
+        }
+      ]
+    },
+    "float": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 113,
+          "tf": 1
+        },
+        {
+          "id": 114,
+          "tf": 1
+        },
+        {
+          "id": 140,
+          "tf": 1
+        }
+      ]
+    },
+    "doubl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 114,
+          "tf": 1
+        }
+      ]
+    },
+    "integ": {
+      "df": 9,
+      "postings": [
+        {
+          "id": 115,
+          "tf": 1
+        },
+        {
+          "id": 116,
+          "tf": 1
+        },
+        {
+          "id": 117,
+          "tf": 1
+        },
+        {
+          "id": 202,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 2
+        },
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 210,
+          "tf": 3
+        },
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 274,
+          "tf": 1
+        }
+      ]
+    },
+    "basic": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 118,
+          "tf": 1
+        },
+        {
+          "id": 159,
+          "tf": 1
+        },
+        {
+          "id": 255,
+          "tf": 1
+        },
+        {
+          "id": 257,
+          "tf": 1
+        },
+        {
+          "id": 271,
+          "tf": 1
+        }
+      ]
+    },
+    "arithmet": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 213,
+          "tf": 1
+        },
+        {
+          "id": 214,
+          "tf": 1
+        }
+      ]
+    },
+    "subtract": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        }
+      ]
+    },
+    "multipli": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "divid": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 215,
+          "tf": 1
+        }
+      ]
+    },
+    "logic": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "xor": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "comparison": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "movement": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "store": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 148,
+          "tf": 1
+        }
+      ]
+    },
+    "shuffl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        }
+      ]
+    },
+    "blend": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 119,
+          "tf": 1
+        },
+        {
+          "id": 155,
+          "tf": 1
+        }
+      ]
+    },
+    "cpu": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 120,
+          "tf": 1
+        },
+        {
+          "id": 121,
+          "tf": 1
+        }
+      ]
+    },
+    "evolv": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 121,
+          "tf": 1
+        },
+        {
+          "id": 125,
+          "tf": 1
+        }
+      ]
+    },
+    "increasingli": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 121,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "sophist": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 121,
+          "tf": 1
+        }
+      ]
+    },
+    "capabl": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 121,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        },
+        {
+          "id": 133,
+          "tf": 1
+        }
+      ]
+    },
+    "featur": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 122,
+          "tf": 1
+        }
+      ]
+    },
+    "optim": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 122,
+          "tf": 1
+        },
+        {
+          "id": 144,
+          "tf": 1
+        },
+        {
+          "id": 145,
+          "tf": 1
+        },
+        {
+          "id": 286,
+          "tf": 1
+        }
+      ]
+    },
+    "introduc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 124,
+          "tf": 1
+        }
+      ]
+    },
+    "mmx": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 124,
+          "tf": 1
+        }
+      ]
+    },
+    "follow": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 124,
+          "tf": 1
+        },
+        {
+          "id": 166,
+          "tf": 1
+        },
+        {
+          "id": 230,
+          "tf": 1
+        }
+      ]
+    },
+    "sever": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 125,
+          "tf": 1
+        },
+        {
+          "id": 145,
+          "tf": 1
+        }
+      ]
+    },
+    "version": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 125,
+          "tf": 1
+        }
+      ]
+    },
+    "sse2": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 125,
+          "tf": 1
+        }
+      ]
+    },
+    "sse3": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 125,
+          "tf": 1
+        }
+      ]
+    },
+    "ssse3": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 125,
+          "tf": 1
+        }
+      ]
+    },
+    "sse4": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 125,
+          "tf": 1
+        }
+      ]
+    },
+    "arriv": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "sandi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "bridg": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        },
+        {
+          "id": 315,
+          "tf": 2
+        }
+      ]
+    },
+    "avx2": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        }
+      ]
+    },
+    "haswel": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "xeon": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "phi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 126,
+          "tf": 1
+        }
+      ]
+    },
+    "amd": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 127,
+          "tf": 1
+        },
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 129,
+          "tf": 1
+        }
+      ]
+    },
+    "similar": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 128,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        }
+      ]
+    },
+    "implement": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 128,
+          "tf": 1
+        }
+      ]
+    },
+    "recent": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 129,
+          "tf": 1
+        }
+      ]
+    },
+    "chip": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 129,
+          "tf": 1
+        },
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "zen": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 129,
+          "tf": 1
+        }
+      ]
+    },
+    "wide": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "mobil": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "devic": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 131,
+          "tf": 1
+        }
+      ]
+    },
+    "server": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 131,
+          "tf": 2
+        }
+      ]
+    },
+    "hardwar": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 133,
+          "tf": 1
+        }
+      ]
+    },
+    "softwar": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 133,
+          "tf": 1
+        }
+      ]
+    },
+    "effect": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 133,
+          "tf": 1
+        }
+      ]
+    },
+    "util": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 133,
+          "tf": 1
+        }
+      ]
+    },
+    "auto": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 134,
+          "tf": 1
+        }
+      ]
+    },
+    "compil": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 135,
+          "tf": 1
+        }
+      ]
+    },
+    "automat": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 135,
+          "tf": 1
+        }
+      ]
+    },
+    "loop": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 135,
+          "tf": 1
+        },
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "meet": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "analyz": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 136,
+          "tf": 1
+        },
+        {
+          "id": 218,
+          "tf": 1
+        }
+      ]
+    },
+    "clear": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "memori": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 136,
+          "tf": 1
+        },
+        {
+          "id": 146,
+          "tf": 1
+        },
+        {
+          "id": 147,
+          "tf": 1
+        }
+      ]
+    },
+    "access": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "pattern": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 136,
+          "tf": 1
+        }
+      ]
+    },
+    "intrins": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 137,
+          "tf": 1
+        },
+        {
+          "id": 138,
+          "tf": 1
+        }
+      ]
+    },
+    "map": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 138,
+          "tf": 1
+        }
+      ]
+    },
+    "directli": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 138,
+          "tf": 1
+        }
+      ]
+    },
+    "fine": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 139,
+          "tf": 1
+        }
+      ]
+    },
+    "grain": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 139,
+          "tf": 1
+        }
+      ]
+    },
+    "control": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 139,
+          "tf": 1
+        },
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "maintain": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 139,
+          "tf": 1
+        },
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "_mm256_add_p": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 140,
+          "tf": 1
+        }
+      ]
+    },
+    "point": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 140,
+          "tf": 1
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 237,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        }
+      ]
+    },
+    "addit": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 140,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 243,
+          "tf": 1
+        }
+      ]
+    },
+    "assembl": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 141,
+          "tf": 1
+        },
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "direct": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 142,
+          "tf": 1
+        },
+        {
+          "id": 237,
+          "tf": 1
+        },
+        {
+          "id": 305,
+          "tf": 1
+        },
+        {
+          "id": 306,
+          "tf": 2
+        }
+      ]
+    },
+    "maximum": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "sacrific": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 142,
+          "tf": 1
+        }
+      ]
+    },
+    "typic": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 143,
+          "tf": 1
+        }
+      ]
+    },
+    "reserv": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 143,
+          "tf": 1
+        }
+      ]
+    },
+    "hotspot": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 143,
+          "tf": 1
+        }
+      ]
+    },
+    "care": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 145,
+          "tf": 1
+        }
+      ]
+    },
+    "attent": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 145,
+          "tf": 1
+        }
+      ]
+    },
+    "factor": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 145,
+          "tf": 1
+        },
+        {
+          "id": 174,
+          "tf": 1
+        }
+      ]
+    },
+    "affect": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 145,
+          "tf": 1
+        }
+      ]
+    },
+    "align": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 146,
+          "tf": 1
+        },
+        {
+          "id": 147,
+          "tf": 1
+        },
+        {
+          "id": 148,
+          "tf": 1
+        },
+        {
+          "id": 149,
+          "tf": 2
+        }
+      ]
+    },
+    "best": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 147,
+          "tf": 1
+        },
+        {
+          "id": 154,
+          "tf": 1
+        }
+      ]
+    },
+    "faster": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 148,
+          "tf": 1
+        }
+      ]
+    },
+    "unalign": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 148,
+          "tf": 1
+        }
+      ]
+    },
+    "byte": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 149,
+          "tf": 2
+        }
+      ]
+    },
+    "layout": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 150,
+          "tf": 1
+        },
+        {
+          "id": 151,
+          "tf": 1
+        }
+      ]
+    },
+    "structur": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 151,
+          "tf": 2
+        },
+        {
+          "id": 252,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "arrai": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 151,
+          "tf": 2
+        },
+        {
+          "id": 241,
+          "tf": 1
+        }
+      ]
+    },
+    "soa": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 151,
+          "tf": 1
+        },
+        {
+          "id": 152,
+          "tf": 1
+        }
+      ]
+    },
+    "gener": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 151,
+          "tf": 1
+        },
+        {
+          "id": 169,
+          "tf": 1
+        },
+        {
+          "id": 244,
+          "tf": 1
+        }
+      ]
+    },
+    "better": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 151,
+          "tf": 1
+        }
+      ]
+    },
+    "ao": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 151,
+          "tf": 1
+        }
+      ]
+    },
+    "effici": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 152,
+          "tf": 1
+        },
+        {
+          "id": 212,
+          "tf": 1
+        }
+      ]
+    },
+    "branch": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 153,
+          "tf": 1
+        },
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        }
+      ]
+    },
+    "avoid": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 153,
+          "tf": 1
+        }
+      ]
+    },
+    "branchless": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 154,
+          "tf": 1
+        }
+      ]
+    },
+    "replac": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 155,
+          "tf": 1
+        }
+      ]
+    },
+    "mask": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 155,
+          "tf": 1
+        }
+      ]
+    },
+    "algebra": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 156,
+          "tf": 1
+        },
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 232,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "foundat": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 156,
+          "tf": 1
+        },
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 219,
+          "tf": 1
+        },
+        {
+          "id": 268,
+          "tf": 1
+        },
+        {
+          "id": 269,
+          "tf": 1
+        }
+      ]
+    },
+    "mathemat": {
+      "df": 18,
+      "postings": [
+        {
+          "id": 156,
+          "tf": 1
+        },
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 175,
+          "tf": 1
+        },
+        {
+          "id": 176,
+          "tf": 1
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 201,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 204,
+          "tf": 1
+        },
+        {
+          "id": 219,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 253,
+          "tf": 1
+        },
+        {
+          "id": 268,
+          "tf": 1
+        },
+        {
+          "id": 269,
+          "tf": 1
+        },
+        {
+          "id": 283,
+          "tf": 1
+        },
+        {
+          "id": 285,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "symbol": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 160,
+          "tf": 1
+        }
+      ]
+    },
+    "letter": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 157,
+          "tf": 1
+        }
+      ]
+    },
+    "repres": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 160,
+          "tf": 1
+        },
+        {
+          "id": 184,
+          "tf": 1
+        },
+        {
+          "id": 188,
+          "tf": 1
+        },
+        {
+          "id": 189,
+          "tf": 1
+        },
+        {
+          "id": 237,
+          "tf": 1
+        },
+        {
+          "id": 242,
+          "tf": 1
+        }
+      ]
+    },
+    "quantiti": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 157,
+          "tf": 1
+        }
+      ]
+    },
+    "formula": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 157,
+          "tf": 1
+        },
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 1
+        }
+      ]
+    },
+    "form": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 169,
+          "tf": 1
+        },
+        {
+          "id": 173,
+          "tf": 1
+        }
+      ]
+    },
+    "scienc": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 216,
+          "tf": 1
+        },
+        {
+          "id": 218,
+          "tf": 1
+        },
+        {
+          "id": 286,
+          "tf": 1
+        }
+      ]
+    },
+    "engin": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "everydai": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 158,
+          "tf": 1
+        }
+      ]
+    },
+    "problem": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 314,
+          "tf": 1
+        },
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "solv": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 158,
+          "tf": 1
+        },
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        },
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "concept": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 159,
+          "tf": 1
+        },
+        {
+          "id": 179,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 216,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 271,
+          "tf": 1
+        }
+      ]
+    },
+    "variabl": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 160,
+          "tf": 1
+        },
+        {
+          "id": 162,
+          "tf": 1
+        },
+        {
+          "id": 168,
+          "tf": 1
+        },
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 172,
+          "tf": 1
+        }
+      ]
+    },
+    "unknown": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 160,
+          "tf": 1
+        }
+      ]
+    },
+    "chang": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 160,
+          "tf": 1
+        },
+        {
+          "id": 161,
+          "tf": 1
+        },
+        {
+          "id": 175,
+          "tf": 1
+        },
+        {
+          "id": 176,
+          "tf": 1
+        },
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 183,
+          "tf": 1
+        },
+        {
+          "id": 184,
+          "tf": 1
+        }
+      ]
+    },
+    "valu": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 160,
+          "tf": 1
+        },
+        {
+          "id": 161,
+          "tf": 1
+        },
+        {
+          "id": 180,
+          "tf": 2
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 221,
+          "tf": 2
+        },
+        {
+          "id": 223,
+          "tf": 1
+        },
+        {
+          "id": 307,
+          "tf": 1
+        }
+      ]
+    },
+    "constant": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 161,
+          "tf": 1
+        },
+        {
+          "id": 162,
+          "tf": 1
+        }
+      ]
+    },
+    "fix": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 161,
+          "tf": 1
+        },
+        {
+          "id": 231,
+          "tf": 1
+        }
+      ]
+    },
+    "don": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 161,
+          "tf": 1
+        }
+      ]
+    },
+    "t": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 161,
+          "tf": 1
+        }
+      ]
+    },
+    "express": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 162,
+          "tf": 1
+        },
+        {
+          "id": 163,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        }
+      ]
+    },
+    "combin": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 162,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 1
+        },
+        {
+          "id": 276,
+          "tf": 1
+        },
+        {
+          "id": 285,
+          "tf": 1
+        },
+        {
+          "id": 293,
+          "tf": 1
+        },
+        {
+          "id": 294,
+          "tf": 1
+        }
+      ]
+    },
+    "state": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 163,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        }
+      ]
+    },
+    "two": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 163,
+          "tf": 1
+        },
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 313,
+          "tf": 1
+        }
+      ]
+    },
+    "equal": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 163,
+          "tf": 1
+        },
+        {
+          "id": 198,
+          "tf": 1
+        },
+        {
+          "id": 227,
+          "tf": 1
+        }
+      ]
+    },
+    "divis": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 165,
+          "tf": 1
+        },
+        {
+          "id": 209,
+          "tf": 1
+        },
+        {
+          "id": 210,
+          "tf": 1
+        }
+      ]
+    },
+    "specif": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        },
+        {
+          "id": 288,
+          "tf": 1
+        }
+      ]
+    },
+    "rule": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        }
+      ]
+    },
+    "commut": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        },
+        {
+          "id": 244,
+          "tf": 1
+        }
+      ]
+    },
+    "properti": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 3
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 309,
+          "tf": 1
+        }
+      ]
+    },
+    "b": {
+      "df": 12,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 5
+        },
+        {
+          "id": 169,
+          "tf": 1
+        },
+        {
+          "id": 174,
+          "tf": 2
+        },
+        {
+          "id": 188,
+          "tf": 2
+        },
+        {
+          "id": 200,
+          "tf": 1
+        },
+        {
+          "id": 210,
+          "tf": 1
+        },
+        {
+          "id": 215,
+          "tf": 2
+        },
+        {
+          "id": 239,
+          "tf": 3
+        },
+        {
+          "id": 247,
+          "tf": 1
+        },
+        {
+          "id": 276,
+          "tf": 1
+        },
+        {
+          "id": 277,
+          "tf": 1
+        },
+        {
+          "id": 278,
+          "tf": 2
+        }
+      ]
+    },
+    "associ": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        }
+      ]
+    },
+    "distribut": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        },
+        {
+          "id": 228,
+          "tf": 1
+        },
+        {
+          "id": 229,
+          "tf": 1
+        },
+        {
+          "id": 230,
+          "tf": 1
+        },
+        {
+          "id": 231,
+          "tf": 1
+        }
+      ]
+    },
+    "ab": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        },
+        {
+          "id": 244,
+          "tf": 1
+        }
+      ]
+    },
+    "ac": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 166,
+          "tf": 1
+        }
+      ]
+    },
+    "linear": {
+      "df": 10,
+      "postings": [
+        {
+          "id": 167,
+          "tf": 1
+        },
+        {
+          "id": 168,
+          "tf": 1
+        },
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 232,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 3
+        },
+        {
+          "id": 242,
+          "tf": 1
+        },
+        {
+          "id": 245,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "ax": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 169,
+          "tf": 1
+        },
+        {
+          "id": 173,
+          "tf": 1
+        },
+        {
+          "id": 247,
+          "tf": 1
+        }
+      ]
+    },
+    "involv": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 170,
+          "tf": 1
+        }
+      ]
+    },
+    "isol": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 170,
+          "tf": 1
+        }
+      ]
+    },
+    "invers": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 170,
+          "tf": 1
+        },
+        {
+          "id": 243,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "quadrat": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 171,
+          "tf": 1
+        },
+        {
+          "id": 172,
+          "tf": 1
+        },
+        {
+          "id": 174,
+          "tf": 1
+        }
+      ]
+    },
+    "rais": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 172,
+          "tf": 1
+        }
+      ]
+    },
+    "second": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 172,
+          "tf": 1
+        }
+      ]
+    },
+    "standard": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 173,
+          "tf": 1
+        },
+        {
+          "id": 222,
+          "tf": 1
+        },
+        {
+          "id": 223,
+          "tf": 1
+        }
+      ]
+    },
+    "bx": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 173,
+          "tf": 1
+        }
+      ]
+    },
+    "solut": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 247,
+          "tf": 1
+        }
+      ]
+    },
+    "complet": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 308,
+          "tf": 1
+        }
+      ]
+    },
+    "squar": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "x": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 174,
+          "tf": 1
+        },
+        {
+          "id": 181,
+          "tf": 4
+        },
+        {
+          "id": 184,
+          "tf": 2
+        },
+        {
+          "id": 188,
+          "tf": 4
+        },
+        {
+          "id": 189,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        }
+      ]
+    },
+    "4ac": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 174,
+          "tf": 1
+        }
+      ]
+    },
+    "2a": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 174,
+          "tf": 1
+        }
+      ]
+    },
+    "calculu": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 175,
+          "tf": 1
+        },
+        {
+          "id": 176,
+          "tf": 1
+        },
+        {
+          "id": 177,
+          "tf": 2
+        },
+        {
+          "id": 179,
+          "tf": 1
+        }
+      ]
+    },
+    "continu": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 176,
+          "tf": 1
+        }
+      ]
+    },
+    "main": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        }
+      ]
+    },
+    "differenti": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 187,
+          "tf": 1
+        }
+      ]
+    },
+    "concern": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 2
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        }
+      ]
+    },
+    "rate": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 183,
+          "tf": 1
+        },
+        {
+          "id": 184,
+          "tf": 1
+        }
+      ]
+    },
+    "slope": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 185,
+          "tf": 1
+        }
+      ]
+    },
+    "integr": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 186,
+          "tf": 1
+        },
+        {
+          "id": 187,
+          "tf": 1
+        },
+        {
+          "id": 188,
+          "tf": 1
+        },
+        {
+          "id": 189,
+          "tf": 1
+        }
+      ]
+    },
+    "accumul": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        }
+      ]
+    },
+    "area": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 177,
+          "tf": 1
+        },
+        {
+          "id": 188,
+          "tf": 1
+        },
+        {
+          "id": 204,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        }
+      ]
+    },
+    "limit": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 178,
+          "tf": 1
+        },
+        {
+          "id": 179,
+          "tf": 1
+        },
+        {
+          "id": 180,
+          "tf": 1
+        }
+      ]
+    },
+    "describ": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 180,
+          "tf": 1
+        }
+      ]
+    },
+    "approach": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 180,
+          "tf": 2
+        },
+        {
+          "id": 181,
+          "tf": 1
+        }
+      ]
+    },
+    "input": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 180,
+          "tf": 1
+        },
+        {
+          "id": 282,
+          "tf": 1
+        }
+      ]
+    },
+    "formal": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 1
+        }
+      ]
+    },
+    "lim": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 1
+        }
+      ]
+    },
+    "f": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 2
+        },
+        {
+          "id": 184,
+          "tf": 2
+        },
+        {
+          "id": 188,
+          "tf": 2
+        },
+        {
+          "id": 189,
+          "tf": 1
+        }
+      ]
+    },
+    "l": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 2
+        }
+      ]
+    },
+    "mean": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 1
+        },
+        {
+          "id": 221,
+          "tf": 1
+        },
+        {
+          "id": 223,
+          "tf": 1
+        }
+      ]
+    },
+    "get": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 1
+        }
+      ]
+    },
+    "arbitrarili": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 1
+        }
+      ]
+    },
+    "close": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 181,
+          "tf": 1
+        }
+      ]
+    },
+    "deriv": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 182,
+          "tf": 1
+        },
+        {
+          "id": 183,
+          "tf": 1
+        },
+        {
+          "id": 184,
+          "tf": 1
+        }
+      ]
+    },
+    "measur": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 183,
+          "tf": 1
+        },
+        {
+          "id": 196,
+          "tf": 1
+        },
+        {
+          "id": 221,
+          "tf": 1
+        },
+        {
+          "id": 222,
+          "tf": 1
+        },
+        {
+          "id": 223,
+          "tf": 1
+        }
+      ]
+    },
+    "y": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 184,
+          "tf": 1
+        }
+      ]
+    },
+    "dy": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 184,
+          "tf": 1
+        }
+      ]
+    },
+    "dx": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 184,
+          "tf": 1
+        },
+        {
+          "id": 188,
+          "tf": 1
+        },
+        {
+          "id": 189,
+          "tf": 1
+        }
+      ]
+    },
+    "instantan": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 184,
+          "tf": 1
+        }
+      ]
+    },
+    "geometr": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 185,
+          "tf": 1
+        }
+      ]
+    },
+    "tangent": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 185,
+          "tf": 1
+        },
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        }
+      ]
+    },
+    "line": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 185,
+          "tf": 1
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        }
+      ]
+    },
+    "graph": {
+      "df": 14,
+      "postings": [
+        {
+          "id": 185,
+          "tf": 1
+        },
+        {
+          "id": 301,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 2
+        },
+        {
+          "id": 303,
+          "tf": 1
+        },
+        {
+          "id": 304,
+          "tf": 1
+        },
+        {
+          "id": 305,
+          "tf": 1
+        },
+        {
+          "id": 306,
+          "tf": 1
+        },
+        {
+          "id": 307,
+          "tf": 1
+        },
+        {
+          "id": 308,
+          "tf": 1
+        },
+        {
+          "id": 309,
+          "tf": 1
+        },
+        {
+          "id": 313,
+          "tf": 1
+        },
+        {
+          "id": 316,
+          "tf": 1
+        },
+        {
+          "id": 318,
+          "tf": 1
+        },
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "revers": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 187,
+          "tf": 1
+        }
+      ]
+    },
+    "definit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 188,
+          "tf": 1
+        }
+      ]
+    },
+    "curv": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 188,
+          "tf": 1
+        },
+        {
+          "id": 229,
+          "tf": 1
+        }
+      ]
+    },
+    "indefinit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 189,
+          "tf": 1
+        }
+      ]
+    },
+    "antideriv": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 189,
+          "tf": 1
+        }
+      ]
+    },
+    "geometri": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 190,
+          "tf": 1
+        },
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 192,
+          "tf": 1
+        },
+        {
+          "id": 193,
+          "tf": 1
+        }
+      ]
+    },
+    "shape": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 190,
+          "tf": 1
+        },
+        {
+          "id": 229,
+          "tf": 1
+        }
+      ]
+    },
+    "space": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 190,
+          "tf": 1
+        },
+        {
+          "id": 193,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 237,
+          "tf": 1
+        }
+      ]
+    },
+    "relationship": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        }
+      ]
+    },
+    "surfac": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 191,
+          "tf": 1
+        }
+      ]
+    },
+    "solid": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 191,
+          "tf": 1
+        },
+        {
+          "id": 194,
+          "tf": 1
+        }
+      ]
+    },
+    "euclidean": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 192,
+          "tf": 1
+        },
+        {
+          "id": 193,
+          "tf": 1
+        },
+        {
+          "id": 212,
+          "tf": 1
+        }
+      ]
+    },
+    "base": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 193,
+          "tf": 1
+        }
+      ]
+    },
+    "euclid": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 193,
+          "tf": 1
+        }
+      ]
+    },
+    "axiom": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 193,
+          "tf": 1
+        }
+      ]
+    },
+    "deal": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 193,
+          "tf": 1
+        },
+        {
+          "id": 214,
+          "tf": 1
+        }
+      ]
+    },
+    "flat": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 193,
+          "tf": 1
+        }
+      ]
+    },
+    "kei": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        }
+      ]
+    },
+    "no": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 194,
+          "tf": 1
+        },
+        {
+          "id": 206,
+          "tf": 1
+        },
+        {
+          "id": 273,
+          "tf": 1
+        },
+        {
+          "id": 305,
+          "tf": 1
+        }
+      ]
+    },
+    "dimens": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 194,
+          "tf": 4
+        }
+      ]
+    },
+    "plane": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 194,
+          "tf": 1
+        }
+      ]
+    },
+    "three": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 194,
+          "tf": 1
+        }
+      ]
+    },
+    "angl": {
+      "df": 9,
+      "postings": [
+        {
+          "id": 195,
+          "tf": 1
+        },
+        {
+          "id": 196,
+          "tf": 1
+        },
+        {
+          "id": 197,
+          "tf": 1
+        },
+        {
+          "id": 198,
+          "tf": 1
+        },
+        {
+          "id": 239,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 2
+        }
+      ]
+    },
+    "triangl": {
+      "df": 8,
+      "postings": [
+        {
+          "id": 195,
+          "tf": 1
+        },
+        {
+          "id": 197,
+          "tf": 1
+        },
+        {
+          "id": 198,
+          "tf": 1
+        },
+        {
+          "id": 200,
+          "tf": 1
+        },
+        {
+          "id": 253,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        },
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        }
+      ]
+    },
+    "degre": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 196,
+          "tf": 1
+        },
+        {
+          "id": 198,
+          "tf": 1
+        },
+        {
+          "id": 310,
+          "tf": 1
+        }
+      ]
+    },
+    "radian": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 196,
+          "tf": 1
+        }
+      ]
+    },
+    "side": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        }
+      ]
+    },
+    "equilater": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        }
+      ]
+    },
+    "isoscel": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        }
+      ]
+    },
+    "scalen": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        }
+      ]
+    },
+    "acut": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        }
+      ]
+    },
+    "right": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        },
+        {
+          "id": 200,
+          "tf": 1
+        },
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        }
+      ]
+    },
+    "obtus": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 197,
+          "tf": 1
+        }
+      ]
+    },
+    "sum": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 198,
+          "tf": 1
+        },
+        {
+          "id": 227,
+          "tf": 1
+        },
+        {
+          "id": 267,
+          "tf": 1
+        }
+      ]
+    },
+    "alwai": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 198,
+          "tf": 1
+        }
+      ]
+    },
+    "pythagorean": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 199,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        }
+      ]
+    },
+    "theorem": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 199,
+          "tf": 1
+        },
+        {
+          "id": 201,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        }
+      ]
+    },
+    "hypotenus": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 200,
+          "tf": 1
+        },
+        {
+          "id": 259,
+          "tf": 1
+        },
+        {
+          "id": 260,
+          "tf": 1
+        }
+      ]
+    },
+    "countless": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 201,
+          "tf": 1
+        }
+      ]
+    },
+    "physic": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 201,
+          "tf": 1
+        },
+        {
+          "id": 234,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "theori": {
+      "df": 10,
+      "postings": [
+        {
+          "id": 202,
+          "tf": 1
+        },
+        {
+          "id": 203,
+          "tf": 1
+        },
+        {
+          "id": 219,
+          "tf": 1
+        },
+        {
+          "id": 268,
+          "tf": 1
+        },
+        {
+          "id": 269,
+          "tf": 1
+        },
+        {
+          "id": 301,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        },
+        {
+          "id": 316,
+          "tf": 1
+        },
+        {
+          "id": 318,
+          "tf": 1
+        },
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "pure": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 203,
+          "tf": 1
+        }
+      ]
+    },
+    "devot": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 203,
+          "tf": 1
+        }
+      ]
+    },
+    "oldest": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 204,
+          "tf": 1
+        }
+      ]
+    },
+    "prime": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 205,
+          "tf": 1
+        },
+        {
+          "id": 206,
+          "tf": 1
+        },
+        {
+          "id": 207,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        }
+      ]
+    },
+    "greater": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 206,
+          "tf": 1
+        },
+        {
+          "id": 208,
+          "tf": 1
+        }
+      ]
+    },
+    "posit": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 206,
+          "tf": 1
+        },
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        }
+      ]
+    },
+    "divisor": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 206,
+          "tf": 1
+        },
+        {
+          "id": 211,
+          "tf": 1
+        }
+      ]
+    },
+    "themselv": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 206,
+          "tf": 1
+        }
+      ]
+    },
+    "few": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 207,
+          "tf": 1
+        }
+      ]
+    },
+    "everi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 208,
+          "tf": 1
+        }
+      ]
+    },
+    "product": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 208,
+          "tf": 1
+        },
+        {
+          "id": 238,
+          "tf": 2
+        },
+        {
+          "id": 239,
+          "tf": 1
+        }
+      ]
+    },
+    "exist": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 210,
+          "tf": 1
+        }
+      ]
+    },
+    "kb": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 210,
+          "tf": 1
+        }
+      ]
+    },
+    "greatest": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 211,
+          "tf": 1
+        }
+      ]
+    },
+    "gcd": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 211,
+          "tf": 1
+        },
+        {
+          "id": 212,
+          "tf": 1
+        }
+      ]
+    },
+    "largest": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 211,
+          "tf": 1
+        }
+      ]
+    },
+    "algorithm": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 212,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "modular": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 213,
+          "tf": 1
+        },
+        {
+          "id": 214,
+          "tf": 1
+        }
+      ]
+    },
+    "remaind": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 214,
+          "tf": 1
+        },
+        {
+          "id": 215,
+          "tf": 1
+        }
+      ]
+    },
+    "mod": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 215,
+          "tf": 1
+        }
+      ]
+    },
+    "m": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 215,
+          "tf": 2
+        },
+        {
+          "id": 299,
+          "tf": 2
+        }
+      ]
+    },
+    "when": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 215,
+          "tf": 1
+        },
+        {
+          "id": 247,
+          "tf": 1
+        }
+      ]
+    },
+    "statist": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 217,
+          "tf": 1
+        },
+        {
+          "id": 218,
+          "tf": 1
+        },
+        {
+          "id": 219,
+          "tf": 1
+        },
+        {
+          "id": 220,
+          "tf": 1
+        },
+        {
+          "id": 229,
+          "tf": 1
+        }
+      ]
+    },
+    "probabl": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 217,
+          "tf": 1
+        },
+        {
+          "id": 219,
+          "tf": 1
+        },
+        {
+          "id": 224,
+          "tf": 1
+        },
+        {
+          "id": 225,
+          "tf": 1
+        },
+        {
+          "id": 227,
+          "tf": 1
+        },
+        {
+          "id": 286,
+          "tf": 1
+        }
+      ]
+    },
+    "interpret": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 218,
+          "tf": 1
+        }
+      ]
+    },
+    "descript": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 220,
+          "tf": 1
+        }
+      ]
+    },
+    "central": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "tendenc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "averag": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "median": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "middl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "mode": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "frequent": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 221,
+          "tf": 1
+        }
+      ]
+    },
+    "dispers": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 222,
+          "tf": 1
+        }
+      ]
+    },
+    "rang": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 222,
+          "tf": 1
+        },
+        {
+          "id": 226,
+          "tf": 1
+        }
+      ]
+    },
+    "varianc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 222,
+          "tf": 1
+        }
+      ]
+    },
+    "deviat": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 222,
+          "tf": 1
+        },
+        {
+          "id": 223,
+          "tf": 1
+        }
+      ]
+    },
+    "spread": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 223,
+          "tf": 1
+        }
+      ]
+    },
+    "quantifi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 225,
+          "tf": 1
+        }
+      ]
+    },
+    "likelihood": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 225,
+          "tf": 1
+        }
+      ]
+    },
+    "event": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 225,
+          "tf": 1
+        },
+        {
+          "id": 226,
+          "tf": 1
+        }
+      ]
+    },
+    "p": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 226,
+          "tf": 1
+        }
+      ]
+    },
+    "imposs": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 226,
+          "tf": 1
+        },
+        {
+          "id": 316,
+          "tf": 1
+        }
+      ]
+    },
+    "possibl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 227,
+          "tf": 1
+        }
+      ]
+    },
+    "outcom": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 227,
+          "tf": 1
+        }
+      ]
+    },
+    "normal": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 229,
+          "tf": 1
+        }
+      ]
+    },
+    "bell": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 229,
+          "tf": 1
+        }
+      ]
+    },
+    "phenomena": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 230,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        }
+      ]
+    },
+    "binomi": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 231,
+          "tf": 1
+        },
+        {
+          "id": 295,
+          "tf": 1
+        }
+      ]
+    },
+    "model": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 231,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "success": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 231,
+          "tf": 1
+        }
+      ]
+    },
+    "independ": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 231,
+          "tf": 1
+        }
+      ]
+    },
+    "trial": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 231,
+          "tf": 1
+        }
+      ]
+    },
+    "matric": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 232,
+          "tf": 1
+        },
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 240,
+          "tf": 1
+        },
+        {
+          "id": 242,
+          "tf": 1
+        }
+      ]
+    },
+    "represent": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 233,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "order": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 236,
+          "tf": 1
+        },
+        {
+          "id": 281,
+          "tf": 1
+        },
+        {
+          "id": 288,
+          "tf": 1
+        },
+        {
+          "id": 294,
+          "tf": 1
+        }
+      ]
+    },
+    "list": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 236,
+          "tf": 1
+        }
+      ]
+    },
+    "abstract": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 237,
+          "tf": 1
+        }
+      ]
+    },
+    "dot": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 239,
+          "tf": 1
+        }
+      ]
+    },
+    "cross": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 238,
+          "tf": 1
+        },
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "co": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 239,
+          "tf": 1
+        },
+        {
+          "id": 260,
+          "tf": 1
+        },
+        {
+          "id": 261,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        }
+      ]
+    },
+    "matrix": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 241,
+          "tf": 1
+        },
+        {
+          "id": 243,
+          "tf": 1
+        },
+        {
+          "id": 244,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 2
+        },
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "rectangular": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 241,
+          "tf": 1
+        }
+      ]
+    },
+    "arrang": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 241,
+          "tf": 1
+        },
+        {
+          "id": 284,
+          "tf": 1
+        },
+        {
+          "id": 285,
+          "tf": 1
+        },
+        {
+          "id": 288,
+          "tf": 1
+        }
+      ]
+    },
+    "row": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 241,
+          "tf": 1
+        }
+      ]
+    },
+    "column": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 241,
+          "tf": 1
+        }
+      ]
+    },
+    "transform": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 242,
+          "tf": 1
+        },
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "find": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 243,
+          "tf": 1
+        },
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "determin": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 243,
+          "tf": 1
+        }
+      ]
+    },
+    "ba": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 244,
+          "tf": 1
+        }
+      ]
+    },
+    "method": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "gaussian": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "elimin": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "lu": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "decomposit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 246,
+          "tf": 1
+        }
+      ]
+    },
+    "invert": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 247,
+          "tf": 1
+        }
+      ]
+    },
+    "eigenvalu": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 248,
+          "tf": 1
+        },
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "eigenvector": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 248,
+          "tf": 1
+        },
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "av": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "v": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 249,
+          "tf": 3
+        }
+      ]
+    },
+    "non": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "zero": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 249,
+          "tf": 1
+        }
+      ]
+    },
+    "quantum": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "mechan": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "googl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 250,
+          "tf": 1
+        }
+      ]
+    },
+    "pagerank": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 250,
+          "tf": 1
+        },
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "neural": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 252,
+          "tf": 1
+        }
+      ]
+    },
+    "network": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 252,
+          "tf": 1
+        },
+        {
+          "id": 301,
+          "tf": 1
+        },
+        {
+          "id": 318,
+          "tf": 2
+        }
+      ]
+    },
+    "analysi": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 252,
+          "tf": 1
+        },
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "trigonometri": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 253,
+          "tf": 1
+        },
+        {
+          "id": 254,
+          "tf": 1
+        }
+      ]
+    },
+    "circl": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 253,
+          "tf": 1
+        },
+        {
+          "id": 262,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        }
+      ]
+    },
+    "period": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 254,
+          "tf": 1
+        }
+      ]
+    },
+    "trigonometr": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 255,
+          "tf": 1
+        },
+        {
+          "id": 257,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        }
+      ]
+    },
+    "sine": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        }
+      ]
+    },
+    "cosin": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        }
+      ]
+    },
+    "defin": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 256,
+          "tf": 1
+        },
+        {
+          "id": 258,
+          "tf": 1
+        }
+      ]
+    },
+    "sin": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 259,
+          "tf": 1
+        },
+        {
+          "id": 261,
+          "tf": 1
+        },
+        {
+          "id": 264,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 1
+        }
+      ]
+    },
+    "opposit": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 259,
+          "tf": 1
+        },
+        {
+          "id": 261,
+          "tf": 1
+        }
+      ]
+    },
+    "adjac": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 260,
+          "tf": 1
+        },
+        {
+          "id": 261,
+          "tf": 1
+        }
+      ]
+    },
+    "tan": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 261,
+          "tf": 1
+        }
+      ]
+    },
+    "unit": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 262,
+          "tf": 1
+        },
+        {
+          "id": 263,
+          "tf": 1
+        }
+      ]
+    },
+    "radiu": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 264,
+          "tf": 1
+        }
+      ]
+    },
+    "axi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 264,
+          "tf": 1
+        }
+      ]
+    },
+    "ident": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 265,
+          "tf": 1
+        },
+        {
+          "id": 266,
+          "tf": 2
+        }
+      ]
+    },
+    "trig": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 267,
+          "tf": 1
+        }
+      ]
+    },
+    "distinct": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 270,
+          "tf": 1
+        },
+        {
+          "id": 289,
+          "tf": 1
+        }
+      ]
+    },
+    "object": {
+      "df": 6,
+      "postings": [
+        {
+          "id": 270,
+          "tf": 1
+        },
+        {
+          "id": 288,
+          "tf": 1
+        },
+        {
+          "id": 289,
+          "tf": 1
+        },
+        {
+          "id": 294,
+          "tf": 1
+        },
+        {
+          "id": 295,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "call": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 270,
+          "tf": 1
+        }
+      ]
+    },
+    "member": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 270,
+          "tf": 1
+        }
+      ]
+    },
+    "finit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 272,
+          "tf": 1
+        }
+      ]
+    },
+    "infinit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 272,
+          "tf": 1
+        }
+      ]
+    },
+    "empti": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 273,
+          "tf": 1
+        }
+      ]
+    },
+    "ration": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 274,
+          "tf": 1
+        }
+      ]
+    },
+    "real": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 274,
+          "tf": 1
+        }
+      ]
+    },
+    "union": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 276,
+          "tf": 1
+        }
+      ]
+    },
+    "intersect": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 277,
+          "tf": 1
+        }
+      ]
+    },
+    "differ": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 278,
+          "tf": 1
+        }
+      ]
+    },
+    "complement": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 279,
+          "tf": 1
+        }
+      ]
+    },
+    "relat": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 280,
+          "tf": 1
+        },
+        {
+          "id": 281,
+          "tf": 1
+        },
+        {
+          "id": 282,
+          "tf": 1
+        },
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "exactli": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 282,
+          "tf": 1
+        },
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "output": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 282,
+          "tf": 1
+        }
+      ]
+    },
+    "combinator": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 284,
+          "tf": 1
+        },
+        {
+          "id": 285,
+          "tf": 1
+        }
+      ]
+    },
+    "count": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 284,
+          "tf": 1
+        },
+        {
+          "id": 285,
+          "tf": 1
+        }
+      ]
+    },
+    "permut": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 287,
+          "tf": 1
+        },
+        {
+          "id": 288,
+          "tf": 1
+        },
+        {
+          "id": 289,
+          "tf": 1
+        }
+      ]
+    },
+    "n": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 289,
+          "tf": 2
+        },
+        {
+          "id": 290,
+          "tf": 1
+        },
+        {
+          "id": 295,
+          "tf": 3
+        },
+        {
+          "id": 297,
+          "tf": 1
+        },
+        {
+          "id": 299,
+          "tf": 2
+        }
+      ]
+    },
+    "factori": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 290,
+          "tf": 1
+        }
+      ]
+    },
+    "select": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 294,
+          "tf": 1
+        }
+      ]
+    },
+    "without": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 294,
+          "tf": 1
+        }
+      ]
+    },
+    "regard": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 294,
+          "tf": 1
+        }
+      ]
+    },
+    "wai": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 295,
+          "tf": 1
+        }
+      ]
+    },
+    "choos": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 295,
+          "tf": 1
+        }
+      ]
+    },
+    "given": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 295,
+          "tf": 1
+        }
+      ]
+    },
+    "coeffici": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 295,
+          "tf": 1
+        }
+      ]
+    },
+    "pigeonhol": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 298,
+          "tf": 1
+        }
+      ]
+    },
+    "principl": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 298,
+          "tf": 1
+        },
+        {
+          "id": 300,
+          "tf": 1
+        }
+      ]
+    },
+    "item": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 299,
+          "tf": 2
+        }
+      ]
+    },
+    "place": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 299,
+          "tf": 1
+        }
+      ]
+    },
+    "least": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 299,
+          "tf": 1
+        }
+      ]
+    },
+    "simpl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 300,
+          "tf": 1
+        }
+      ]
+    },
+    "connect": {
+      "df": 5,
+      "postings": [
+        {
+          "id": 301,
+          "tf": 1
+        },
+        {
+          "id": 303,
+          "tf": 1
+        },
+        {
+          "id": 310,
+          "tf": 1
+        },
+        {
+          "id": 311,
+          "tf": 1
+        },
+        {
+          "id": 313,
+          "tf": 1
+        }
+      ]
+    },
+    "pairwis": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 302,
+          "tf": 1
+        }
+      ]
+    },
+    "vertic": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 303,
+          "tf": 1
+        },
+        {
+          "id": 311,
+          "tf": 1
+        },
+        {
+          "id": 313,
+          "tf": 1
+        }
+      ]
+    },
+    "node": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 303,
+          "tf": 1
+        }
+      ]
+    },
+    "edg": {
+      "df": 7,
+      "postings": [
+        {
+          "id": 303,
+          "tf": 1
+        },
+        {
+          "id": 305,
+          "tf": 1
+        },
+        {
+          "id": 306,
+          "tf": 1
+        },
+        {
+          "id": 307,
+          "tf": 1
+        },
+        {
+          "id": 308,
+          "tf": 1
+        },
+        {
+          "id": 310,
+          "tf": 1
+        },
+        {
+          "id": 311,
+          "tf": 1
+        }
+      ]
+    },
+    "undirect": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 305,
+          "tf": 1
+        }
+      ]
+    },
+    "digraph": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 306,
+          "tf": 1
+        }
+      ]
+    },
+    "assign": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 307,
+          "tf": 1
+        }
+      ]
+    },
+    "vertex": {
+      "df": 3,
+      "postings": [
+        {
+          "id": 308,
+          "tf": 1
+        },
+        {
+          "id": 310,
+          "tf": 1
+        },
+        {
+          "id": 312,
+          "tf": 1
+        }
+      ]
+    },
+    "path": {
+      "df": 4,
+      "postings": [
+        {
+          "id": 311,
+          "tf": 1
+        },
+        {
+          "id": 312,
+          "tf": 1
+        },
+        {
+          "id": 313,
+          "tf": 1
+        },
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "sequenc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 311,
+          "tf": 1
+        }
+      ]
+    },
+    "cycl": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 312,
+          "tf": 1
+        }
+      ]
+    },
+    "start": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 312,
+          "tf": 1
+        }
+      ]
+    },
+    "end": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 312,
+          "tf": 1
+        }
+      ]
+    },
+    "seven": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "nigsberg": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "euler": {
+      "df": 2,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        },
+        {
+          "id": 316,
+          "tf": 1
+        }
+      ]
+    },
+    "ask": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "walk": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "citi": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "onc": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 315,
+          "tf": 1
+        }
+      ]
+    },
+    "prove": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 316,
+          "tf": 1
+        }
+      ]
+    },
+    "social": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "transport": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "plan": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "circuit": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "design": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "field": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 318,
+          "tf": 1
+        }
+      ]
+    },
+    "dijkstra": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "shortest": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    },
+    "reli": {
+      "df": 1,
+      "postings": [
+        {
+          "id": 319,
+          "tf": 1
+        }
+      ]
+    }
+  }
+}

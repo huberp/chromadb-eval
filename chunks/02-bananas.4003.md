@@ -1,0 +1,1 @@
+The natural sugars in bananas provide quick energy, making them popular among athletes.

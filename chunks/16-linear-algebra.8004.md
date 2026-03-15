@@ -1,0 +1,1 @@
+Matrix multiplication is not commutative: AB ≠ BA in general.

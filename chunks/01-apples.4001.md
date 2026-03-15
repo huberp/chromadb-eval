@@ -1,0 +1,1 @@
+Apples are rich in dietary fiber, particularly pectin, which aids in digestion.

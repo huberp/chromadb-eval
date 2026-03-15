@@ -1,0 +1,1 @@
+Weighted graphs assign values to edges.

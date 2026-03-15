@@ -1,0 +1,1 @@
+Probability quantifies the likelihood of events.

@@ -1,0 +1,1 @@
+In traditional scalar processing, one instruction operates on one data element at a time.

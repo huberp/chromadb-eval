@@ -1,0 +1,1 @@
+Recent AMD chips also support AVX-512 in their Zen 4 architecture.

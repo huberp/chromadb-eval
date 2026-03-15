@@ -1,0 +1,1 @@
+Statistics is the science of collecting, analyzing, and interpreting data.

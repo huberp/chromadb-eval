@@ -1,0 +1,1 @@
+The degree of a vertex is the number of edges connected to it.

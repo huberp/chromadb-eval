@@ -1,0 +1,1 @@
+These concepts are crucial in understanding linear transformations and appear in applications from quantum mechanics to Google's PageRank algorithm.

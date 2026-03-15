@@ -1,0 +1,1 @@
+Bananas are one of the most consumed fruits globally.

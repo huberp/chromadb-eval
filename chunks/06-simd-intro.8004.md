@@ -1,0 +1,1 @@
+- **AVX-512**: Further extends to 512-bit registers

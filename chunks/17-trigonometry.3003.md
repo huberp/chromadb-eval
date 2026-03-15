@@ -1,0 +1,1 @@
+- cos(θ) = adjacent/hypotenuse

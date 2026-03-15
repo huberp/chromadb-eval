@@ -1,0 +1,1 @@
+Berries are small, pulpy, and often edible fruits.

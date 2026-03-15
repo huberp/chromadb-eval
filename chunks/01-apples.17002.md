@@ -1,0 +1,1 @@
+The old saying "an apple a day keeps the doctor away" has scientific backing.

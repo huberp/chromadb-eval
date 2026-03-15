@@ -1,0 +1,1 @@
+- **ARM NEON**: ARM architecture's SIMD technology

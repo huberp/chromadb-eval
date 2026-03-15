@@ -1,0 +1,1 @@
+The unit circle provides a way to extend trigonometric functions to all angles.

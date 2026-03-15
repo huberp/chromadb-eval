@@ -1,0 +1,1 @@
+A path is a sequence of vertices connected by edges.

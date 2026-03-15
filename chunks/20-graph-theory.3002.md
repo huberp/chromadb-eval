@@ -1,0 +1,1 @@
+Directed graphs (digraphs) have edges with direction.

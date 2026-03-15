@@ -1,0 +1,1 @@
+AMD processors support similar instruction sets to Intel, implementing SSE, AVX, and AVX2.

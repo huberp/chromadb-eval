@@ -1,0 +1,1 @@
+- sin(θ) = opposite/hypotenuse

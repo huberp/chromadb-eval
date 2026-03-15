@@ -1,0 +1,1 @@
+SoA keeps similar data elements together, enabling efficient vectorization.

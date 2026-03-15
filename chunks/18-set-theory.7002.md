@@ -1,0 +1,1 @@
+Intersection (A ∩ B) contains elements in both sets.

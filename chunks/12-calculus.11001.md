@@ -1,0 +1,1 @@
+Integration is the reverse process of differentiation.

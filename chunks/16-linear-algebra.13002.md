@@ -1,0 +1,1 @@
+The system Ax = b has a unique solution when A is invertible.

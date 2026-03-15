@@ -1,0 +1,1 @@
+Complete graphs have edges between all vertex pairs.

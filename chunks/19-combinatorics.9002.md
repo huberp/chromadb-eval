@@ -1,0 +1,1 @@
+The number of ways to choose k objects from n is given by the binomial coefficient: C(n,k) = n!

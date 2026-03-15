@@ -1,0 +1,1 @@
+- **SSE (Streaming SIMD Extensions)**: Intel's first mainstream SIMD instruction set

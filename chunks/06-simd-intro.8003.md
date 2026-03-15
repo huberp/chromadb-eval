@@ -1,0 +1,1 @@
+- **AVX (Advanced Vector Extensions)**: Extends SSE with wider 256-bit registers

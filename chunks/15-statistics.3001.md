@@ -1,0 +1,1 @@
+Measures of central tendency include mean (average), median (middle value), and mode (most frequent value).

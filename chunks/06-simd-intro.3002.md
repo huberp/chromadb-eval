@@ -1,0 +1,1 @@
+SIMD, however, allows one instruction to operate on multiple data elements in parallel.

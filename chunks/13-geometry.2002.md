@@ -1,0 +1,1 @@
+Key concepts include points (no dimension), lines (one dimension), planes (two dimensions), and solids (three dimensions).

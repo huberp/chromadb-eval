@@ -1,0 +1,1 @@
+They are botanically classified as berries and come from plants in the Musa genus.

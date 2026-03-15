@@ -1,0 +1,1 @@
+SIMD stands for Single Instruction Multiple Data, a parallel computing architecture that enables a single instruction to process multiple data elements simultaneously.

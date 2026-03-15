@@ -1,0 +1,1 @@
+A set is a collection of distinct objects, called elements or members.

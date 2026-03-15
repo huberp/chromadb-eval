@@ -1,0 +1,1 @@
+The Euclidean algorithm efficiently computes the GCD.

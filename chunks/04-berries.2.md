@@ -1,0 +1,1 @@
+True berries develop from a single flower with one ovary.

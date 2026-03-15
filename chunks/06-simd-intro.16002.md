@@ -1,0 +1,1 @@
+These gains come from processing multiple data elements with reduced instruction overhead.

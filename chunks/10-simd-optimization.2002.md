@@ -1,0 +1,1 @@
+Aligned loads and stores are faster than unaligned ones.

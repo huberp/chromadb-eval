@@ -1,0 +1,1 @@
+Calculus is the mathematical study of continuous change.

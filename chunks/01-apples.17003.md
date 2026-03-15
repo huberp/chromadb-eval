@@ -1,0 +1,1 @@
+Studies show that apple consumption can improve cardiovascular health and support weight management.

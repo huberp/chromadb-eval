@@ -1,0 +1,1 @@
+Formally, lim(x→a) f(x) = L means that f(x) gets arbitrarily close to L as x approaches a.

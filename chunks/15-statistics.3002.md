@@ -1,0 +1,1 @@
+Measures of dispersion include range, variance, and standard deviation.

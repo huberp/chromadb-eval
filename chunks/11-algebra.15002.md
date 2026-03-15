@@ -1,0 +1,1 @@
+The standard form is ax² + bx + c = 0.

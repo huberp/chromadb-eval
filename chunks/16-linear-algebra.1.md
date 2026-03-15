@@ -1,0 +1,1 @@
+Linear algebra is the branch of mathematics concerning linear equations, linear functions, and their representations through matrices and vector spaces.

@@ -1,0 +1,1 @@
+Matrix operations include addition, multiplication, and finding the determinant and inverse.

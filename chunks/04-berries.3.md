@@ -1,0 +1,1 @@
+This category includes strawberries (technically not true berries), blueberries, raspberries, and blackberries.

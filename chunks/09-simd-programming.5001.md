@@ -1,0 +1,1 @@
+Intrinsics are C/C++ functions that map directly to SIMD instructions.

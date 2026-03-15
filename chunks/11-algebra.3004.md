@@ -1,0 +1,1 @@
+Equations state that two expressions are equal.

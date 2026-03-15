@@ -1,0 +1,1 @@
+It has two main branches: differential calculus (concerning rates of change and slopes) and integral calculus (concerning accumulation and areas).

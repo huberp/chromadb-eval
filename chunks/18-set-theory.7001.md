@@ -1,0 +1,1 @@
+Union (A ∪ B) combines elements from both sets.

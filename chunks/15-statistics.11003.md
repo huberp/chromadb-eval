@@ -1,0 +1,1 @@
+The binomial distribution models the number of successes in a fixed number of independent trials.

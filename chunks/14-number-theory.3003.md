@@ -1,0 +1,1 @@
+The Fundamental Theorem of Arithmetic states that every integer greater than 1 can be uniquely expressed as a product of prime numbers.

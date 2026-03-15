@@ -1,0 +1,1 @@
+Euler proved it impossible, founding graph theory.

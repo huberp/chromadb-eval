@@ -1,0 +1,1 @@
+Vector operations are the core of SIMD programming.

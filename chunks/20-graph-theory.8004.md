@@ -1,0 +1,1 @@
+A graph is connected if there's a path between any two vertices.

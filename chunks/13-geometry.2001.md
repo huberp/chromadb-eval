@@ -1,0 +1,1 @@
+Euclidean geometry, based on Euclid's axioms, deals with flat space.

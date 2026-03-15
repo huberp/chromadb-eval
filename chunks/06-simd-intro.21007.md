@@ -1,0 +1,1 @@
+Understanding SIMD is crucial for writing high-performance code in performance-critical applications.

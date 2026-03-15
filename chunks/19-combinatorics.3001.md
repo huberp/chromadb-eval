@@ -1,0 +1,1 @@
+A permutation is an arrangement of objects in a specific order.

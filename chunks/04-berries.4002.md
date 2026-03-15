@@ -1,0 +1,1 @@
+These compounds help protect cells from damage and reduce inflammation.

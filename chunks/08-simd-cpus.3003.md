@@ -1,0 +1,1 @@
+AVX arrived in 2011 with Sandy Bridge, AVX2 in 2013 with Haswell, and AVX-512 in 2015 with Xeon Phi.

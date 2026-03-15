@@ -1,0 +1,1 @@
+Number theory is a branch of pure mathematics devoted to the study of integers and integer-valued functions.

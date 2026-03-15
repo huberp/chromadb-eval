@@ -1,0 +1,1 @@
+However, this requires meeting certain conditions: loops must be analyzable, data dependencies must be clear, and memory access patterns should be regular.

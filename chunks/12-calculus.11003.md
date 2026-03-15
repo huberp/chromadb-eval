@@ -1,0 +1,1 @@
+The indefinite integral ∫f(x)dx represents the family of antiderivatives.

@@ -1,0 +1,1 @@
+- 8 single-precision floats

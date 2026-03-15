@@ -1,0 +1,1 @@
+It's typically reserved for critical performance hotspots.

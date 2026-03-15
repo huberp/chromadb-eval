@@ -1,0 +1,1 @@
+Solving linear equations involves isolating the variable using inverse operations.

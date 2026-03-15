@@ -1,0 +1,1 @@
+The normal distribution is a bell-shaped curve fundamental to statistics.

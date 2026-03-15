@@ -1,0 +1,1 @@
+A relation is a set of ordered pairs.

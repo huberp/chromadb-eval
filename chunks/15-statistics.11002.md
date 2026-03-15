@@ -1,0 +1,1 @@
+Many natural phenomena follow this distribution.

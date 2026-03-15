@@ -1,0 +1,1 @@
+For example, instead of adding four pairs of numbers sequentially, SIMD can add all four pairs simultaneously using a single instruction.

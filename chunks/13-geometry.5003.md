@@ -1,0 +1,1 @@
+The sum of angles in a triangle always equals 180 degrees.

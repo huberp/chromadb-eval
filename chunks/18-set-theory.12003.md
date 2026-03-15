@@ -1,0 +1,1 @@
+Functions are fundamental to all of mathematics.

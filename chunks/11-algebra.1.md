@@ -1,0 +1,1 @@
+Algebra is a branch of mathematics that uses symbols and letters to represent numbers and quantities in formulas and equations.

@@ -1,0 +1,1 @@
+Combinatorics is the mathematics of counting, arrangements, and combinations.

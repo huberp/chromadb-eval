@@ -1,0 +1,1 @@
+For a square matrix A, if Av = λv for some non-zero vector v, then λ is an eigenvalue and v is an eigenvector.

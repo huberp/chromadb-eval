@@ -1,0 +1,1 @@
+It's fundamental to many areas of mathematics and applications including computer graphics, machine learning, and physics.

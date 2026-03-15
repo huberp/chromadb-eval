@@ -1,0 +1,1 @@
+Apples come in thousands of varieties, each with unique characteristics.

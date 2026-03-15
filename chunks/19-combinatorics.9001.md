@@ -1,0 +1,1 @@
+A combination is a selection of objects without regard to order.

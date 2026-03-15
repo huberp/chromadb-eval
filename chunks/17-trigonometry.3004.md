@@ -1,0 +1,1 @@
+- tan(θ) = opposite/adjacent = sin(θ)/cos(θ)

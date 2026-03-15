@@ -1,0 +1,1 @@
+- Fuji: Very sweet and juicy

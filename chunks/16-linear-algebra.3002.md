@@ -1,0 +1,1 @@
+Vectors can represent points in space, directions, or abstract data.

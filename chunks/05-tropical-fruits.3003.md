@@ -1,0 +1,1 @@
+Papayas have papain, another digestive enzyme.

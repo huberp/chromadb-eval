@@ -1,0 +1,1 @@
+A graph consists of vertices (nodes) connected by edges (links).

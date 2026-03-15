@@ -1,0 +1,1 @@
+A medium-sized apple contains about 95 calories and provides 4 grams of fiber.

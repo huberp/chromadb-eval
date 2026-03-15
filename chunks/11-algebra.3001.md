@@ -1,0 +1,1 @@
+Variables are symbols that represent unknown or changing values.
