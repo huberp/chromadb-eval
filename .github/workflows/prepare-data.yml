@@ -57,6 +57,11 @@ jobs:
           RAW_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/data-main
           EMBEDDING_MODEL_ID: ${{ steps.model-info.outputs.model_id }}
 
+      - name: Prepare BM25 index
+        run: npm run prepare-bm25
+        env:
+          OUTPUT_DIR: ${{ github.workspace }}/data-output
+
       - name: Deploy to data-main branch
         env:
           GITHUB_TOKEN: ${{ github.token }}

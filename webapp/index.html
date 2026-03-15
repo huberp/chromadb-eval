@@ -118,7 +118,7 @@
             loadEmbeddings, initializeModel, computeQueryEmbedding, findTopMatches,
             cosineSimilarity, MODEL_ID
         } from './embeddings.js';
-        import { Bm25Index } from './bm25.js';
+        import { Bm25Index, loadBm25Index } from './bm25.js';
         import { rrfFuse } from './fusion.js';
         import { BUILD_SHA, BUILD_DATE } from './version.js';
 
@@ -467,9 +467,15 @@
                 return;
             }
 
-            // Build BM25 index from plainText fields (once at startup)
-            updateStatus('Building BM25 index...', 'loading');
-            bm25Index.build(embeddings.map(e => ({ id: e.id, text: e.plainText || '' })));
+            // Load precomputed BM25 index from data-main branch
+            const bm25Data = await loadBm25Index(updateStatus);
+            if (bm25Data) {
+                bm25Index.load(bm25Data);
+            } else {
+                // Fallback: build from plainText fields if precomputed index is unavailable
+                updateStatus('Building BM25 index from embeddings...', 'loading');
+                bm25Index.build(embeddings.map(e => ({ id: e.id, text: e.plainText || '' })));
+            }
 
             embedder = await initializeModel(updateStatus);
             if (!embedder) {
