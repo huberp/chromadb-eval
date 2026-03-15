@@ -11,6 +11,7 @@
     "verify-ast-chunker": "tsx src/verify-ast-chunker.ts",
     "compare-chunkers": "tsx src/chunking/compare-chunkers.ts",
     "prepare-data": "tsx src/prepare-data.ts",
+    "prepare-bm25": "tsx src/prepare-bm25.ts",
     "test": "vitest run"
   },
   "keywords": [],

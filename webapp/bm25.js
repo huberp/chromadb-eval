@@ -2,7 +2,13 @@
  * Browser-side BM25 lexical search index.
  *
  * Standard BM25 scoring with k1=1.5 and b=0.75.
- * The index is built once at startup from plainText fields in embeddings.json.
+ *
+ * The index can be populated in two ways:
+ *   1. load(data)  — preferred: loads a precomputed index from data-main/bm25/index.json,
+ *                    generated at build time by src/prepare-bm25.ts.  This avoids
+ *                    re-tokenising all documents in the browser at startup.
+ *   2. build(docs) — fallback: builds the index at runtime from { id, text } pairs
+ *                    (e.g. from the plainText fields of embeddings.json).
  *
  * Tokenizer pipeline: lowercase → split on non-word characters → stop-word
  * filter → Porter stemmer.
@@ -20,6 +26,10 @@
 
 import { eng as STOP_WORDS_LIST } from 'https://esm.sh/stopword@3.1.5';
 import { stemmer } from 'https://esm.sh/stemmer@2.0.1';
+import { REPO_OWNER, REPO_NAME } from './config.js';
+
+/** URL of the precomputed BM25 index on the data-main branch. */
+export const BM25_INDEX_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/data-main/bm25/index.json`;
 
 const BM25_K1 = 1.5;
 const BM25_B = 0.75;
@@ -32,17 +42,48 @@ function tokenize(text) {
     return text.toLowerCase().split(/\W+/).filter(t => t.length > 0 && !STOP_WORDS.has(t)).map(stemmer);
 }
 
+/**
+ * Fetch the precomputed BM25 index from the data-main branch.
+ * Returns the parsed index data on success, null on error.
+ *
+ * @param {function(string, string): void} updateStatus
+ * @returns {Promise<object|null>}
+ */
+export async function loadBm25Index(updateStatus) {
+    try {
+        updateStatus('Loading BM25 index...', 'loading');
+        const response = await fetch(BM25_INDEX_URL);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch BM25 index: ${response.status}`);
+        }
+        const data = await response.json();
+        updateStatus('BM25 index loaded', 'success');
+        return data;
+    } catch (error) {
+        updateStatus(`Error loading BM25 index: ${error.message}`, 'error');
+        console.error('Error loading BM25 index:', error);
+        return null;
+    }
+}
+
 export class Bm25Index {
     constructor() {
-        this._docs = [];       // Array of { id, tokens }
-        this._df = new Map();  // term -> document frequency
-        this._avgdl = 0;       // average document length (in tokens)
+        this._docs = [];       // Array of { id, tokens } — used in build() mode
+        this._df = new Map();  // term -> document frequency — used in build() mode
+        this._avgdl = 0;       // average document length (in tokens) — used in build() mode
         this._built = false;
+
+        // Precomputed data set by load()
+        this._loaded = false;
+        this._n = 0;
+        this._loadedAvgdl = 0;
+        this._docLengths = null;  // Record<string, number>
+        this._index = null;       // Record<string, { df, postings: [{id, tf}] }>
     }
 
     /**
-     * Build the BM25 index from an array of { id, text } documents.
-     * Call this once after loadEmbeddings() completes.
+     * Build the BM25 index at runtime from an array of { id, text } documents.
+     * Prefer load() when a precomputed index is available.
      *
      * @param {Array<{id: string, text: string}>} docs
      */
@@ -74,6 +115,22 @@ export class Bm25Index {
     }
 
     /**
+     * Load a precomputed BM25 index produced by src/prepare-bm25.ts.
+     * After this call, search() uses the precomputed data without re-tokenising
+     * any documents.
+     *
+     * @param {{ n: number, avgdl: number, docLengths: object, index: object }} data
+     */
+    load(data) {
+        this._loaded = true;
+        this._n = data.n;
+        this._loadedAvgdl = data.avgdl;
+        this._docLengths = data.docLengths;
+        this._index = data.index;
+        console.log(`[BM25] Loaded precomputed index: ${Object.keys(data.index).length} terms, ${data.n} docs, avgdl=${data.avgdl.toFixed(1)}`);
+    }
+
+    /**
      * Search the index for a query string.
      * Returns the top k documents sorted by BM25 score descending.
      * Tie-break by id (lexicographic) for determinism.
@@ -83,8 +140,8 @@ export class Bm25Index {
      * @returns {Array<{id: string, score: number}>}
      */
     search(query, k = 5) {
-        if (!this._built) {
-            throw new Error('BM25 index not built. Call build() first.');
+        if (!this._built && !this._loaded) {
+            throw new Error('BM25 index not ready. Call build() or load() first.');
         }
 
         const queryTerms = tokenize(query);
@@ -92,8 +149,51 @@ export class Bm25Index {
             return [];
         }
 
+        if (this._loaded) {
+            return this._searchLoaded(queryTerms, k);
+        }
+        return this._searchBuilt(queryTerms, k);
+    }
+
+    /**
+     * Search using the precomputed inverted index (set via load()).
+     * @private
+     */
+    _searchLoaded(queryTerms, k) {
+        const N = this._n;
+        const scores = new Map();
+
+        for (const term of queryTerms) {
+            const entry = this._index[term];
+            if (!entry) continue;
+
+            const { df, postings } = entry;
+            // IDF component: ln((N - df + 0.5) / (df + 0.5) + 1)
+            const idf = Math.log((N - df + 0.5) / (df + 0.5) + 1);
+
+            for (const posting of postings) {
+                const { id, tf } = posting;
+                const dl = this._docLengths[id] || 0;
+                // BM25 TF component
+                const tfNorm = (tf * (BM25_K1 + 1)) /
+                    (tf + BM25_K1 * (1 - BM25_B + BM25_B * dl / this._loadedAvgdl));
+                scores.set(id, (scores.get(id) || 0) + idf * tfNorm);
+            }
+        }
+
+        return Array.from(scores.entries())
+            .map(([id, score]) => ({ id, score }))
+            .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
+            .slice(0, k);
+    }
+
+    /**
+     * Search using the in-memory token arrays (set via build()).
+     * @private
+     */
+    _searchBuilt(queryTerms, k) {
         const N = this._docs.length;
-        const scores = new Map(); // id -> score
+        const scores = new Map();
 
         for (const term of queryTerms) {
             const df = this._df.get(term) || 0;
@@ -117,10 +217,10 @@ export class Bm25Index {
         }
 
         // Convert to array, sort by score desc, tie-break by id asc
-        const results = Array.from(scores.entries())
+        return Array.from(scores.entries())
             .map(([id, score]) => ({ id, score }))
-            .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
-
-        return results.slice(0, k);
+            .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id))
+            .slice(0, k);
     }
 }
+

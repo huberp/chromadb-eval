@@ -1,13 +1,11 @@
 import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
-import { MODEL_ID } from './config.js';
+import { MODEL_ID, REPO_OWNER, REPO_NAME } from './config.js';
 
 // Configure transformers.js to use CDN models
 env.allowLocalModels = false;
 env.allowRemoteModels = true;
 
-const OWNER = 'huberp';
-const REPO = 'chromadb-eval';
-export const EMBEDDINGS_URL = `https://raw.githubusercontent.com/${OWNER}/${REPO}/data-main/embeddings.json`;
+export const EMBEDDINGS_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/data-main/embeddings.json`;
 export { MODEL_ID };
 
 // Computes cosine similarity between two equal-length vectors.
