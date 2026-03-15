@@ -128,6 +128,18 @@ CHUNKING_MODE=legacy npm start
 
 **Note**: AST mode provides improved structural awareness of markdown documents. Both modes follow the same chunking strategies (chunk size, overlap, special handling for code blocks, lists, and tables) but AST mode leverages the Abstract Syntax Tree for more precise parsing.
 
+#### AST Sentence Mode (Hierarchical / Small-to-Big RAG)
+Extends AST mode with a second level of chunking that further splits large paragraph blocks into individual sentences:
+```bash
+CHUNKING_MODE=ast-sentence npm start
+```
+
+Each sentence becomes its own chunk with metadata linking it back to its parent block-level chunk (`parentChunkId`, `sentenceIndex`, `chunkLevel: 2`). This enables **small-to-big retrieval**: retrieve the most semantically precise sentence chunk, then expand to the full parent block for context.
+
+Only paragraph blocks longer than `CHUNK_MIN_PARAGRAPH_LENGTH` characters are split into sentences (default: 300). Short blocks are kept as-is.
+
+> **When to use**: Dense/semantic retrieval over long-form prose, or any RAG pipeline that benefits from fine-grained retrieval units with parent-context expansion.
+
 ### Switch between embedding strategies
 
 The application supports three embedding strategies:
@@ -164,9 +176,10 @@ EMBEDDING_STRATEGY=huggingface npm start
 You can customize both chunking and embedding behavior via environment variables:
 
 **Chunking:**
-- `CHUNKING_MODE`: Set to `legacy` or `ast` (default)
+- `CHUNKING_MODE`: Set to `legacy`, `ast` (default), or `ast-sentence`
 - `CHUNK_SIZE`: Target chunk size in characters (default: 1000)
 - `CHUNK_OVERLAP`: Overlap size between chunks in characters (default: 150)
+- `CHUNK_MIN_PARAGRAPH_LENGTH`: Minimum paragraph length to trigger sentence splitting in `ast-sentence` mode (default: 300)
 
 **Embeddings:**
 - `EMBEDDING_STRATEGY`: Set to `llm` (default), `local`, or `huggingface`
