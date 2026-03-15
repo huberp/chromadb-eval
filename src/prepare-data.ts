@@ -119,7 +119,7 @@ async function main(): Promise<void> {
   const chunker = new AstDocumentChunker({
     sentenceChunking: {
       enabled: true,
-      minParagraphLength: 300,
+      minParagraphLength: 0,
     },
   });
   const allChunks: AstChunk[] = [];
