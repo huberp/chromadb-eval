@@ -3,7 +3,7 @@
  *
  * This script:
  * 1. Reads all markdown documents from /documents
- * 2. Chunks them using AstDocumentChunker
+ * 2. Chunks them using AstDocumentChunker with hierarchical sentence-level chunking (Level 2)
  * 3. Writes each chunk as <docname>.<chunk-number>.md into <outputDir>/chunks
  * 4. Copies full documents into <outputDir>/documents
  * 5. Computes embeddings for every chunk via transformers.js
@@ -116,7 +116,12 @@ async function main(): Promise<void> {
   console.log(`Copied ${mdFiles.length} full documents to ${DOCS_DIR}\n`);
 
   // 4. Chunk every document using AstDocumentChunker
-  const chunker = new AstDocumentChunker();
+  const chunker = new AstDocumentChunker({
+    sentenceChunking: {
+      enabled: true,
+      minParagraphLength: 300,
+    },
+  });
   const allChunks: AstChunk[] = [];
 
   for (const file of mdFiles) {
@@ -174,6 +179,9 @@ async function main(): Promise<void> {
     section: string | undefined;
     headerHierarchy: string[] | undefined;
     chunkType: string | undefined;
+    chunkLevel: number | undefined;
+    parentChunkId: string | undefined;
+    sentenceIndex: number | undefined;
     plainText: string;
     embedding: number[];
   }
@@ -228,6 +236,9 @@ async function main(): Promise<void> {
       section: chunk.metadata?.section,
       headerHierarchy: chunk.metadata?.headerHierarchy,
       chunkType: chunk.metadata?.chunkType,
+      chunkLevel: chunk.metadata?.chunkLevel,
+      parentChunkId: chunk.metadata?.parentChunkId,
+      sentenceIndex: chunk.metadata?.sentenceIndex,
       plainText: texts[i],
       embedding: embeddings[i],
     });
